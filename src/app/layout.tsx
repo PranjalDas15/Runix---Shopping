@@ -1,6 +1,24 @@
 import type { Metadata } from "next";
+import { Oxanium } from 'next/font/google'
 import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { ProductContextProvider } from "@/Context/productContext";
+import { SingleProductProvider } from "@/Context/singleProductContext";
+import { use } from "react";
+import { UserProvider } from "@/Context/userContext";
+import { Toaster } from "react-hot-toast";
+
+interface Props {
+  params: { _id: string };
+}
+
+const oxanium = Oxanium({
+  subsets: ['latin'],
+  variable: "--font-oxanium",
+  weight: ['200', '300', '400', '500'],
+})
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,16 +37,29 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children, params
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode; params: Props["params"];
 }>) {
+
+  const param = params
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Toaster position="top-right"/>
+          <UserProvider>
+            <ProductContextProvider>
+              <SingleProductProvider>
+                <div className="relative">
+                  <Navbar/>
+                    {children}
+                  <Footer/>
+                </div>
+              </SingleProductProvider>
+            </ProductContextProvider>
+          </UserProvider>
       </body>
     </html>
   );
