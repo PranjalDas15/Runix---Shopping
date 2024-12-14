@@ -19,7 +19,7 @@ interface Product {
   }
 
 interface Prop {
-    value: Product[];
+    value: any;
     delButton?: true;
     heartButton?: true;
 }
@@ -44,7 +44,7 @@ const Shop:React.FC<Prop> = ({ value, delButton , heartButton }) => {
     <div>
 
         <div className='grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full h-full'>
-        {value.map((product, index)=>(
+        {value.map((product: any, index: number)=>(
             <div key={index} className='w-full border h-[350px] relative group'>
                 {product.productImage && product.productImage[0] && ( 
                 <div className="w-full h-[200px] overflow-hidden">

@@ -1,14 +1,7 @@
 import User from "@/types/User";
 import mongoose, { Schema } from "mongoose";
-
-
-// export interface User extends Document {
-//     email: string;
-//     phone: number;
-//     password: string;
-//     address: [string];
-//     role: string;
-// }
+import CartModel from "./Cart";
+import WishlistModel from "./Wishlist";
 
 export const UserSchema: Schema<User> = new Schema({
     email: {
@@ -18,24 +11,44 @@ export const UserSchema: Schema<User> = new Schema({
     },
     phone: {
         type: Number,
-        required: true,
-        unique: true
+        required: true
     },
     password: {
         type: String,
     },
-    address: [
-       { type: String }
-    ],
+    address: {
+        type: [String],
+        default: []
+    },
     role: {
         type: String,
         enum: ['Customer', 'Admin', 'Seller'],
         default: 'Customer',
         required: true
-    }
-
+    },
+    wishlist: {
+        type: [
+            {   
+                type: Schema.Types.ObjectId,
+                ref: "Product"
+            }
+        ],
+        default: []
+    },
+    cart: {
+        type: [{
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: "Product"
+            },
+            quantity: {
+                type: Number,
+                default: 1
+            },
+    }],
+    default: []
+    },
 });
-
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema);
 

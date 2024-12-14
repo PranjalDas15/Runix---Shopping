@@ -32,7 +32,9 @@ const UserSignIn = async (req: NextApiRequest, res: NextApiResponse )=> {
             email: isUser.email,
             phone: isUser.phone,
             address: isUser.address,
-            role: isUser.role
+            role: isUser.role,
+            wishlist: isUser.wishlist,
+            cart: isUser.cart
         }
         res.status(200).json({message: "User Logged in successfully.", user})
 

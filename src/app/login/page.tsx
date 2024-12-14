@@ -1,13 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
-import { auth } from '@/app/firebase/config';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { images } from '@/lib/assets';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 import { useUser } from '@/Context/userContext';
 
 const page = () => {
@@ -16,46 +12,12 @@ const page = () => {
   const [ email, setEmail] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
   const [ phone, setPhone ] = useState<string>('');
-  const [ createUserWithEmailAndPassword ] = useCreateUserWithEmailAndPassword(auth);
-  const [ signInWithEmailAndPassword ] = useSignInWithEmailAndPassword(auth);
-  const {signin, signup} = useUser();
+  const [role] = useState('Customer');
+  const {signin, signup, fetchUser} = useUser();
 
-  const handleSignUp = async () => {
-    try {
-      const res = await createUserWithEmailAndPassword(email, password);
-      const res2 = await axios.post('/api/users',{
-        email
-      })
-
-      console.log(res2)
-
-      if(res?.user.refreshToken && res2){
-        toast.success("Registered successfully.");
-        setIsSignIn(true);
-      } else {
-        toast.error("User already exists.")
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const handleSignIn = async () => {
-    try {
-      const res = await signInWithEmailAndPassword(email, password);
-      if(res?.user.refreshToken) {
-        setEmail('');
-        setPassword('');
-        toast.success("Logged in successfully.");
-        return router.push('/');
-      } else {
-        toast.error("Invalid username or password.")
-        console.log("Not Authorised");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  useEffect(()=>{
+    fetchUser()
+  },[])
  
   return (
     <div className='min-h-[70vh] w-full bg-white flex justify-center items-center px-10 py-10'>
@@ -99,7 +61,7 @@ const page = () => {
                       <label htmlFor="password" className='block'>Password</label>
                       <input id='password' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} className='w-2/3 md:w-1/2 h-[40px] px-2 py-1 border-2 border-black rounded-full'/>
                     </div>
-                    <button type='submit' onClick={()=>signup(email, phone, password)} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Register</button>
+                    <button type='submit' onClick={()=>{signup(email, phone, password, role); setIsSignIn(true)}} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Register</button>
                     <p>Already Registered? <span onClick={()=>setIsSignIn(!isSignIn)} className='hover:text-orange-400 cursor-pointer underline underline-offset-1'>Login</span></p>
                   </div></div>}
     </div>

@@ -16,7 +16,7 @@ export const CartSchema: Schema<Cart> = new Schema ({
     products: [{
         type: Schema.Types.ObjectId,
         ref: "Product",
-        require: true
+        required: true
     }],
     createdAt: {
         type: Date,

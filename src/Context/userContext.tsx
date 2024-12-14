@@ -14,9 +14,12 @@ import { useProductContext } from "./productContext";
 
 interface UserData {
   _id: string,
-  email: string | undefined | null,
-  phone: number | undefined | null,
-  address: [string | undefined | null]
+  email: string | undefined | null;
+  phone: number | undefined | null;
+  address: Array<string | null | undefined>;
+  role: string;
+  cart: Array<{ product: any; quantity: number }>;
+  wishlist: Array<{ product: any }>;
 }
 
 interface WishlistData {
@@ -32,12 +35,13 @@ interface ApiResponse {
 interface UserContextType {
   loading: boolean;
   signin: (email: string, password: string) => void;
-  signup: (email: string, password: string, phone: string) => void;
+  signup: (email: string, password: string, phone: string, role: any) => void;
   signout: () => void;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   isLoggedIn: boolean | undefined;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean | undefined>>
   addToWishlist: (product: any) => void;
+  fetchUser: () => void;
   refreshWishlist: () => void;
   deleteFromWishlist: (product: any) => void;
   addToCart: (user: any, product: any) => void;
@@ -67,28 +71,27 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [ currnetUser, setCurrentUser ] = useState<UserData | null>();
-  const [wishlist, setWishlist] = useState<WishlistData | any>(null);
+  const [ wishlist, setWishlist ] = useState<WishlistData | any>(null);
   const [ isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>(false)
-  const [loading, setLoading] = useState<boolean>(true);
-  const { products } = useProductContext()
+  const [ loading, setLoading ] = useState<boolean>(true);
   const router = useRouter();
 
 
-  const signup = async(email: string, phone: string, password: string) => {
+
+
+  {/* User Context starts */}
+
+  const signup = async(email: string, phone: string, password: string,  role: any) => {
     try {
-      const res = await axios.post('/api/auth/signup',{email, phone, password});
-      if(!res.data) {
+      const res = await axios.post('/api/auth/signup',{email, phone, password, role});
+      const data = res?.data;
+      if(!data) {
         console.log(res?.data?.error);
       }
-      const data = res.data;
-      console.log(data)
     } catch (error:any) {
       return console.error(error?.data)
     }
   }
-
-  {/* User Context starts */}
-
 
   const signin = async (email:string, password:string) => {
     
@@ -101,6 +104,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       router.push('/');
       setIsLoggedIn(true);
       setLoading(false);
+      await fetchUser();
+      
       toast.success("Logged in successfully");
     } catch (error:any) {
       setLoading(false);
@@ -128,7 +133,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  useEffect(()=>{
    const fetchUser = async () => {
     try {
       setLoading(true);
@@ -137,21 +141,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       if(!data) {
         console.log(data.error);
       }
-      console.log('User: ',data)
       setCurrentUser(data);
-      setIsLoggedIn(true);
+      setWishlist(data.wishlist);
       setLoading(false);
     } catch (error) {
-      setIsLoggedIn(false)
       setLoading(false);
       console.error("Error", error)
     } 
    }
+   useEffect(()=> {
     fetchUser();
-  }, [])
-
-
-
+   }, [])
 
   {/* User Context ends */}
 
@@ -160,86 +160,122 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   {/* Wishlist Context */}
 
-  const refreshWishlist = async () => {
+  // const refreshWishlist = async () => {
+  //   try {
+  //     const res = await axios.get('/api/user/customer/wishlist', {
+  //       withCredentials: true,
+  //     });
+  //     if (res.status === 200) {
+  //       setWishlist(res.data.wishlist);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+
+  // const addToWishlist = async (product: any)=>{
+  //     if (!product) {
+  //       toast.error("Product information is missing!");
+  //       return;
+  //     }
+  //     try {
+  //       const response = await axios.post<WishlistResponse>('/api/user/customer/wishlist', {
+  //         products: [product]
+  //       }, {withCredentials: true});
+  //       if (response.data?.wishlist) {
+  //         setWishlist((prevWishlist: any)=> ({
+  //           ...prevWishlist,
+  //           products: [...(prevWishlist.products || []), product]
+  //         }));
+  //         await refreshWishlist();
+  //         toast.success("Product added to wishlist!");
+  //       }      
+  //     }
+  //     catch (error: any) {
+  //       toast.error("Already added to list.");
+  //     }
+
+  //   }
+
+  //   const deleteFromWishlist = async(product: any)=>{
+  //     if(!product) return toast.error("Product Information is missing.");
+
+  //     try {
+  //       const response = await axios.delete<WishlistResponse>('/api/user/customer/wishlist', 
+  //         { data: { products: [product] }, withCredentials: true });
+  //       console.log(response)
+  //       if(response.data?.wishlist){
+  //         setWishlist((prevWishlist:any) => ({
+  //           ...prevWishlist,
+  //           products: prevWishlist.products.filter((p: any)=> p !==product)
+  //         }));
+  //         await refreshWishlist();
+  //         toast.success("Product removed from wishlist!");
+  //       }
+  //     } catch (error:any) {
+  //       toast.error(error.data.message)
+  //     }
+  //   }
+
+  const refreshWishlist = () =>{
+
+  }
+
+  const addToWishlist = async (productId: any) => {
+    if (!productId) {
+      toast.error("Product information is missing!");
+      return;
+    }
+  
     try {
-      const res = await axios.get('/api/user/customer/wishlist', {
-        withCredentials: true,
-      });
-      if (res.status === 200) {
-        setWishlist(res.data.wishlist);
+      const response = await axios.patch<UserData>(
+        '/api/user/customer/wishlist', 
+        { productId },
+        { withCredentials: true }
+      );
+  
+      if (response.data) {
+        setWishlist(response.data.wishlist);
+        await fetchUser();
+        toast.success('Added to wishlist');
+      } else {
+        toast.error("Something went wrong. Please try again.");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+      toast.error(errorMessage);
     }
   };
+  
 
-
-  const addToWishlist = async (product: any)=>{
-      if (!product) {
-        toast.error("Product information is missing!");
-        return;
-      }
-      try {
-        const response = await axios.post<WishlistResponse>('/api/user/customer/wishlist', {
-          products: [product]
-        }, {withCredentials: true});
-        if (response.data?.wishlist) {
-          setWishlist((prevWishlist: any)=> ({
-            ...prevWishlist,
-            products: [...(prevWishlist.products || []), product]
-          }));
-          await refreshWishlist();
-          toast.success("Product added to wishlist!");
-        }      
-      }
-      catch (error: any) {
-        toast.error("Already added to list.");
-      }
-
+  const deleteFromWishlist = async (productId: string) => {
+    if(!productId){
+      toast.error("Product information is missing.");
+      return;
     }
 
-    const deleteFromWishlist = async(product: any)=>{
-      if(!product) return toast.error("Product Information is missing.");
+    try {
+      const response = await axios.delete<UserData>(
+        '/api/user/customer/wishlist',
+        { 
+          data: { productId }, 
+          withCredentials: true 
+        });
 
-      try {
-        const response = await axios.delete<WishlistResponse>('/api/user/customer/wishlist', 
-          { data: { products: [product] }, withCredentials: true });
-        console.log(response)
-        if(response.data?.wishlist){
-          setWishlist((prevWishlist:any) => ({
-            ...prevWishlist,
-            products: prevWishlist.products.filter((p: any)=> p !==product)
-          }));
-          await refreshWishlist();
-          toast.success("Product removed from wishlist!");
-        }
-      } catch (error:any) {
-        toast.error(error.data.message)
-      }
-    }
-
-
-    useEffect(()=> {
-
-      const getWishlist = async() => {
-        try {
-          setLoading(true);
-          const res = await axios.get('/api/user/customer/wishlist', {withCredentials: true})
-          if(res.status === 200) {
-            const data = res.data.wishlist;
-            setWishlist(data);
-          } else {
-            console.error(res.data.message);
-          }
-        } catch (error) {
-          console.error(error)
-        } finally {
-          setLoading(false)
-        }
+      console.log(response.data);
+      if(response.data) {
+        await fetchUser();
+        toast.success('Removed from wishlist.')
+      } else {
+        toast.error("Something went wrong.")
       }
       
-      getWishlist();
-    }, [])
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+      toast.error(errorMessage);
+    }
+  }
 
 
 
@@ -286,6 +322,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     isLoggedIn,
     setIsLoggedIn,
     setWishlist,
+    fetchUser,
     refreshWishlist,
     addToCart,
     currnetUser,
