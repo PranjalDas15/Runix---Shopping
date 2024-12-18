@@ -42,9 +42,9 @@ interface UserContextType {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean | undefined>>
   addToWishlist: (product: any) => void;
   fetchUser: () => void;
-  refreshWishlist: () => void;
   deleteFromWishlist: (product: any) => void;
-  addToCart: (user: any, product: any) => void;
+  addToCart: (productId: any, productQuantity: any) => void;
+  updateCart: (productId: any, productQuantity: any) => void;
   currnetUser: UserData | null | undefined,
   setCurrentUser: React.Dispatch<React.SetStateAction< undefined | any >>
   wishlist: any | null | undefined,
@@ -160,67 +160,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   {/* Wishlist Context */}
 
-  // const refreshWishlist = async () => {
-  //   try {
-  //     const res = await axios.get('/api/user/customer/wishlist', {
-  //       withCredentials: true,
-  //     });
-  //     if (res.status === 200) {
-  //       setWishlist(res.data.wishlist);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-
-  // const addToWishlist = async (product: any)=>{
-  //     if (!product) {
-  //       toast.error("Product information is missing!");
-  //       return;
-  //     }
-  //     try {
-  //       const response = await axios.post<WishlistResponse>('/api/user/customer/wishlist', {
-  //         products: [product]
-  //       }, {withCredentials: true});
-  //       if (response.data?.wishlist) {
-  //         setWishlist((prevWishlist: any)=> ({
-  //           ...prevWishlist,
-  //           products: [...(prevWishlist.products || []), product]
-  //         }));
-  //         await refreshWishlist();
-  //         toast.success("Product added to wishlist!");
-  //       }      
-  //     }
-  //     catch (error: any) {
-  //       toast.error("Already added to list.");
-  //     }
-
-  //   }
-
-  //   const deleteFromWishlist = async(product: any)=>{
-  //     if(!product) return toast.error("Product Information is missing.");
-
-  //     try {
-  //       const response = await axios.delete<WishlistResponse>('/api/user/customer/wishlist', 
-  //         { data: { products: [product] }, withCredentials: true });
-  //       console.log(response)
-  //       if(response.data?.wishlist){
-  //         setWishlist((prevWishlist:any) => ({
-  //           ...prevWishlist,
-  //           products: prevWishlist.products.filter((p: any)=> p !==product)
-  //         }));
-  //         await refreshWishlist();
-  //         toast.success("Product removed from wishlist!");
-  //       }
-  //     } catch (error:any) {
-  //       toast.error(error.data.message)
-  //     }
-  //   }
-
-  const refreshWishlist = () =>{
-
-  }
 
   const addToWishlist = async (productId: any) => {
     if (!productId) {
@@ -277,26 +216,24 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-
-
-
-  
   {/* Wishlist Context  ends*/}
 
 
   {/* Cart Context */}
     
-  const addToCart = async (user: any ,product: any)=>{
-    if (!user || !product) {
-      toast.error("User or Product information is missing!");
+  const addToCart = async (productId: any, productQuantity: any)=>{
+    if (!productId || !productQuantity) {
+      toast.error("Information is missing!");
       return;
     }
     try {
-      const response = await axios.post<CartResponse>('/api/cart', {
-        user: user,
-        products: [product]
+      const response = await axios.patch<UserData>('/api/user/customer/cart', {
+        productId, productQuantity
+      }, {
+        withCredentials: true
       })
-      if (response.data?.cart) {
+      if (response.status === 200) {
+        await fetchUser()
         toast.success("Product added to cart!");
       }
       return response.data;        
@@ -306,6 +243,25 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
   }
+
+  const updateCart = async(productId: any, productQuantity: any)=> {
+
+    try {
+      const response = await axios.delete<UserData>('/api/user/customer/cart',
+        {data: { productId, productQuantity }, withCredentials: true}
+      )
+
+      if(response.status === 200) {
+        await fetchUser();
+      } else {
+        toast.error("Error")
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+      toast.error(errorMessage);
+    }
+  }
+
 
   {/* Cart Context  ends*/}
     
@@ -323,8 +279,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn,
     setWishlist,
     fetchUser,
-    refreshWishlist,
     addToCart,
+    updateCart,
     currnetUser,
     setCurrentUser
   };

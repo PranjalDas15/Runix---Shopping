@@ -78,13 +78,15 @@ const ProductPage = () => {
           </div>
           
           <div className="flex gap-2 py-4 border-b-2">
-            <button onClick={()=>addToWishlist(currnetUser?._id ,product._id)} className="w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400 active:bg-transparent md:hover:bg-transparent group custom-transition">
-              <Heart size={20} className="text-white md:group-hover:text-orange-400 fill-current custom-transition"/>
-              <p className="text-sm md:text-xl text-white md:group-hover:text-black custom-transition">Add to Wishlist</p>
+
+            <button onClick={()=>addToWishlist(product._id)} disabled={currnetUser?.wishlist?.some((p)=>p === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400  group custom-transition ${currnetUser?.wishlist.some((p)=>p === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
+              <Heart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.wishlist.some((p)=>p === product._id) ? '':'md:group-hover:text-orange-400'}`}/>
+              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.wishlist?.some((p)=>p === product._id) ? '':'md:group-hover:text-black'}`}>{currnetUser?.wishlist.some((p)=>p === product._id) ? 'Added to Wishlist' : 'Add to Wishlist'}</p>    
             </button>
-            <button onClick={()=>addToCart(currnetUser?._id ,product._id)}  className="w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-black border-black active:bg-transparent md:hover:bg-transparent group custom-transition">
-              <ShoppingCart size={20} className="text-white md:group-hover:text-black fill-current custom-transition"/>
-              <p className="text-sm md:text-xl text-white md:group-hover:text-black custom-transition">Add to Cart</p>    
+
+            <button onClick={()=>addToCart(product._id, 1)} disabled={currnetUser?.cart?.some((p)=>p.product._id === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-black border-black  group custom-transition ${currnetUser?.cart.some((p)=>p.product._id === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
+              <ShoppingCart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.cart.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}/>
+              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.cart?.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}>{currnetUser?.cart.some((p)=>p.product._id === product._id) ? 'Added to Cart' : 'Add to Cart'}</p>    
             </button>
           </div>
           <div className="py-3 flex flex-col gap-3 font-semibold">

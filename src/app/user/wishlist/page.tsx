@@ -15,12 +15,12 @@ const page = () => {
 
 
   return (
-    <>
-      <div className="min-h-[70vh] w-full bg-white mt-[70px]">
+    <div>
+      <div className="min-h-[70vh] w-full bg-white mt-[70px] flex justify-center">
       {loading ? (
         <Loading />
       ) : (
-        <div className=" mx-4 py-3">
+        <div className=" mx-4 py-3 w-full md:w-[70%]">
           <div className="flex gap-1 text-[12px]">
               <Link href={"/"} className="text-orange-400">
                 Home
@@ -40,7 +40,7 @@ const page = () => {
             <Shop value={currnetUser.wishlist} delButton={true}/>
           ) : (
             <div className="w-full h-[50vh] xl:h-[80vh] flex flex-col items-center justify-center gap-10">
-              <p className="font-semibold text-xl">No Wishlist yet!</p>
+              <p className="font-semibold text-xl">Your wishlist is empty!</p>
               <Link
                 href={"/shop/Male"}
                 className="text-wrap py-2 px-3 border-2 border-orange-400 bg-white hover:bg-orange-400 hover:text-white custom-transition"
@@ -52,7 +52,7 @@ const page = () => {
         </div>
       )}
     </div>
-    </>
+    </div>
   );
 };
 

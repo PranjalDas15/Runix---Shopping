@@ -1,19 +1,7 @@
 'use client';
 
+import { Product } from "@/types/Product";
 import React, { useContext, createContext, useState, useEffect, ReactNode } from "react";
-
-interface Product {
-  _id: any,
-  productName: string;
-  productDesc: string;
-  productImage: string[]; 
-  category: string;
-  quantity: number;
-  price: number;
-  size: string;
-  discountPercent: number;
-  gender: string;
-}
 
 interface ProductContextProps {
   products: Product[];

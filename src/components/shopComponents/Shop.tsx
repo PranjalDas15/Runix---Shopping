@@ -79,7 +79,7 @@ const Shop:React.FC<Prop> = ({ value, delButton , heartButton }) => {
                     {heartButton ? (<div onClick={(e) => {addToWishlist(product._id) ;e.stopPropagation()}}>
                             <Heart className='hover:fill-current custom-transition'/>
                     </div>):null}
-                    <div onClick={(e) => {addToCart(currnetUser?._id, product._id) ;e.stopPropagation()}}>
+                    <div onClick={(e) => {addToCart(product._id, 1) ;e.stopPropagation()}}>
                             <ShoppingCart className='hover:fill-current custom-transition'/>
                     </div>
                     {delButton ? (<div onClick={(e) => { deleteFromWishlist(product._id);e.stopPropagation()}}>
