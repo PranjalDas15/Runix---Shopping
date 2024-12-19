@@ -63,10 +63,11 @@ const Carousel: React.FC<Label> = ({ label, height, extras }) => {
                 {banner.body}
               </p>
               <div className="z-50">
-                <Button
-                  label={banner.button}
+              <Button
                   extras={''}
-                />
+                >
+                  {banner.button}
+                </Button>
               </div>
             </div>
           </div>

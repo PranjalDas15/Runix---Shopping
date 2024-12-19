@@ -79,9 +79,9 @@ const ProductPage = () => {
           
           <div className="flex gap-2 py-4 border-b-2">
 
-            <button onClick={()=>addToWishlist(product._id)} disabled={currnetUser?.wishlist?.some((p)=>p === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400  group custom-transition ${currnetUser?.wishlist.some((p)=>p === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
-              <Heart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.wishlist.some((p)=>p === product._id) ? '':'md:group-hover:text-orange-400'}`}/>
-              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.wishlist?.some((p)=>p === product._id) ? '':'md:group-hover:text-black'}`}>{currnetUser?.wishlist.some((p)=>p === product._id) ? 'Added to Wishlist' : 'Add to Wishlist'}</p>    
+            <button onClick={()=>addToWishlist(product._id)} disabled={currnetUser?.wishlist && currnetUser.wishlist.some((p)=>p === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400  group custom-transition ${currnetUser?.wishlist.find((p)=>p) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
+              <Heart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.wishlist.find((p)=>p) ? '':'md:group-hover:text-orange-400'}`}/>
+              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.wishlist?.find((p)=>p) ? '':'md:group-hover:text-black'}`}>{currnetUser?.wishlist.find((p)=>p) ? 'Added to Wishlist' : 'Add to Wishlist'}</p>    
             </button>
 
             <button onClick={()=>addToCart(product._id, 1)} disabled={currnetUser?.cart?.some((p)=>p.product._id === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-black border-black  group custom-transition ${currnetUser?.cart.some((p)=>p.product._id === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>

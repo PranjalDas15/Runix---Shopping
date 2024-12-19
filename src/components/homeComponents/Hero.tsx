@@ -83,7 +83,7 @@ return () => {
           <p className='hero_no4 pt-2'>Get your favourite shoes for upto <span className='font-bold'>70% off</span> !</p>
           <p className='hero_no4 pt-2'>Grab them before they are gone !!</p>
           <div className='w-full flex justify-center hero_no4 pt-5'>
-            <Button label='Explore' extras={'scale-125 -translate-x-2'}/>
+            <Button extras={'scale-125 -translate-x-2'}>Explore</Button>
           </div>
         </div>
       </div>

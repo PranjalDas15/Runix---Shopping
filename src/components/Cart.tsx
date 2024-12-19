@@ -16,6 +16,7 @@ interface SelectedProduct {
   id: string;
   price: number;
   quantity: number;
+  total?: number
 }
 
 const Demo: React.FC = () => {
@@ -23,6 +24,15 @@ const Demo: React.FC = () => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
+
+  const [order, setOrder] = useState<SelectedProduct[]>([]);
+
+  const handleOrder = () => {
+    if (selectedProducts) {
+      setOrder(selectedProducts);
+      console.log("My order: ", order);
+    }
+  };
 
   const handleCheckboxChange = (
     productId: string,
@@ -109,7 +119,7 @@ const Demo: React.FC = () => {
                 <div className="flex items-center gap-1 mt-3">
                   <button
                     disabled={c.quantity === 1}
-                    onClick={()=>updateCart(c.product._id, 1)}
+                    onClick={() => updateCart(c.product._id, 1)}
                     className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                       c.quantity === 1
                         ? "cursor-not-allowed opacity-80"
@@ -125,7 +135,7 @@ const Demo: React.FC = () => {
 
                   <button
                     disabled={c.quantity === 5}
-                    onClick={()=>addToCart(c.product._id, 1)}
+                    onClick={() => addToCart(c.product._id, 1)}
                     className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                       c.quantity === 5
                         ? "cursor-not-allowed opacity-80"
@@ -139,7 +149,7 @@ const Demo: React.FC = () => {
               <button
                 className="absolute top-0 right-0 mt-4 mr-4"
                 onClick={() => {
-                  updateCart(c.product._id, c.quantity)
+                  updateCart(c.product._id, c.quantity);
                 }}
               >
                 <X
@@ -193,11 +203,14 @@ const Demo: React.FC = () => {
                   })}
                 </ul>
               </div>
-              <div className="mt-4 flex justify-between p-3 text-xl font-bold">
-                <button className="text-white bg-orange-400 px-2 py-2 font-semibold text-lg">
+              <div className="mt-4 flex justify-between p-3 text-xl">
+                <button
+                  onClick={handleOrder}
+                  className="border-2 text-black hover:text-white border-orange-400 hover:bg-orange-400 px-2 py-2 text-lg custom-transition"
+                >
                   Place Order
                 </button>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center font-semibold">
                   <p>Cart Total</p>
                   <p className="text-orange-500"> ₹{calculateTotalPrice()}</p>
                 </div>
