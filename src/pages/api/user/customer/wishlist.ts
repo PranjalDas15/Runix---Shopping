@@ -42,7 +42,7 @@ const handler = async (req: ExtendedRequest, res: NextApiResponse) => {
         return res.status(404).json({ message: "User not found." });
 
       const update = {
-        wislist: updatedUser.wishlist,
+        wishlist: updatedUser.wishlist,
       };
 
       return res.status(200).json({ message: "Added to wishlist", update });

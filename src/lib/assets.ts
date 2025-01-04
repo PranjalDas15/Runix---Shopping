@@ -99,41 +99,52 @@ export const images = {
   banner, banner2, banner3, banner4, banner5, banner6, banner7,banner8, banner9, banner10
 };
 
+export const prices = [
+  {price: "All", min: 0, max: 10000 },
+  {price: "Below 1000" , min: 0, max: 1000 },
+  {price: "1000 - 2000", min: 1000, max: 2000 },
+  {price: "2000 - 3000", min: 2000, max: 3000 },
+  {price: "3000 - 4000", min: 3000, max: 4000 },
+  {price: "4000 and above", min:4000, max: 10000 }
+]
+
 export const genders = [
-  {gender: "Male"},
-  {gender: "Female"}
+  {gender: "Both", value: "" },
+  {gender: "Male" ,value: "male"},
+  {gender: "Female", value: "female" }
 ]
 
 export const categories = [
-  { type: "All", image: sneakerm},
-  { type: "Shoes", image: sneakerm},
-  { type: "Topwear" , image: tshirtm},
-  { type: "Bottomwear", image: shortsm },
-  { type: "Sportswear", image: tracksm },
-  { type: "Jacket" , image: jacketsm},
-  { type: "Accessories" , image: accm},
-  { type: "Winterwear" , image: accm},
+  { type: "All", value: "", image: sneakerm},
+  { type: "Shoes", value: "Shoes", image: sneakerm},
+  { type: "Topwear" , value: "T-Shirt", image: tshirtm},
+  { type: "Bottomwear", value: "Bottomwear", image: shortsm },
+  { type: "Sportswear", value: "Sportswear", image: tracksm },
+  { type: "Jacket" , value: "Jacket", image: jacketsm},
+  { type: "Accessories" , value: "Accessories", image: accm},
+  { type: "Winterwear", value: "Winterwear",  image: accm},
 ];
 
 export const categoriesMale = [
-  { type: "Shoes", image: sneakerm},
-  { type: "Topwear" , image: tshirtm},
-  { type: "BottomWear", image: shortsm },
-  { type: "Sportswear", image: tracksm },
-  { type: "Jacket" , image: sweatsm},
-  { type: "Accessories" , image: jacketsm},
-  { type: "Winterwear" , image: accm},
+  { type: "Shoes", value:"Shoes", image: sneakerm},
+  { type: "Topwear" , value:"T-Shirt", image: tshirtm},
+  { type: "BottomWear", value:"Bottomwear", image: shortsm },
+  { type: "Sportswear", value:"Sportswear", image: tracksm },
+  { type: "Jacket" , value:"Jacket", image: sweatsm},
+  { type: "Accessories" , value:"Accessories", image: jacketsm},
+  { type: "Winterwear" , value:"Winterwear", image: accm},
 ];
 
 export const categoriesFemale = [
-  { type: "Shoes", image: sneakerw},
-  { type: "Topwear" , image: tshirtw},
-  { type: "BottomWear", image: shortsw },
-  { type: "Sportswear", image: tracksw },
-  { type: "Jacket" , image: sweatsw},
-  { type: "Accessories" , image: accw},
-  { type: "Winterwear" , image: accm},
+  { type: "Shoes", value:"Shoes", image: sneakerw},
+  { type: "Topwear" , value:"T-Shirt", image: tshirtw},
+  { type: "BottomWear", value:"Bottomwear", image: shortsw },
+  { type: "Sportswear", value:"Sportswear", image: tracksw },
+  { type: "Jacket" , value:"Jacket", image: sweatsw},
+  { type: "Accessories" ,value:"Accessories",  image: accw},
+  { type: "Winterwear" ,value:"Winterwear",  image: accm},
 ];
+
 
 export const customerPolicies = [
   {type: "About Us"},

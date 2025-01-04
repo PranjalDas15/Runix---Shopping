@@ -100,7 +100,7 @@ const handler = async (req: ExtendedRequest, res: NextApiResponse) => {
         }
 
         const user = await UserModel.findOne({ _id: userId });
-        const productInCart = user?.cart.find(item => item.product.toString() === productId);
+        const productInCart = user?.cart.find((item: { product: mongoose.Types.ObjectId, quantity: number }) => item.product.toString() === productId); 
 
         if (!productInCart || productQuantity > productInCart.quantity) {
             return res.status(400).json({ message: "Invalid or excessive quantity." });

@@ -3,7 +3,6 @@ import { customerAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { ExtendedRequest } from "@/types/ExtendedRequest";
 import { NextApiResponse } from "next";
-import wishlist from "./wishlist";
 
 
 const handler = async(req: ExtendedRequest, res: NextApiResponse) => {
@@ -13,10 +12,12 @@ const handler = async(req: ExtendedRequest, res: NextApiResponse) => {
     if(!userId) return res.status(400).json({message: "UserId required."});
     try {
         await dbConnect();
-        const user = await UserModel.findById(userId).select('-password').populate({
+        const user = await UserModel.findById(userId).select('-password')
+        .populate({
             path: 'wishlist',
             model: "Product"
-        }).populate({
+        })
+        .populate({
             path: 'cart.product',
             model: "Product"
         });

@@ -176,6 +176,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   
       if (response.data) {
         setWishlist(response.data.wishlist);
+        console.log("Wishlist:", wishlist)
         await fetchUser();
         toast.success('Added to wishlist');
       } else {

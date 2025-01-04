@@ -1,6 +1,4 @@
 import { categoriesMale, customerPolicies, images, keepInTouch } from '@/lib/assets'
-import { Facebook } from 'lucide-react'
-import { Twinkle_Star } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'

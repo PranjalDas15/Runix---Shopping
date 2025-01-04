@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.1",
+    "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -26,6 +27,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-firebase-hooks": "^5.1.1",
     "react-hot-toast": "^2.4.1",
+    "react-redux": "^9.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
