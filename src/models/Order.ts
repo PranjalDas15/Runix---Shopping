@@ -1,52 +1,71 @@
-    import mongoose, { Schema, Document } from "mongoose";
+import { Order } from "@/types/Order";
+import mongoose, { Schema, Document } from "mongoose";
 
+enum OrderStatus {
+    Processing = "Processing",
+    Shipped = "Shipped",
+    Delivered = "Delivered",
+    Cancelled = "Cancelled"
+}
 
-    export interface Order extends Document {
-        user: mongoose.Types.ObjectId,
-        cartProducts: mongoose.Types.ObjectId[],
-        totalPrice: Number,
-        paymentMethod: string,
-        paymentStatus: string,
-        orderStatus: string
-        createdAt: Date,
-        updatedAt: Date,
-    };
+enum PaymentMethod {
+    CreditCard = "Credit Card",
+    DebitCard = "Debit Card",
+    UPI = "UPI",
+    CashOnDelivery = "Cash on Delivery"
+}
 
-    export const OrderSchema: Schema<Order> = new Schema ({
-        user: {
-            type: Schema.Types.ObjectId, 
-            ref: "User", 
+enum PaymentStatus {
+    Pending = "Pending",
+    Completed = "Completed",
+    Failed = "Failed"
+}
+
+interface OrderDocument extends Document, Order {}
+
+const OrderSchema: Schema<OrderDocument> = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    order: [{
+        productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Products",
             required: true
         },
-        cartProducts: [{
-            type: mongoose.Types.ObjectId,
-            ref: "Cart",
-            required: true
-        }],
-        totalPrice: {
+        quantity: {
             type: Number,
             required: true
         },
-        paymentMethod: {
-            type: String,
+        price: {
+            type: Number,
             required: true
-        },
-        paymentStatus: {
-            type: String,
-            required: true,
-            default: "Pending",
-            enum: ["Pending", "Cancelled","Success","Cash on Delivery"]
-        },
-        orderStatus: {
-            type: String,
-            required: true,
-            default: "Pending",
-            enum: ["Pending", "Cancelled", "Processing", "InTransit", "Delivered", "Error"]
         }
-    },{ timestamps: true, });
+    }],
+    totalPrice: {
+        type: Number,
+        required: true
+    },
+    orderStatus: {
+        type: String,
+        enum: Object.values(OrderStatus),
+        required: true
+    },
+    paymentMethod: {
+        type: String,
+        enum: Object.values(PaymentMethod),
+        required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: Object.values(PaymentStatus),
+        required: true
+    }
+}, { timestamps: true });
 
+const OrderModel = (mongoose.models.Order as mongoose.Model<OrderDocument>) ||
+    mongoose.model<OrderDocument>("Order", OrderSchema);
 
-    const OrderModel = (mongoose.models.Order as mongoose.Model<Order>) ||
-    mongoose.model<Order>("Order", OrderSchema);
-
-    export default OrderModel;
+export default OrderModel;

@@ -1,21 +1,20 @@
 'use client'
 
 import Loading from "@/components/Loading";
-import Arrow from "@/components/ui/Arrow";
-import { useSingleProduct } from "@/Context/singleProductContext";
-import { useUser } from "@/Context/userContext";
+import { addToCart } from "@/lib/actions/cartActions";
+import { addToWishlist } from "@/lib/actions/wishlistActions";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { ArrowLeft, Check, Heart, ShoppingCart, Smartphone, Truck } from "lucide-react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 
 
 const ProductPage = () => {
-  const { addToWishlist, currnetUser, addToCart } = useUser()
-  const searchParams = useSearchParams();
+  const params = useParams();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  const { products, loading, error } = useAppSelector((state)=>state.products)
   const router = useRouter();
-  const { product, loading, error } = useSingleProduct();
-  const id = searchParams?.get("id");
 
   const discountedPrice = (price:number , discount:number) => {
     const discountedAmmount = (price * discount) / 100 ;
@@ -26,11 +25,7 @@ const ProductPage = () => {
     const currentDate = new Date().toString().slice(0,10);
     return currentDate;
   }
-
-
-  useEffect(() => {
-    if (!id) return;
-  }, [id]);
+  const product = products.find((product)=> product._id.toString() === params?.id?.toString());
 
   return (
     <>
@@ -79,14 +74,14 @@ const ProductPage = () => {
           
           <div className="flex gap-2 py-4 border-b-2">
 
-            <button onClick={()=>addToWishlist(product._id)} disabled={currnetUser?.wishlist && currnetUser.wishlist.some((p)=>p === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400  group custom-transition ${currnetUser?.wishlist.find((p)=>p) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
-              <Heart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.wishlist.find((p)=>p) ? '':'md:group-hover:text-orange-400'}`}/>
-              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.wishlist?.find((p)=>p) ? '':'md:group-hover:text-black'}`}>{currnetUser?.wishlist.find((p)=>p) ? 'Added to Wishlist' : 'Add to Wishlist'}</p>    
+            <button onClick={()=>dispatch(addToWishlist(product._id))} disabled={user?.wishlist && user.wishlist.some((p)=>p === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-orange-400 border-orange-400  group custom-transition ${user?.wishlist.find((p)=>p) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
+              <Heart size={20} className={`text-white  fill-current custom-transition ${user?.wishlist.find((p)=>p) ? '':'md:group-hover:text-orange-400'}`}/>
+              <p className={`text-sm md:text-xl text-white custom-transition ${user?.wishlist?.find((p)=>p) ? '':'md:group-hover:text-black'}`}>{user?.wishlist.find((p)=>p) ? 'Added to Wishlist' : 'Add to Wishlist'}</p>    
             </button>
 
-            <button onClick={()=>addToCart(product._id, 1)} disabled={currnetUser?.cart?.some((p)=>p.product._id === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-black border-black  group custom-transition ${currnetUser?.cart.some((p)=>p.product._id === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
-              <ShoppingCart size={20} className={`text-white  fill-current custom-transition ${currnetUser?.cart.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}/>
-              <p className={`text-sm md:text-xl text-white custom-transition ${currnetUser?.cart?.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}>{currnetUser?.cart.some((p)=>p.product._id === product._id) ? 'Added to Cart' : 'Add to Cart'}</p>    
+            <button onClick={()=>dispatch(addToCart({productId: product._id, productQuantity: 1}))} disabled={user?.cart?.some((p)=>p.product._id === product._id)} className={`w-full md:max-w-[300px] border py-4 flex items-center justify-center gap-3 bg-black border-black  group custom-transition ${user?.cart.some((p)=>p.product._id === product._id) ? 'cursor-not-allowed opacity-80':'md:hover:bg-transparent active:bg-transparent'}`}>
+              <ShoppingCart size={20} className={`text-white  fill-current custom-transition ${user?.cart.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}/>
+              <p className={`text-sm md:text-xl text-white custom-transition ${user?.cart?.some((p)=>p.product._id === product._id) ? '':'md:group-hover:text-black'}`}>{user?.cart.some((p)=>p.product._id === product._id) ? 'Added to Cart' : 'Add to Cart'}</p>    
             </button>
           </div>
           <div className="py-3 flex flex-col gap-3 font-semibold">

@@ -11,13 +11,13 @@ export const addToWishlist = createAsyncThunk("user/addToWishlist", async (produ
         {withCredentials: true})
 
         if(res.status !== 200) {
-            throw new Error("Failed to add to wishlist.")
+            toast.error(res.data.message);
         }
         fetchUser();
         toast.success("Added to wishlist.");
         return res.data.update.wishlist;
     } catch (error: any) {
-        console.error("Error: ", error.message);
+        toast.error("You need to log in first.");
         throw error;
     }
 });
@@ -30,12 +30,12 @@ export const deleteFromWishlist = createAsyncThunk("user/removeFromWishlist", as
         )
 
         if(res.status !== 200) {
-            throw new Error("Failed to remove from wishlist.")
+            toast.error(res.data.message);
         }
         toast.success("Removed from wishlist.");
         return res.data.result.wishlist;
     } catch (error:any) {
-        console.error("Error: ", error.message);
+        toast.error("You need to log in first.");
         throw error;
     }
 });

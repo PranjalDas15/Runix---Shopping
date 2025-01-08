@@ -5,7 +5,7 @@ import Shop from "@/components/shopComponents/Shop";
 import { setCategoryValue, setGenderValue } from "@/lib/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Search } from "lucide-react";
+import { FileTerminal, Filter, Search, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
@@ -19,9 +19,10 @@ const page = () => {
     500, 10000,
   ]);
   const [search, setSearch] = useState("");
+  const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
-    dispatch(setGenderValue(searchParam?.get("gender") ?? genderValue));
+    dispatch(setGenderValue(searchParam?.get("gender") ?? ""));
   }, [searchParam, genderValue, categoryValue]);
 
   const [sortOption, setSortOption] = useState<
@@ -70,8 +71,24 @@ const page = () => {
       {/* <div className="relative bg-white">
         <Carousel height="h-[400px] md:h-[800px]" label={advertisements} />
       </div> */}
-      <div className="flex gap-2 py-5 px-2 mt-[70px]">
-        <div className="w-[300px] md:relative min-h-screen border md:block custom-transition">
+      <div className="relative flex gap-2 py-5 px-2 pt-[70px] h-screen">
+        <div
+          className="absolute top-[65px] md:hidden mt-5"
+          onClick={() => setIsHidden(!isHidden)}
+        >
+          <Filter />
+        </div>
+
+        <div
+          className={`absolute top-0 z-20 bg-white w-full md:w-[300px] max-h-full md:relative min-h-screen border md:block custom-transition pt-[70px] md:pt-0 ${
+            isHidden
+              ? "-translate-x-full md:translate-x-0 opacity-0 md:opacity-100"
+              : "translate-x-0 opacity-100"
+          }`}
+        >
+          <div className="w-full flex justify-end p-3 md:hidden" onClick={()=>setIsHidden(!isHidden)}>
+            <X />
+          </div>
           <div className="relative mx-2 my-5">
             <input
               type="text"
@@ -91,20 +108,6 @@ const page = () => {
             priceFilter={priceFilter}
             setSearch={setSearch}
           />
-
-          {/* <select
-            value={sortOption}
-            onChange={(e) =>
-              setSortOption(e.target.value as "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a")
-            }
-            className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-          >
-            <option value="default">Sort by</option>
-            <option value="high-to-low">Price: High to Low</option>
-            <option value="high-to-low">Price: Low to High</option>
-            <option value="high-to-low">Price: High to Low</option>
-            <option value="high-to-low">Price: High to Low</option>
-          </select> */}
 
           <div className="mx-2 my-5">
             <h1 className="text-black text-lg md:text-xl font-bold mt-4">
@@ -153,7 +156,7 @@ const page = () => {
             </select>
           </div>
         </div>
-        <div className="">
+        <div className="mt-14 md:mt-0 flex flex-col">
           <div className="pb-5 text-2xl font-bold ">
             <h1 className="">
               {genderValue === ""
@@ -169,11 +172,13 @@ const page = () => {
                   categoryValue.slice(1)}
             </p>
           </div>
-          {filteredProducts.length > 0 ? (
-            <Shop value={filteredProducts} heartButton={true} />
-          ) : (
-            <></>
-          )}
+          <div className="max-h-screen overflow-auto pb-5">
+            {filteredProducts.length > 0 ? (
+              <Shop value={filteredProducts} heartButton={true} />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     </div>

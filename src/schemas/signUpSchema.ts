@@ -7,8 +7,7 @@ export const emailValidation = z
 
 export const phoneValidation = z
             .string()
-            .min(10, {message: "Not a valid phone number."})
-            .max(10, {message: "Not a valid phone number."})
+            .regex(/^\d{10}$/, { message: "Not a valid phone number." });
 
 export const passwordValidation = z
             .string()

@@ -29,6 +29,7 @@ const FilterSidebar = (props: Props) => {
     const discountAmount = (price * discountPercent) / 100;
     return price - discountAmount;
   };
+
   return (
     <>
       <div className="px-2 flex flex-col gap-4">
@@ -216,7 +217,6 @@ const FilterSidebar = (props: Props) => {
                         }
                         onChange={(e: any) => {
                           dispatch(setCategoryValue(e.target.value));
-                          console.log("Category:", categoryValue);
                         }}
                         className="peer hidden"
                       />

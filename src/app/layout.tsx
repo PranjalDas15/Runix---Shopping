@@ -51,14 +51,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="top-right"/>
-        <UserProvider>
+        {/* <UserProvider> */}
           <StoreProvider>
             <div className="relative">
               <Navbar />
               {children}
             </div>
           </StoreProvider>
-        </UserProvider>
+        {/* </UserProvider> */}
       </body>
     </html>
   );

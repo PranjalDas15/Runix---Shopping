@@ -1,53 +1,46 @@
 "use client";
 
 import Cart from "@/components/Cart";
-import Loading from "@/components/Loading";
-import { useUser } from "@/Context/userContext";
-import { BinaryIcon, CheckSquare, Divide, Square, X } from "lucide-react";
-import Image from "next/image";
+import Test from "@/components/Test";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
 import Link from "next/link";
-import { useState } from "react";
 
 const page = () => {
-  const { currnetUser, loading } = useUser();
-
+  const { user } = useAppSelector((state: RootState) => state.user);
   return (
     <div className="w-full min-h-[70vh] flex justify-center">
       <div className="min-h-[70vh] w-full bg-white mt-[70px] flex justify-center">
-        {loading ? (
-          // <Loading />
-          <></>
-        ) : (
-          <div className=" mx-4 py-3 w-full lg:w-[60%]">
-            <div className="flex gap-1 text-[12px]">
-              <Link href={"/"} className="text-orange-400">
-                Home
-              </Link>
-              <p>/</p>
-              <Link href={"/user"} className="text-orange-400">
-                Profile
-              </Link>
-              <p>/</p>
-              <p> Cart</p>
-            </div>
-            <div className="py-5">
-              <h1 className="font-bold text-xl md:text-2xl">My Cart</h1>
-            </div>
-            {currnetUser?.cart.length === 0 ? (
-              <div className="w-full h-[50vh] xl:h-[80vh] flex flex-col items-center justify-center gap-10">
-                <p className="font-semibold text-xl">Your cart is empty!</p>
-                <Link
-                  href={"/shop/Male"}
-                  className="text-wrap py-2 px-3 border-2 border-orange-400 bg-white hover:bg-orange-400 hover:text-white custom-transition"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
-            ) : (
-              <Cart />
-            )}
+        <div className=" mx-4 py-3 w-full lg:w-[60%]">
+          <div className="flex gap-1 text-[12px]">
+            <Link href={"/"} className="text-orange-400">
+              Home
+            </Link>
+            <p>/</p>
+            <Link href={"/user"} className="text-orange-400">
+              Profile
+            </Link>
+            <p>/</p>
+            <p> Cart</p>
           </div>
-        )}
+          <div className="py-5">
+            <h1 className="font-bold text-xl md:text-2xl">My Cart</h1>
+          </div>
+          {user?.cart.length === 0 ? (
+            <div className="w-full h-[50vh] xl:h-[80vh] flex flex-col items-center justify-center gap-10">
+              <p className="font-semibold text-xl">Your cart is empty!</p>
+              <Link
+                href={"/shop"}
+                className="text-wrap py-2 px-3 border-2 border-orange-400 bg-white hover:bg-orange-400 hover:text-white custom-transition"
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          ) : (
+            <Cart />
+            // <Test/>
+          )}
+        </div>
       </div>
     </div>
   );

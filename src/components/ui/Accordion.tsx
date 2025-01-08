@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import Arrow from './Arrow';
 import Link from 'next/link';
+import { useAppDispatch } from '@/lib/hooks';
+import { setCategoryValue } from '@/lib/features/productSlice';
 
 interface Items {
     type: string,
+    value: string
 }
 
 
@@ -18,6 +21,7 @@ interface Props {
 
 
 const Accordion: React.FC<Props> = ({ items, label, link, isOpen, toggleMenu, onClick }) => {
+  const dispatch = useAppDispatch();
 
   return (
     <div className='w-full text-black'>
@@ -37,7 +41,7 @@ const Accordion: React.FC<Props> = ({ items, label, link, isOpen, toggleMenu, on
             }`}
           >
             {items.slice(1).map((item, index) => (
-              <Link key={index} href={`/shop/${link}/${item.type}`} onClick={onClick} className='py-2 w-full flex items-center justify-center text-lg active:text-orange-400'>
+              <Link key={index} href={`/shop?gender=${link.toLowerCase()}`}  onClick={()=>{dispatch(setCategoryValue(item.value.toLowerCase())); onClick()}} className='py-2 w-full flex items-center justify-center text-lg active:text-orange-400'>
                 {item.type}
               </Link>
             ))}

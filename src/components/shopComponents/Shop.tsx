@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@/Context/userContext";
 import { Heart, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,21 +7,9 @@ import {
   addToWishlist,
   deleteFromWishlist,
 } from "@/lib/actions/wishlistActions";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { RootState } from "@/lib/store";
+import { useAppDispatch } from "@/lib/hooks";
+import { addToCart } from "@/lib/actions/cartActions";
 
-interface Product {
-  _id: Object;
-  productName: string;
-  productDesc: string;
-  productImage: string[];
-  category: string;
-  quantity: number;
-  price: number;
-  size: string;
-  discountPercent: number;
-  gender: string;
-}
 
 interface Prop {
   value: any;
@@ -32,7 +19,6 @@ interface Prop {
 
 const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: RootState) => state.user);
   const router = useRouter();
   const discountedPrice = (price: number, discountPercent: number) => {
     const discountAmount = (price * discountPercent) / 100;
@@ -113,6 +99,7 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
                 ) : null}
                 <div
                   onClick={(e) => {
+                    dispatch(addToCart({productId: product._id, productQuantity: 1}));
                     e.stopPropagation();
                   }}
                 >

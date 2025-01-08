@@ -1,25 +1,23 @@
 'use client'
 
-import { useUser } from '@/Context/userContext'
-import React from 'react'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
+import { redirect } from 'next/navigation';
 
 const page = () => {
+  const {user} = useAppSelector((state)=>state.user);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const {currnetUser} = useUser();
+  useEffect(()=> {
+    if(!user) {
+      redirect('/login')
+    }
+  }, [dispatch])
   return (
     <div>
   <h3>Your Wishlist</h3>
-  {currnetUser?.wishlist && currnetUser.wishlist.length > 0 ? (
-    <ul>
-      {currnetUser.wishlist.map((p: any, index) => (
-        <li key={index}>
-          <p>Product ID: {p.productName}</p>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>Your wishlist is empty.</p>
-  )}
 </div>
 
   )

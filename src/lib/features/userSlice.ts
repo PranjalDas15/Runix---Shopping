@@ -1,52 +1,52 @@
+
 import { CartItem, User, WishlistItem } from "@/types/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchUser } from "../actions/fetchUser";
-import update from "@/pages/api/user/admin/update";
-import { clear } from "console";
-import add from "@/pages/api/products/add";
 import { addToWishlist, deleteFromWishlist } from "../actions/wishlistActions";
+import { addToCart, updateCart } from "../actions/cartActions";
+
+interface SelectedProduct {
+    id: string;
+    price: number;
+    quantity: number;
+    total?: number;
+  }
 
 interface UserState {
     user: User | null;
     loading: boolean;
     error: null | string;
+    selectedProducts: SelectedProduct | null;
 };
 
+
+
 const initialState: UserState = {
-    user: {
-        _id: "",
-        email: "",
-        phone: 0,
-        wishlist: [],
-        cart: [],
-        address: [],
-        role: ""
-    },
+    user: null,
     loading: false,
     error: null,
+    selectedProducts: null
 }
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers:{
-        updateUser(state, action: PayloadAction<User>) {
-            state.user = action.payload;
-        },
+        // updateUser(state, action: PayloadAction<User>) {
+        //     state.user = action.payload;
+        // },
+        setSelectedProducts(state, action: PayloadAction<SelectedProduct[]>) {
+            // @ts-ignore
+            state.selectedProducts = action.payload;
+            
+
+        }
+        ,
         clearUser(state) {
             state.user = null;
             state.loading = false;
             state.error = null;
-        },
-        removeFromWishlist(state, action: PayloadAction<string>) {
-            if(state.user) {
-                state.user.wishlist = state.user.wishlist.filter((item: WishlistItem) => item._id !== action.payload);
-            }
-        },
-        removeFromCart(state, action: PayloadAction<string>) {
-            if(state.user) {
-                state.user.cart = state.user.cart.filter((item: CartItem) => item.product._id !== action.payload);
-            }
+            state.selectedProducts = null
         }
     },
     extraReducers: (builder) =>{
@@ -58,6 +58,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
                 state.loading = false;
+                // @ts-ignore
                 state.user = action.payload;
                 state.error = null;
             })
@@ -101,8 +102,44 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message || null;
             })
+
+            // add to cart
+
+            .addCase(addToCart.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addToCart.fulfilled, (state, action: PayloadAction<CartItem[] | undefined>) => {
+                state.loading = false;
+                if (state.user && action.payload) {
+                    state.user.cart = action.payload;
+                }
+                state.error = null;
+            })
+            .addCase(addToCart.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || null;
+            })
+
+            // update cart
+
+            .addCase(updateCart.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateCart.fulfilled, (state, action: PayloadAction<CartItem[] | undefined>) => {
+                state.loading = false;
+                if (state.user && action.payload) {
+                    state.user.cart = action.payload;
+                }
+                state.error = null;
+            })
+            .addCase(updateCart.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || null;
+            })
     }
 })
 
-export const { updateUser, clearUser, removeFromWishlist, removeFromCart } = userSlice.actions;
+export const { clearUser, setSelectedProducts } = userSlice.actions;
 export default userSlice.reducer;

@@ -4,20 +4,36 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { images } from '@/lib/assets';
-import { useUser } from '@/Context/userContext';
+import { signIn, signUp } from './actions';
+import { fetchUser } from '@/lib/actions/fetchUser';
+import store from '@/lib/store';
 
 const page = () => {
-  const router = useRouter();
+  const router = useRouter()
   const [ isSignIn, setIsSignIn ] = useState<boolean>(true)
   const [ email, setEmail] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
   const [ phone, setPhone ] = useState<string>('');
   const [role] = useState('Customer');
-  const {signin, signup, fetchUser} = useUser();
+
+  const handleSignUp = async (email: string, phone: string, password: string, role: string) => {
+    console.log("Number: ", phone)
+    const success = await signUp(email, phone, password, role);
+    if (success) {
+      setIsSignIn(true); 
+    }
+  };
+
+  const handleSignIn = async (email: string, password: string) => {
+    const success = await signIn(email, password);
+    if(success) {
+      router.push('/');
+    }
+  }
 
   useEffect(()=>{
-    fetchUser()
-  },[])
+    fetchUser();
+  },[]);
  
   return (
     <div className='min-h-[70vh] w-full bg-white flex justify-center items-center px-10 py-10'>
@@ -36,7 +52,7 @@ const page = () => {
                           <label htmlFor="password" className='block'>Password</label>
                           <input id='password' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} className='w-2/3 md:w-1/2 h-[40px] px-2 py-1 border-2 border-black rounded-full'/>
                         </div>
-                        <button type='submit' onClick={()=>signin(email, password)} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Login</button>
+                        <button type='submit' onClick={()=>handleSignIn(email, password)} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Login</button>
                         <p>Not yet Registered? <span onClick={()=>setIsSignIn(!isSignIn)} className='hover:text-orange-400 cursor-pointer underline underline-offset-1'>Register</span></p>
                       </div>
                     </div> 
@@ -61,7 +77,7 @@ const page = () => {
                       <label htmlFor="password" className='block'>Password</label>
                       <input id='password' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} className='w-2/3 md:w-1/2 h-[40px] px-2 py-1 border-2 border-black rounded-full'/>
                     </div>
-                    <button type='submit' onClick={()=>{signup(email, phone, password, role); setIsSignIn(true)}} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Register</button>
+                    <button type='submit' onClick={()=>{handleSignUp(email, phone, password, role)}} className='w-2/3 md:w-1/2 bg-orange-400 py-2 rounded-full text-lg hover:bg-white border-2 border-orange-400 custom-transition'>Register</button>
                     <p>Already Registered? <span onClick={()=>setIsSignIn(!isSignIn)} className='hover:text-orange-400 cursor-pointer underline underline-offset-1'>Login</span></p>
                   </div></div>}
     </div>

@@ -10,7 +10,6 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useProductContext } from "./productContext";
 
 interface UserData {
   _id: string,
@@ -146,7 +145,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error("Error", error)
     } 
    }
    useEffect(()=> {

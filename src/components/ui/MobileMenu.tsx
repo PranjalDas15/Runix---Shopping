@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import Arrow from "./Arrow";
 import { categories, categoriesFemale, categoriesMale } from "@/lib/assets";
-import Link from "next/link";
 import Accordion from "./Accordion";
-import { LogOut } from "lucide-react";
-import { useProductContext } from "@/Context/productContext";
-import { useUser } from "@/Context/userContext";
+import { LogOut, X } from "lucide-react";
+import { useAppSelector } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 
-const MobileMenu = () => {
-  const { menuHidden, setMenuHidden } = useProductContext();
-  const { signout } = useUser();
-
+interface Props {
+  signOut: ()=>void;
+  menuHidden: boolean;
+  setMenuHidden: React.Dispatch<React.SetStateAction<boolean>>
+}
+const MobileMenu:React.FC<Props> = ({signOut, menuHidden, setMenuHidden}) => {
+  const {user} = useAppSelector((state)=>state.user);
+  const router = useRouter();
   const [accordionValue, setAccordionValue ] = useState<string | null>(null);
   const toggleMenu = (openAccordion: string) => {
     setAccordionValue(accordionValue === openAccordion ? null : openAccordion);
@@ -18,7 +20,8 @@ const MobileMenu = () => {
 
   return (
     <div className="w-full mt-[100px] overflow-hidden">
-      <ul className="w-full flex flex-col gap-5 justify-center items-center">
+
+      <ul className="relative w-full flex flex-col gap-5 justify-center items-center">
         <li className="border w-full">
           <Accordion 
             label="MEN" 
@@ -39,8 +42,8 @@ const MobileMenu = () => {
             onClick={()=>setMenuHidden(!menuHidden)}
             />
         </li>
-        <li onClick={()=>{signout(); setMenuHidden(!menuHidden)}} className="flex items-center justify-center gap-3 border w-full cursor-pointer">
-          <p className="font-semibold text-lg py-5 text-black">LOGIN</p>
+        <li onClick={()=>{setMenuHidden(!menuHidden) ;{ user ? signOut() : router.push('/login')}}} className="flex items-center justify-center gap-3 border w-full cursor-pointer">
+          <p className="font-semibold text-lg py-5 text-black">{user ? 'LOGOUT' : 'LOGIN'}</p>
           <LogOut/>
         </li>
       </ul>

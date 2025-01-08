@@ -1,13 +1,14 @@
 "use client";
 
+import { Product } from "@/types/Product";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { addToCart, updateCart } from "@/lib/actions/cartActions";
-
+import { setSelectedProducts } from "@/lib/features/userSlice";
 
 interface SelectedProduct {
   id: any;
@@ -18,49 +19,33 @@ interface SelectedProduct {
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: RootState) => state.user);
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
-    []
-  );
-
-  const [order, setOrder] = useState<{
-    order: SelectedProduct[];
-    totalPrice: number;
-  }>({
-    order: [],
-    totalPrice: 0,
-  });
-
-  const handleOrder = () => {
-    if (selectedProducts.length > 0) {
-      setOrder((prevState) => {
-        const newOrder = [...prevState.order.filter(
-          (item) => !selectedProducts.some((p) => p.id === item.id)
-        ), ...selectedProducts];
-        const newTotalPrice = newOrder.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
-        return { order: newOrder, totalPrice: newTotalPrice };
-      });
-    }
-  };
-
-
-  const handleCheckboxChange = (
-    productId: string,
-    price: number,
-    quantity: number
-  ) => {
-    setSelectedProducts((prev) =>
-      prev.find((p) => p.id === productId)
-        ? prev.filter((p) => p.id !== productId)
-        : [...prev, { id: productId, price, quantity }]
-    );
-  };
+  const { user, selectedProducts } = useAppSelector((state: RootState) => ({
+    user: state.user.user,
+    selectedProducts: state.user.selectedProducts as SelectedProduct[],
+  }));
+  console.log("Selected Products: ", selectedProducts);
 
   const calculateTotalPrice = () => {
     return selectedProducts.reduce(
       (total, product) => total + product.price * product.quantity,
       0
     );
+  };
+
+  const handleCheckboxChange = (product: any, isChecked: boolean) => {
+    const updatedSelectedProducts = isChecked
+      ? [
+          ...selectedProducts,
+          {
+            id:product._id,
+            price: user?.cart.find((c: any) => c.product._id === product._id)
+            ?.product.price || 0,
+            quantity: user?.cart.find((c: any) => c.product._id === product._id)?.quantity || 1,
+          },
+        ]
+      : selectedProducts.filter((p: any) => p.id !== product._id);
+
+    dispatch(setSelectedProducts(updatedSelectedProducts));
   };
 
   const discountedPrice = (price: number, discountPercent: number) => {
@@ -77,13 +62,12 @@ const Cart: React.FC = () => {
               type="checkbox"
               name="cart_product"
               value={c.product._id}
-              checked={selectedProducts.some((p) => p.id === c.product._id)}
+              checked={selectedProducts.some((p) => p.id === c.product.id)}
               id={c.product._id}
               onChange={() =>
                 handleCheckboxChange(
-                  c.product._id,
-                  discountedPrice(c.product.price, c.product.discountPercent),
-                  c.quantity
+                  c.product,
+                  !selectedProducts.some((p: any) => p.id === c.product.id)
                 )
               }
               className="hidden"
@@ -91,7 +75,7 @@ const Cart: React.FC = () => {
             <label
               htmlFor={c.product._id}
               className={`relative w-full flex items-center p-2 rounded-xl ${
-                selectedProducts.some((p) => p.id === c.product._id)
+                selectedProducts.some((p) => p.id === c.product.id)
                   ? "bg-orange-100"
                   : " bg-slate-50 "
               }`}
@@ -152,14 +136,13 @@ const Cart: React.FC = () => {
 
                   <button
                     disabled={c.quantity === 5}
-                    onClick={() =>{
+                    onClick={() =>
                       dispatch(
                         addToCart({
                           productId: c.product._id,
                           productQuantity: 1,
                         })
-                      );
-                    }
+                      )
                     }
                     className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                       c.quantity === 5
@@ -208,7 +191,7 @@ const Cart: React.FC = () => {
                   </li>
                   {selectedProducts.map((p, idx) => {
                     const productDetails = user?.cart.find(
-                      (c: any) => c.product._id === p.id
+                      (c: any) => c.product.id === p.id
                     )?.product;
 
                     return (
@@ -230,9 +213,21 @@ const Cart: React.FC = () => {
                               Product not found
                             </p>
                           )}
-                          <p>₹ {productDetails && p.price}</p>
+                          <p>
+                            ₹{" "}
+                            {discountedPrice(
+                              p.price,
+                              productDetails?.discountPercent || NaN
+                            )}
+                          </p>
                           <p>x{p.quantity} </p>
-                          <p>₹ {productDetails && p.price * p.quantity}</p>
+                          <p>
+                            ₹{" "}
+                            {discountedPrice(
+                              p.price,
+                              productDetails?.discountPercent || NaN
+                            ) * p.quantity}
+                          </p>
                         </div>
                       </li>
                     );
@@ -240,12 +235,12 @@ const Cart: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-4 flex justify-between p-3 text-xl">
-                <button
+                {/* <button
                   onClick={handleOrder}
                   className="border-2 text-black hover:text-white border-orange-400 hover:bg-orange-400 px-2 py-2 text-lg custom-transition"
                 >
                   Place Order
-                </button>
+                </button> */}
                 <div className="flex gap-2 items-center font-semibold">
                   <p>Cart Total</p>
                   <p className="text-orange-500"> ₹{calculateTotalPrice()}</p>
