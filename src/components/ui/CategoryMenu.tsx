@@ -1,14 +1,14 @@
 import { setCategoryValue } from '@/lib/features/productSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
 interface Value {
     type: string;
     value: string;
-    image: StaticImageData;
+    image: string;
 }
 
 interface Props {
