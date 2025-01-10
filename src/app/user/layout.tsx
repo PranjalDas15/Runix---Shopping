@@ -1,23 +1,27 @@
-'use client'
+"use client";
 
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { redirect } from 'next/navigation';
-import React, { useEffect } from 'react'
+import Loading from "@/components/Loading";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { redirect } from "next/navigation";
+import React, { useEffect } from "react";
 
-const layout = ({children} : {children : React.ReactNode}) => {
-      const {user, loading} = useAppSelector((state)=>state.user);
-      const dispatch = useAppDispatch();
+const layout = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
     
-      useEffect(()=> {
-        if(!user && !loading) {
-         
-          redirect('/login')
-        }
-      }, [user, loading])
-  return (
-    <div>{children}</div>
-    
-  )
-}
+    if (user && !loading) {
+      if (user === undefined || null) {
+        redirect("/login");
+      }
+    }
+  }, [dispatch]);
+  if(loading){
+    return <Loading/>
+  }
 
-export default layout
+  return <div>{children}</div>;
+};
+
+export default layout;

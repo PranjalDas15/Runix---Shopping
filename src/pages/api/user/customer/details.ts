@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import { customerAuth } from "@/middleware/auth";
+import { adminAuth, customerAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { ExtendedRequest } from "@/types/ExtendedRequest";
 import { NextApiResponse } from "next";

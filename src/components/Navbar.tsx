@@ -13,7 +13,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./ui/MobileMenu";
-import { useProductContext } from "@/Context/productContext";
 import CategoryMenu from "./ui/CategoryMenu";
 import { redirect, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -35,7 +34,10 @@ function Navbar() {
     }
   };
 
-  return (
+  if(user && user.role !== 'Customer') {
+    return null;
+  } else{
+    return (
     <div className="w-screen h-[70px] fixed top-0 z-50 bg-gradient-to-b from-black to-transparent flex justify-around items-center text-white">
       {/* Mobile Menu Section starts */}
       <button
@@ -164,6 +166,9 @@ function Navbar() {
       {/* Navbar Menu Section ends */}
     </div>
   );
+  }
+
+  
 }
 
 export default Navbar;

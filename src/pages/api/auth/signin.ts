@@ -20,7 +20,7 @@ const UserSignIn = async (req: NextApiRequest, res: NextApiResponse )=> {
         const isUser = await UserModel.findOne({email});
 
         if(!isUser) return res.status(404).json({message: "User not found."});
-
+        if (!isUser.password) return res.status(500).json({message: "User password is missing."});
         const decodedPassword = await bcrypt.compare(password, isUser.password);
         if(!decodedPassword) return res.status(401).json({message: "Please enter correct password."});
 

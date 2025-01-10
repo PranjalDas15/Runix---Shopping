@@ -7,8 +7,11 @@ import { fetchUser } from "@/lib/actions/fetchUser";
 
 export default function StoreProvider({ children }: {children: React.ReactNode;}) {
   useEffect(() => {
-    store.dispatch(fetchProducts());
-    store.dispatch(fetchUser());
+    const fetchData = async()=>{
+      await store.dispatch(fetchProducts());
+      await store.dispatch(fetchUser());
+    }
+    fetchData();
   }, []);
 
   return <Provider store={store}>{children}</Provider>;

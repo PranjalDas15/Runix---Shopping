@@ -1,7 +1,6 @@
 "use client";
 
-import Loading from "../components/Loading";
-import { advertisements } from "@/lib/assets";
+import { advertisements, advertisements2 } from "@/lib/assets";
 import Hero from "@/components/homeComponents/Hero";
 import Brand from "@/components/homeComponents/Brand";
 import Carousel from "@/components/homeComponents/Carousel";
@@ -10,11 +9,9 @@ import CategoriesFemale from "@/components/homeComponents/CategoriesFemale";
 import NewArrivals from "@/components/homeComponents/NewArrivals";
 import { ArrowBigUp } from "lucide-react";
 import { useState } from "react";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   const [isTop, setIsTop] = useState(true);
-
   const autoAppear = () => {
     if (window.scrollY > 1) {
       setIsTop(false);
@@ -34,7 +31,7 @@ export default function Home() {
       <div className="relative w-full h-[100vh] overflow-y-auto snap-y snap-mandatory">
         <Brand />
         <Carousel
-          label={advertisements}
+          label={advertisements2}
           height={"h-[100vh]"}
           extras={"snap-center"}
         />
