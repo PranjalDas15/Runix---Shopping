@@ -1,7 +1,7 @@
 "use client";
 
 import { banners } from "@/lib/assets";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import { Circle, MoveLeft, MoveRight } from "lucide-react";
@@ -51,6 +51,7 @@ const Carousel: React.FC<Label> = ({ label, height, extras }) => {
               <Image
                 alt=""
                 src={banner.image}
+                width={900} height={900}
                 className="object-cover w-full h-full"
               />
             </div>

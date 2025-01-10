@@ -1,4 +1,4 @@
-import { categoriesMale, customerPolicies, images, keepInTouch } from '@/lib/assets'
+import { categoriesMale, customerPolicies, keepInTouch } from '@/lib/assets'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -29,21 +29,21 @@ const Footer = () => {
             <div className='flex gap-2'>
             {keepInTouch.map((kit, index)=>(
                 <a href={kit.name} key={index}>
-                  <Image alt='logo' src={kit.logo} width={25}/>
+                  <Image alt='logo' src={kit.logo} width={25} height={25}/>
                 </a>
               ))}
             </div>
           </div>
         </div>
         <div className='flex flex-col gap-3 items-center col-span-2 md:col-span-1'>
-          <Image src={images.logofullwhite} alt='' width={150}/>
+          <Image src={"/Logotextfullwhite.svg"} alt='' height={150} width={150} className='object-contain'/>
           <div className='flex flex-col gap-2'>
             <div className='flex gap-2 items-center'>
-              <Image alt='' src={images.guarantee} width={50}/>
+              <Image alt='' src={"/guarantee.svg"} width={50} height={50}/>
               <p className='font-semibold text-xl md:text-2xl'>100% original products on Runix</p>
             </div>
             <div className='flex gap-2 items-center'>
-              <Image alt='' src={images.returnicon} width={50}/>
+              <Image alt='' src={"/return.svg"} width={50} height={50}/>
               <p className='font-semibold text-xl md:text-2xl'>15 days return policy</p>
             </div>
           </div>

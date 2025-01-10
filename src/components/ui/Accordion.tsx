@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Arrow from './Arrow';
 import Link from 'next/link';
 import { useAppDispatch } from '@/lib/hooks';

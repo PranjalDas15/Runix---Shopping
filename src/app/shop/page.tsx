@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
 
 const page = () => {
+  const searchParam = useSearchParams();
   const dispatch = useAppDispatch();
   
   const { products, genderValue, categoryValue, loading, error } =
@@ -22,7 +23,6 @@ const page = () => {
   const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
-    const searchParam = useSearchParams();
     dispatch(setGenderValue(searchParam?.get("gender") ?? ""));
   }, [ genderValue, categoryValue]);
 

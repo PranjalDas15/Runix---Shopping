@@ -1,4 +1,4 @@
-import { images } from '@/lib/assets'
+
 import Image from 'next/image'
 import { useEffect } from 'react'
 
@@ -28,7 +28,7 @@ useEffect(()=>{
       <div className='relative w-full h-[100vh] snap-center  bg-fixed  bg-cover bg-no-repeat bg-center'>
         <video src="/herovid.mp4" loop autoPlay muted className="absolute top-0 z-0 w-full h-full object-cover bg-fixed"></video>
         <div className='relative flex flex-col justify-center items-center overflow-hidden h-full w-full'>
-          <Image alt='hero' src={images.logowhite} width={500} height={500} className='object-cover w-1/2 md:w-1/3 brandLogo'/>
+          <Image alt='hero' src={"/Logotextwhite.svg"} width={500} height={500} className='object-cover w-1/2 md:w-1/3 brandLogo'/>
           <p className='text-xl md:text-[40px] text-white font-bold brandLogo'>Every Run is a Win </p>
         </div>
       </div>

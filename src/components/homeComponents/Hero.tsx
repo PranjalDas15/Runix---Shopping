@@ -1,7 +1,4 @@
-import { advertise1, banners, categories, images } from '@/lib/assets'
-import { ArrowRight } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+
 import { useEffect } from 'react'
 import Button from '../ui/Button'
 

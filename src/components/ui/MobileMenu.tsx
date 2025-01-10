@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { categories, categoriesFemale, categoriesMale } from "@/lib/assets";
+import { categories } from "@/lib/assets";
 import Accordion from "./Accordion";
 import { LogOut, X } from "lucide-react";
 import { useAppSelector } from "@/lib/hooks";

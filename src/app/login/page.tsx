@@ -4,7 +4,6 @@
 import { redirect} from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { images } from "@/lib/assets";
 import { signIn, signUp } from "./actions";
 import { fetchUser } from "@/lib/actions/fetchUser";
 import { useAppDispatch } from "@/lib/hooks";
@@ -38,11 +37,12 @@ const page = () => {
   return (
     <div className="min-h-[70vh] w-full bg-white flex justify-center items-center px-10 py-10">
       {isSignIn ? (
-        <div className="min-w-[70vw] h-[650px] md:h-[400px] flex flex-col md:flex-row rounded-xl shadow-lg overflow-hidden">
+        <div className="min-w-[70vw] h-[750px] md:h-[450px] flex flex-col md:flex-row rounded-xl shadow-lg overflow-hidden">
           <div className="h-2/3 md:h-full w-full md:w-2/3 overflow-hidden">
             <Image
               alt=""
-              src={images.hero2}
+              src={"/hero2.jpg"}
+              width={1000} height={1000}
               className="w-full h-full object-cover"
             />
           </div>
@@ -91,11 +91,12 @@ const page = () => {
           </div>
         </div>
       ) : (
-        <div className="min-w-[70vw] h-[650px] md:h-[400px] flex flex-col md:flex-row rounded-xl shadow-lg overflow-hidden">
+        <div className="min-w-[70vw] h-[750px] md:h-[450px] flex flex-col md:flex-row rounded-xl shadow-lg overflow-hidden">
           <div className="h-2/3 md:h-full w-full md:w-2/3 overflow-hidden">
             <Image
               alt=""
-              src={images.hero2}
+              src={"/hero2.jpg"}
+              width={1000} height={1000}
               className="w-full h-full object-cover"
             />
           </div>

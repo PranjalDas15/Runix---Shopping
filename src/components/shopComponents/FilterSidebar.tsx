@@ -1,9 +1,8 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import React, { useState } from 'react'
 import Arrow from '../ui/Arrow';
-import { categories, genders, prices } from '@/lib/assets';
+import { categories, genders } from '@/lib/assets';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setCategoryValue, setGenderValue } from '@/lib/features/productSlice';

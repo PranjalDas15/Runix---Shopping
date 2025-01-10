@@ -1,4 +1,4 @@
-import { categories, categoriesFemale, categoriesMale } from "@/lib/assets";
+import { categoriesFemale } from "@/lib/assets";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,7 +62,7 @@ const Categories = () => {
               className="dissapear2 relative group rounded-xl h-[5.5rem] md:h-[8rem] overflow-hidden"
             >
               <div className='w-full h-full'>
-                    <Image alt='' src={c.image} className='group-hover:scale-110 custom-transition w-full h-full object-cover' />
+                    <Image alt='' src={c.image} width={200} height={200} className='group-hover:scale-110 custom-transition w-full h-full object-cover' />
                   </div>
                   <div className='absolute top-0 w-full h-full custom-transition bg-[rgba(0,0,0,0.3)] group-hover:bg-[rgba(230,162,67,0.3)] text-[1.5rem] lg:text-[1.8rem] text-white items-center justify-center flex '>
                     <p>{c.type}</p>

@@ -1,558 +1,156 @@
-import banner1 from "banner1.jpg";
-import hero from "hero.png";
-import hero1 from "hero1.png";
-import hero2 from "hero2.jpg";
-import logo from "logo.svg";
-import logowhite from "Logotextwhite.svg";
-import logofullwhite from "Logotextfullwhite.svg";
-import logoblack from "logotextblack.svg";
-import running from "running.png";
-import sneakerm from "/categories/sneakermen.jpg";
-import sneakerw from "/categories/sneakerwomen.jpg";
-import tshirtm from "/categories/tshirtmen.jpg";
-import tshirtw from "/categories/tshirtwomen.jpg";
-import shortsm from "/categories/shortsmen.jpg";
-import shortsw from "/categories/shortswomen.jpg";
-import tracksm from "/categories/tracksmen.jpg";
-import tracksw from "/categories/trackswomen.jpg"; 
-import sweatsm from "/categories/sweatsmen.jpg"; 
-import sweatsw from "/categories/sweatswomen.jpg"; 
-import jacketsm from "/categories/jacketsmen.jpg"; 
-import jacketsw from "/categories/jacketswomen.jpg"; 
-import accm from "/categories/accessoriesmen.jpg"; 
-import accw from "/categories/accessorieswomen.jpg"; 
-
-import sneaker1 from "products/sneaker1.jpg"
-import sneaker2 from "products/sneaker2.jpg"
-import sneaker3 from "products/sneaker3.jpg"
-import sneaker4 from "products/sneaker4.jpg"
-import training1 from "products/training1.jpg"
-import training2 from "products/training2.jpg"
-import training3 from "products/training3.jpg"
-import training4 from "products/training4.jpg"
-import walking1 from "products/walking1.jpg"
-import walking2 from "products/walking2.jpg"
-import walking3 from "products/walking3.jpg"
-import walking4 from "products/walking4.jpg"
-import walking5 from "products/walking5.jpg"
-import cricket1 from "products/cricket1.jpg"
-import cricket2 from "products/cricket2.jpg"
-import cricket3 from "products/cricket3.jpg"
-import cricket4 from "products/cricket4.jpg"
-import cricket5 from "products/cricket5.jpg"
-import basket1 from "products/basket1.jpg"
-import basket2 from "products/basket2.jpg"
-import basket3 from "products/basket3.jpg"
-import basket4 from "products/basket4.jpg"
-import outdoor1 from "products/outdoor1.jpg"
-import outdoor2 from "products/outdoor2.jpg"
-import outdoor3 from "products/outdoor3.jpg"
-import running1 from "products/running1.jpg"
-import running2 from "products/running2.jpg"
-import running3 from "products/running3.jpg"
-import running4 from "products/running4.jpg"
-import ad1 from "/products/ad1.jpg"
-import ad2 from "/products/ad2.jpg"
-import ad3 from "/products/ad3.jpg"
-import ad4 from "/products/ad4.jpg"
-import ad5 from "/products/ad5.jpg"
-import ad6 from "/products/ad6.jpg"
-import ad7 from "/products/ad7.jpg"
-import ad8 from "/products/ad8.jpg"
-import ad9 from "/products/ad9.jpg"
-import ad10 from "/products/ad10.jpg"
-import ad11 from "/products/ad11.png"
-import enter from "enter.svg";
-import youtube from "youtube.svg";
-import instagram from "instagram.svg";
-import twitter from "twitter.svg";
-import facebook from "facebook.svg";
-import guarantee from "guarantee.svg";
-import returnicon from "return.svg";
-import banner from "/banners/banner1.jpg";
-import banner2 from "/banners/banner2.jpg";
-import banner3 from "/banners/banner3.jpg";
-import banner4 from "/banners/banner4.jpg";
-import banner5 from "/banners/banner5.jpg";
-import banner6 from "/banners/banner6.jpg";
-import banner7 from "/banners/banner7.jpg";
-import banner8 from "/banners/banner8.jpg";
-import banner9 from "/banners/banner9.jpg";
-import banner10 from "/banners/banner10.jpg";
-
-// import  from "../../public/herovid.mp4";
-
-export const images = {
-  banner1,
-  logo,
-  logowhite,
-  logofullwhite,
-  hero2,
-  logoblack, youtube, instagram, twitter, facebook, guarantee, returnicon,
-  running, sneakerm, sneakerw, tshirtw, tshirtm, shortsm, shortsw, sweatsm, sweatsw, jacketsm, jacketsw, accm, accw, hero1,
-  /* Products */
-
-  sneaker1, sneaker2, sneaker3, sneaker4, training1, training2, training3, training4, walking1, walking2, walking3, walking4, walking5, 
-  outdoor1, outdoor2, outdoor3, cricket1, cricket2, cricket3, cricket4, cricket5, basket1, basket2, basket3, basket4, running1, running2, running3, running4,
-  ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8, ad9, ad10, ad11,
-  enter, hero,
-  banner, banner2, banner3, banner4, banner5, banner6, banner7,banner8, banner9, banner10
-};
 
 export const prices = [
-  {price: "All", min: 0, max: 10000 },
-  {price: "Below 1000" , min: 0, max: 1000 },
-  {price: "1000 - 2000", min: 1000, max: 2000 },
-  {price: "2000 - 3000", min: 2000, max: 3000 },
-  {price: "3000 - 4000", min: 3000, max: 4000 },
-  {price: "4000 and above", min:4000, max: 10000 }
-]
+  { price: "All", min: 0, max: 10000 },
+  { price: "Below 1000", min: 0, max: 1000 },
+  { price: "1000 - 2000", min: 1000, max: 2000 },
+  { price: "2000 - 3000", min: 2000, max: 3000 },
+  { price: "3000 - 4000", min: 3000, max: 4000 },
+  { price: "4000 and above", min: 4000, max: 10000 },
+];
 
 export const genders = [
-  {gender: "Both", value: "" },
-  {gender: "Male" ,value: "male"},
-  {gender: "Female", value: "female" }
-]
+  { gender: "Both", value: "" },
+  { gender: "Male", value: "male" },
+  { gender: "Female", value: "female" },
+];
+
 
 export const categories = [
-  { type: "All", value: "", image: sneakerm},
-  { type: "Shoes", value: "Shoes", image: sneakerm},
-  { type: "Topwear" , value: "T-Shirt", image: tshirtm},
-  { type: "Bottomwear", value: "Bottomwear", image: shortsm },
-  { type: "Sportswear", value: "Sportswear", image: tracksm },
-  { type: "Jacket" , value: "Jacket", image: jacketsm},
-  { type: "Accessories" , value: "Accessories", image: accm},
-  { type: "Winterwear", value: "Winterwear",  image: accm},
+  { type: "All", value: "", image: "/categories/sweatsmen.jpg" },
+  { type: "Shoes", value: "Shoes", image: "/categories/tshirtmen.jpg" },
+  { type: "Topwear", value: "T-Shirt", image: "/categories/shortsmen.jpg" },
+  { type: "Bottomwear", value: "Bottomwear", image: "/categories/shortsmen.jpg" },
+  { type: "Sportswear", value: "Sportswear", image: "/categories/tracksmen.jpg" },
+  { type: "Jacket", value: "Jacket", image: "/categories/tracksmen.jpg" },
+  { type: "Accessories", value: "Accessories", image: "/categories/tracksmen.jpg" },
+  { type: "Winterwear", value: "Winterwear", image: "/categories/tracksmen.jpg" },
 ];
 
 export const categoriesMale = [
-  { type: "Shoes", value:"Shoes", image: sneakerm},
-  { type: "Topwear" , value:"T-Shirt", image: tshirtm},
-  { type: "BottomWear", value:"Bottomwear", image: shortsm },
-  { type: "Sportswear", value:"Sportswear", image: tracksm },
-  { type: "Jacket" , value:"Jacket", image: sweatsm},
-  { type: "Accessories" , value:"Accessories", image: jacketsm},
-  { type: "Winterwear" , value:"Winterwear", image: accm},
+  { type: "Shoes", value: "Shoes", image: "/categories/sweatsmen.jpg" },
+  { type: "Topwear", value: "T-Shirt", image: "/categories/tshirtmen.jpg" },
+  { type: "BottomWear", value: "Bottomwear", image: "/categories/shortsmen.jpg" },
+  { type: "Sportswear", value: "Sportswear", image: "/categories/tracksmen.jpg" },
+  { type: "Jacket", value: "Jacket", image: "/categories/sweatsmen.jpg" },
+  { type: "Accessories", value: "Accessories", image: "/categories/accessoriesmen.jpg" },
+  { type: "Winterwear", value: "Winterwear", image: "/categories/accessoriesmen.jpg" },
 ];
 
 export const categoriesFemale = [
-  { type: "Shoes", value:"Shoes", image: sneakerw},
-  { type: "Topwear" , value:"T-Shirt", image: tshirtw},
-  { type: "BottomWear", value:"Bottomwear", image: shortsw },
-  { type: "Sportswear", value:"Sportswear", image: tracksw },
-  { type: "Jacket" , value:"Jacket", image: sweatsw},
-  { type: "Accessories" ,value:"Accessories",  image: accw},
-  { type: "Winterwear" ,value:"Winterwear",  image: accm},
+  { type: "Shoes", value: "Shoes", image: "/categories/sweatswomen.jpg" },
+  { type: "Topwear", value: "T-Shirt", image: "/categories/tshirtwomen.jpg" },
+  { type: "BottomWear", value: "Bottomwear", image: "/categories/shortswomen.jpg" },
+  { type: "Sportswear", value: "Sportswear", image: "/categories/trackswomen.jpg" },
+  { type: "Jacket", value: "Jacket", image: "/categories/sweatswomen.jpg" },
+  { type: "Accessories", value: "Accessories", image: "/categories/accessorieswomen.jpg" },
+  { type: "Winterwear", value: "Winterwear", image: "/categories/accessorieswomen.jpg" },
 ];
 
-
 export const customerPolicies = [
-  {type: "About Us"},
-  {type: "Contact Us"},
-  {type: "FAQs"},
-  {type: "Terms & Conditions"},
-  {type: "Returns"},
-]
+  { type: "About Us" },
+  { type: "Contact Us" },
+  { type: "FAQs" },
+  { type: "Terms & Conditions" },
+  { type: "Returns" },
+];
 
 export const keepInTouch = [
-  {name: "www.fecebook.com", logo: facebook},
-  {name: "www.x.com", logo: twitter},
-  {name: "www.instagram.com", logo: instagram},
-  {name: "www.youtube.com", logo: youtube},
-]
-
-export const advertise1 = { 
-  image: hero1, 
-  heading: "New Collection just dropped!",
-  body: "Grab them before its gone...",
-  button: "Explore"
- }
+  { name: "www.fecebook.com", logo: "/facebook.svg" },
+  { name: "www.x.com", logo: "/twitter.svg" },
+  { name: "www.instagram.com", logo: "/instagram.svg" },
+  { name: "www.youtube.com", logo: "/youtube.svg" },
+];
 
 export const banners = [
-  { image: ad1, 
+  {
+    image: "/products/ad1.jpg",
     heading: "Nothing looks cleaner than whites",
     body: "",
-    button: "Explore"
-   },
-   { image: ad2, 
+    button: "Explore",
+  },
+  {
+    image: "/products/ad2.jpg",
     heading: "Everyone is falling for these sneakers",
     body: "",
-    button: "Explore"
-   },
-   { image: ad3, 
-    heading: "Push Your Limits",
-    body: "",
-    button: "Explore"
-   },
-   { image: ad4, 
+    button: "Explore",
+  },
+  { image: "/products/ad3.jpg", heading: "Push Your Limits", body: "", button: "Explore" },
+  {
+    image: "/products/ad4.jpg",
     heading: "Winter Collection is here!",
     body: "",
-    button: "Explore"
-   },
-   { image: ad4, 
+    button: "Explore",
+  },
+  {
+    image: "/products/ad5.jpg",
     heading: "Winter Collection is here!",
     body: "",
-    button: "Explore"
-   },
-]
+    button: "Explore",
+  },
+];
 
 export const advertisements = [
-  { image: banner, 
+  {
+    image: "/banners/banner1.jpg",
     heading: "Nothing looks cleaner than whites",
     body: "",
-    button: "Explore"
-   },
-   { image: banner2, 
+    button: "Explore",
+  },
+  {
+    image: "/banners/banner2.jpg",
     heading: "Everyone is falling for these sneakers",
     body: "",
-    button: "Explore"
-   },
-   { image: banner3, 
-    heading: "Push Your Limits",
-    body: "",
-    button: "Explore"
-   },
-   { image: banner4, 
+    button: "Explore",
+  },
+  { image: "/banners/banner3.jpg", heading: "Push Your Limits", body: "", button: "Explore" },
+  {
+    image: "/banners/banner4.jpg",
     heading: "Winter Collection is here!",
     body: "",
-    button: "Explore"
-   },
-   { image: banner5, 
+    button: "Explore",
+  },
+  {
+    image: "/banners/banner5.jpg",
     heading: "Winter Collection is here!",
     body: "",
-    button: "Explore"
-   },
-]
+    button: "Explore",
+  },
+];
 
 export const advertisements2 = [
-  { image: banner6, 
+  {
+    image: "/banners/banner6.jpg",
     heading: "Nothing looks cleaner than whites",
     body: "",
-    button: "Explore"
-   },
-   { image: banner7, 
+    button: "Explore",
+  },
+  {
+    image: "/banners/banner7.jpg",
     heading: "Everyone is falling for these sneakers",
     body: "",
-    button: "Explore"
-   },
-   { image: banner8, 
-    heading: "Push 7Your Limits",
-    body: "",
-    button: "Explore"
-   },
-   { image: banner9, 
+    button: "Explore",
+  },
+  { image: "/banners/banner8.jpg", heading: "Push 7Your Limits", body: "", button: "Explore" },
+  {
+    image: "/banners/banner9.jpg",
     heading: "Winter Collection is here!",
     body: "",
-    button: "Explore"
-   },
-   { image: banner10, 
-    heading: "HEllo",
-    body: "",
-    button: "Explore"
-   }
-]
+    button: "Explore",
+  },
+  { image: "/banners/banner10.jpg", heading: "HEllo", body: "", button: "Explore" },
+];
 
 export const commondetails = {
-  price: 'Inclusive of all taxes',
-  size_heading:'Select Size',
-  desc_heading:'Product Description',
-  cart_button: 'Add to Cart',
-  wishlist_button: 'Add to Wishlist',
-  returns: 'Free returns availavle*',
-  shippingheading: 'Shipping and Returns',
-  shippingdetail1: 'Free return on all qualifying orders within 14 days of your order delivery date. Visit our Return Policy for more information.',
-  shippingdetail2: 'For any queries, please contact Customer Service at 0800-000000 or via customercare@runicx.com.'
-}
+  price: "Inclusive of all taxes",
+  size_heading: "Select Size",
+  desc_heading: "Product Description",
+  cart_button: "Add to Cart",
+  wishlist_button: "Add to Wishlist",
+  returns: "Free returns availavle*",
+  shippingheading: "Shipping and Returns",
+  shippingdetail1:
+    "Free return on all qualifying orders within 14 days of your order delivery date. Visit our Return Policy for more information.",
+  shippingdetail2:
+    "For any queries, please contact Customer Service at 0800-000000 or via customercare@runicx.com.",
+};
 
-export const products = [
-  {
-    id: '1',
-    image: sneaker1,
-    name: 'Sneaker 1',
-    desc: 'some descriptions',
-    category: 'Sneakers',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '2',
-    image: sneaker2,
-    name: 'Sneaker 2',
-    desc: 'some descriptions',
-    category: 'Sneakers',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '3',
-    image: sneaker3,
-    name: 'Sneaker 3',
-    desc: 'some descriptions',
-    category: 'Sneakers',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '4',
-    image: sneaker4,
-    name: 'Sneaker 4',
-    desc: 'some descriptions',
-    category: 'Sneakers',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '5',
-    image: training1,
-    name: 'Training 1',
-    desc: 'some descriptions',
-    category: 'Training',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '6',
-    image: training2,
-    name: 'Training 2',
-    desc: 'some descriptions',
-    category: 'Training',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '7',
-    image: training3,
-    name: 'Training 3',
-    desc: 'some descriptions',
-    category: 'Training',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '8',
-    image: training4,
-    name: 'Training 4',
-    desc: 'some descriptions',
-    category: 'Training',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '9',
-    image: walking1,
-    name: 'Walking 1',
-    desc: 'some descriptions',
-    category: 'Walking',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '10',
-    image: walking2,
-    name: 'Walking 2',
-    desc: 'some descriptions',
-    category: 'Walking',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '11',
-    image: walking3,
-    name: 'Walking 3',
-    desc: 'some descriptions',
-    category: 'Walking',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '12',
-    image: walking4,
-    name: 'Walking 4',
-    desc: 'some descriptions',
-    category: 'Walking',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '13',
-    image: walking5,
-    name: 'Walking 5',
-    desc: 'some descriptions',
-    category: 'Walking',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '14',
-    image: outdoor1,
-    name: 'Outdoor 1',
-    desc: 'some descriptions',
-    category: 'Outdoors',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '15',
-    image: outdoor2,
-    name: 'Outdoor 2',
-    desc: 'some descriptions',
-    category: 'Outdoors',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '16',
-    image: outdoor3,
-    name: 'Outdoor 3',
-    desc: 'some descriptions',
-    category: 'Outdoors',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '17',
-    image: cricket1,
-    name: 'Cricket 1',
-    desc: 'some descriptions',
-    category: 'Cricket',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '18',
-    image: cricket2,
-    name: 'Cricket 2',
-    desc: 'some descriptions',
-    category: 'Cricket',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '19',
-    image: cricket3,
-    name: 'Cricket 3',
-    desc: 'some descriptions',
-    category: 'Cricket',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '20',
-    image: cricket4,
-    name: 'Cricket 4',
-    desc: 'some descriptions',
-    category: 'Cricket',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '21',
-    image: cricket5,
-    name: 'Cricket 5',
-    desc: 'some descriptions',
-    category: 'Cricket',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '22',
-    image: basket1,
-    name: 'Basket 1',
-    desc: 'some descriptions',
-    category: 'Basketball',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '23',
-    image: basket2,
-    name: 'Basket 2',
-    desc: 'some descriptions',
-    category: 'Basketball',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '24',
-    image: basket3,
-    name: 'Basket 3',
-    desc: 'some descriptions',
-    category: 'Basketball',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '25',
-    image: basket4,
-    name: 'Basket 4',
-    desc: 'some descriptions',
-    category: 'Basketball',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '26',
-    image: running1,
-    name: 'Running 1',
-    desc: 'some descriptions',
-    category: 'Running',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '27',
-    image: running2,
-    name: 'Running 2',
-    desc: 'some descriptions',
-    category: 'Running',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '28',
-    image: running3,
-    name: 'Running 3',
-    desc: 'some descriptions',
-    category: 'Running',
-    price: 2300,
-    gender: 'Male',
-    sizes: [7, 8, 9, 10, 11]
-  },
-  {
-    id: '29',
-    image: running4,
-    name: 'Running 4',
-    desc: 'some descriptions',
-    category: 'Running',
-    price: 2300,
-    gender: 'Female',
-    sizes: [7, 8, 9, 10, 11]
-  }
-]

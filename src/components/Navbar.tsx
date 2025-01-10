@@ -1,12 +1,10 @@
 "use client";
 
-import { categoriesFemale, categoriesMale, images } from "@/lib/assets";
+import { categoriesFemale, categoriesMale } from "@/lib/assets";
 import {
   Heart,
   LogIn,
   LogOut,
-  Menu,
-  Search,
   ShoppingCart,
   User2,
 } from "lucide-react";
@@ -77,7 +75,7 @@ function Navbar() {
       {/* Navbar Menu Section starts */}
 
       <Link href={"/"} className="w-20 h-20 flex items-center z-50">
-        <Image alt="logo" src={menuHidden ? images.logowhite : images.logoblack} width={100} />
+        <Image alt="logo" width={200} height={200} src={menuHidden ? "/Logotextwhite.svg" : "/logotextblack.svg"} />
       </Link>
 
       <ul className="flex gap-5 items-center h-full">
