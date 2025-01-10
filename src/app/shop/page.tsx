@@ -10,7 +10,7 @@ import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
 
-const page = () => {
+function ShoppingPage () {
   const searchParam = useSearchParams();
   const dispatch = useAppDispatch();
 
@@ -69,7 +69,6 @@ const page = () => {
   }
   return (
     <div>
-      <Suspense fallback={<Loading/>}>
         {/* <div className="relative bg-white">
         <Carousel height="h-[400px] md:h-[800px]" label={advertisements} />
       </div> */}
@@ -186,9 +185,15 @@ const page = () => {
             </div>
           </div>
         </div>
-      </Suspense>
     </div>
   );
 };
 
-export default page;
+export default function page () {
+  return(
+    <Suspense fallback={<Loading/>}>
+      <ShoppingPage />
+    </Suspense>
+  )
+}
+
