@@ -6,14 +6,14 @@ import { setGenderValue } from "@/lib/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { Filter, Search, X } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
 
 const page = () => {
   const searchParam = useSearchParams();
   const dispatch = useAppDispatch();
-  
+
   const { products, genderValue, categoryValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
   const [priceFilter, setPriceFilter] = useState<[number, number]>([
@@ -24,7 +24,7 @@ const page = () => {
 
   useEffect(() => {
     dispatch(setGenderValue(searchParam?.get("gender") ?? ""));
-  }, [ genderValue, categoryValue]);
+  }, [genderValue, categoryValue]);
 
   const [sortOption, setSortOption] = useState<
     "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"
@@ -69,119 +69,124 @@ const page = () => {
   }
   return (
     <div>
-      {/* <div className="relative bg-white">
+      <Suspense fallback={<Loading/>}>
+        {/* <div className="relative bg-white">
         <Carousel height="h-[400px] md:h-[800px]" label={advertisements} />
       </div> */}
-      <div className="relative flex gap-2 py-5 px-2 pt-[70px] h-screen">
-        <div
-          className="absolute top-[65px] md:hidden mt-5"
-          onClick={() => setIsHidden(!isHidden)}
-        >
-          <Filter />
-        </div>
-
-        <div
-          className={`absolute top-0 z-20 bg-white w-full md:w-[300px] max-h-full md:relative min-h-screen border md:block custom-transition pt-[70px] md:pt-0 ${
-            isHidden
-              ? "-translate-x-full md:translate-x-0 opacity-0 md:opacity-100"
-              : "translate-x-0 opacity-100"
-          }`}
-        >
-          <div className="w-full flex justify-end p-3 md:hidden" onClick={()=>setIsHidden(!isHidden)}>
-            <X />
-          </div>
-          <div className="relative mx-2 my-5">
-            <input
-              type="text"
-              placeholder="Search Products"
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              className="w-full pl-10 pr-2 py-2 border border-gray-300 rounded-md"
-            />
-            <div className="absolute top-0 p-2">
-              <Search className="text-orange-400" />
-            </div>
+        <div className="relative flex gap-2 py-5 px-2 pt-[70px] h-screen">
+          <div
+            className="absolute top-[65px] md:hidden mt-5"
+            onClick={() => setIsHidden(!isHidden)}
+          >
+            <Filter />
           </div>
 
-          <FilterSidebar
-            setPriceFilter={setPriceFilter}
-            priceFilter={priceFilter}
-            setSearch={setSearch}
-          />
-
-          <div className="mx-2 my-5">
-            <h1 className="text-black text-lg md:text-xl font-bold mt-4">
-              Sort By
-            </h1>
-            <select
-              name="sort"
-              id="sort"
-              className="py-4 px-4 border mt-2 rounded-md w-full selection:font-bold focus:ring-orange-500 "
-              value={sortOption}
-              onChange={(e) =>
-                setSortOption(
-                  e.target.value as
-                    | "default"
-                    | "high-to-low"
-                    | "low-to-high"
-                    | "a-z"
-                    | "z-a"
-                )
-              }
+          <div
+            className={`absolute top-0 z-20 bg-white w-full md:w-[300px] max-h-full md:relative min-h-screen border md:block custom-transition pt-[70px] md:pt-0 ${
+              isHidden
+                ? "-translate-x-full md:translate-x-0 opacity-0 md:opacity-100"
+                : "translate-x-0 opacity-100"
+            }`}
+          >
+            <div
+              className="w-full flex justify-end p-3 md:hidden"
+              onClick={() => setIsHidden(!isHidden)}
             >
-              <option value="relavance">Relevance</option>
-              <option
-                disabled
-                className="text-gray-600 font-semibold bg-slate-200"
-              >
-                Price
-              </option>
-              <option
-                value="low-to-high"
-                onChange={() =>
-                  filteredProducts.sort((a, b) => a.price - b.price)
+              <X />
+            </div>
+            <div className="relative mx-2 my-5">
+              <input
+                type="text"
+                placeholder="Search Products"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                className="w-full pl-10 pr-2 py-2 border border-gray-300 rounded-md"
+              />
+              <div className="absolute top-0 p-2">
+                <Search className="text-orange-400" />
+              </div>
+            </div>
+
+            <FilterSidebar
+              setPriceFilter={setPriceFilter}
+              priceFilter={priceFilter}
+              setSearch={setSearch}
+            />
+
+            <div className="mx-2 my-5">
+              <h1 className="text-black text-lg md:text-xl font-bold mt-4">
+                Sort By
+              </h1>
+              <select
+                name="sort"
+                id="sort"
+                className="py-4 px-4 border mt-2 rounded-md w-full selection:font-bold focus:ring-orange-500 "
+                value={sortOption}
+                onChange={(e) =>
+                  setSortOption(
+                    e.target.value as
+                      | "default"
+                      | "high-to-low"
+                      | "low-to-high"
+                      | "a-z"
+                      | "z-a"
+                  )
                 }
               >
-                Low to High
-              </option>
-              <option value="high-to-low">High to Low</option>
-              <option
-                disabled
-                className="text-gray-600 font-semibold bg-slate-200"
-              >
-                Name
-              </option>
-              <option value="a-z">Accending Order</option>
-              <option value="z-a">Descending Order</option>
-            </select>
+                <option value="relavance">Relevance</option>
+                <option
+                  disabled
+                  className="text-gray-600 font-semibold bg-slate-200"
+                >
+                  Price
+                </option>
+                <option
+                  value="low-to-high"
+                  onChange={() =>
+                    filteredProducts.sort((a, b) => a.price - b.price)
+                  }
+                >
+                  Low to High
+                </option>
+                <option value="high-to-low">High to Low</option>
+                <option
+                  disabled
+                  className="text-gray-600 font-semibold bg-slate-200"
+                >
+                  Name
+                </option>
+                <option value="a-z">Accending Order</option>
+                <option value="z-a">Descending Order</option>
+              </select>
+            </div>
+          </div>
+          <div className="mt-14 md:mt-0 flex flex-col">
+            <div className="pb-5 text-2xl font-bold ">
+              <h1 className="">
+                {genderValue === ""
+                  ? "Shop"
+                  : genderValue === "female"
+                  ? "Female"
+                  : "Male"}
+              </h1>
+              <p className="text-sm font-light text-gray-500">
+                {categoryValue === ""
+                  ? "All"
+                  : categoryValue.charAt(0).toUpperCase() +
+                    categoryValue.slice(1)}
+              </p>
+            </div>
+            <div className="max-h-screen overflow-auto pb-5">
+              {filteredProducts.length > 0 ? (
+                <Shop value={filteredProducts} heartButton={true} />
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
-        <div className="mt-14 md:mt-0 flex flex-col">
-          <div className="pb-5 text-2xl font-bold ">
-            <h1 className="">
-              {genderValue === ""
-                ? "Shop"
-                : genderValue === "female"
-                ? "Female"
-                : "Male"}
-            </h1>
-            <p className="text-sm font-light text-gray-500">
-              {categoryValue === ""
-                ? "All"
-                : categoryValue.charAt(0).toUpperCase() +
-                  categoryValue.slice(1)}
-            </p>
-          </div>
-          <div className="max-h-screen overflow-auto pb-5">
-            {filteredProducts.length > 0 ? (
-              <Shop value={filteredProducts} heartButton={true} />
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-      </div>
+      </Suspense>
     </div>
   );
 };
