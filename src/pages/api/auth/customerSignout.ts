@@ -8,8 +8,8 @@ const CustomerSignOut = async(req: NextApiRequest, res: NextApiResponse)=> {
       res.setHeader('Set-Cookie', `auth_Customer=; HttpOnly; Path=/; Max-Age=0`);
 
       res.status(200).json({ message: 'Customer logout successful.' });
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error." });
+  } catch (error:any) {
+    return res.status(500).json({ message: "Server Error." , error});
   }
 }
 

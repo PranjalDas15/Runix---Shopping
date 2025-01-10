@@ -1,7 +1,5 @@
 
 import mongoose, { Schema } from "mongoose";
-import CartModel from "./Cart";
-import WishlistModel from "./Wishlist";
 import { User } from "@/types/User";
 
 export const UserSchema: Schema<User> = new Schema({

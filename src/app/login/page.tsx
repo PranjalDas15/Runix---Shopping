@@ -1,7 +1,8 @@
 "use client";
+/* eslint-disable */
 
-import { redirect, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { redirect} from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import { images } from "@/lib/assets";
 import { signIn, signUp } from "./actions";

@@ -8,8 +8,8 @@ const AdminSignOut = async(req: NextApiRequest, res: NextApiResponse)=> {
       res.setHeader('Set-Cookie', `auth_Admin=; HttpOnly; Path=/; Max-Age=0`);
 
       res.status(200).json({ message: 'Admin logout successful.' });
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error." });
+  } catch (error:any) {
+    return res.status(500).json({ message: "Server Error.", error });
   }
 }
 

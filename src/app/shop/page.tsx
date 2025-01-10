@@ -2,17 +2,17 @@
 
 import Loading from "@/components/Loading";
 import Shop from "@/components/shopComponents/Shop";
-import { setCategoryValue, setGenderValue } from "@/lib/features/productSlice";
+import { setGenderValue } from "@/lib/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { FileTerminal, Filter, Search, X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Filter, Search, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
 
 const page = () => {
   const dispatch = useAppDispatch();
-  const searchParam = useSearchParams();
+  
   const { products, genderValue, categoryValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
   const [priceFilter, setPriceFilter] = useState<[number, number]>([
@@ -22,8 +22,9 @@ const page = () => {
   const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
+    const searchParam = useSearchParams();
     dispatch(setGenderValue(searchParam?.get("gender") ?? ""));
-  }, [searchParam, genderValue, categoryValue]);
+  }, [ genderValue, categoryValue]);
 
   const [sortOption, setSortOption] = useState<
     "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"

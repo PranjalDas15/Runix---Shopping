@@ -8,23 +8,8 @@ import CategoriesMale from "@/components/homeComponents/CategoriesMale";
 import CategoriesFemale from "@/components/homeComponents/CategoriesFemale";
 import NewArrivals from "@/components/homeComponents/NewArrivals";
 import { ArrowBigUp } from "lucide-react";
-import { useState } from "react";
 
 export default function Home() {
-  const [isTop, setIsTop] = useState(true);
-  const autoAppear = () => {
-    if (window.scrollY > 1) {
-      setIsTop(false);
-    } else {
-      setIsTop(true);
-    }
-  };
-
-  window.addEventListener("scroll", autoAppear);
-
-  const handleScroll = () => {
-    window.scrollTo(0, 0);
-  }
 
   return (
     <>
@@ -39,15 +24,6 @@ export default function Home() {
         <CategoriesMale /> 
         <CategoriesFemale />
         <NewArrivals />
-        <div
-          className={`sticky bottom-10 mx-10 z-50 flex justify-end custom-transition ${
-            isTop ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"
-          }`}
-        >
-          <button  onClick={()=>handleScroll} className={`px-2 py-2 flex justify-center items-center bg-orange-200`}>
-            <ArrowBigUp/>
-          </button>
-        </div>
       </div>
     </>
   );

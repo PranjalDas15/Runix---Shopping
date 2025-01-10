@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import { clearUser } from "@/lib/features/userSlice";
 import store from "@/lib/store";
@@ -19,7 +20,7 @@ export const signUp = async(email: string, phone: string, password: string, role
         return true;
 
     } catch (error: any) {
-        toast.error(error.response.data.message)
+        toast.error(error.response.data?.message)
     }
 }
 

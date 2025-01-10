@@ -1,7 +1,6 @@
 "use client";
 
 import Cart from "@/components/Cart";
-import Test from "@/components/Test";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import Link from "next/link";

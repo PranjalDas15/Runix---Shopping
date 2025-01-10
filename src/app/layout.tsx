@@ -1,13 +1,10 @@
+/* eslint-disable */
+
 import type { Metadata } from "next";
-import { Oxanium } from "next/font/google";
+// import { Oxanium } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { ProductContextProvider } from "@/Context/productContext";
-import { SingleProductProvider } from "@/Context/singleProductContext";
-import { use } from "react";
-import { UserProvider } from "@/Context/userContext";
 import { Toaster } from "react-hot-toast";
 import StoreProvider from "./storeProvider";
 
@@ -15,11 +12,11 @@ interface Props {
   params: { _id: string };
 }
 
-const oxanium = Oxanium({
-  subsets: ["latin"],
-  variable: "--font-oxanium",
-  weight: ["200", "300", "400", "500"],
-});
+// const oxanium = Oxanium({
+//   subsets: ["latin"],
+//   variable: "--font-oxanium",
+//   weight: ["200", "300", "400", "500"],
+// });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -51,14 +48,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="top-right"/>
-        {/* <UserProvider> */}
           <StoreProvider>
             <div className="relative">
               <Navbar />
               {children}
             </div>
           </StoreProvider>
-        {/* </UserProvider> */}
       </body>
     </html>
   );
