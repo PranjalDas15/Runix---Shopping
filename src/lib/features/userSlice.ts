@@ -3,12 +3,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchUser } from "../actions/fetchUser";
 import { addToWishlist, deleteFromWishlist } from "../actions/wishlistActions";
 import { addToCart, updateCart } from "../actions/cartActions";
+import { updateCurrentUser } from "firebase/auth";
+import { updateUserAddress } from "../actions/updateUserAddress";
 
 interface SelectedProduct {
   id: string;
   price: number;
   quantity: number;
   total?: number;
+}
+
+interface Update {
+  phone: string;
+  address: string[];
 }
 
 type Role = "Admin" | "Customer" | "Seller";
@@ -23,7 +30,7 @@ interface UserState {
 
 const initialState: UserState = {
   user: null,
-  loading: true,
+  loading: false,
   error: null,
   role: null,
   selectedProducts: null,
@@ -64,6 +71,23 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      })
+
+      .addCase(updateUserAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null
+      })
+      .addCase(updateUserAddress.fulfilled, (state, action: PayloadAction<Update>)=> {
+        state.loading = false;
+        if(state.user && state.user.phone){
+          state.user.phone = action.payload.phone;
+          state.user.address = action.payload.address;
+          
+        }
+      })
+      .addCase(updateUserAddress.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
       })

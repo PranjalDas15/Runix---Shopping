@@ -1,10 +1,15 @@
 import { categoriesFemale } from "@/lib/assets";
+import { setCategoryValue } from "@/lib/features/productSlice";
+import { useAppDispatch } from "@/lib/hooks";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Categories = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -56,8 +61,8 @@ const Categories = () => {
         </h1>
         <div className="relative grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 px-4 w-full ">
           {categoriesFemale.map((c, index) => (
-            <Link
-              href={`/shop/Female/${c.type}`}
+            <button
+              onClick={()=>{router.push(`/shop?gender=female`); dispatch(setCategoryValue(c.value.toLowerCase()))}}
               key={index}
               className="dissapear2 relative group rounded-xl h-[5.5rem] md:h-[8rem] overflow-hidden"
             >
@@ -67,7 +72,7 @@ const Categories = () => {
                   <div className='absolute top-0 w-full h-full custom-transition bg-[rgba(0,0,0,0.3)] group-hover:bg-[rgba(230,162,67,0.3)] text-[1.5rem] lg:text-[1.8rem] text-white items-center justify-center flex '>
                     <p>{c.type}</p>
                   </div>
-            </Link>
+            </button>
           ))}
         </div>
       </div>

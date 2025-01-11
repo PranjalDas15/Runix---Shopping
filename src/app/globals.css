@@ -100,11 +100,11 @@ body {
 }
 
 .brandLogoAppear {
-  animation: brandLogoAnimation 1s ease-in-out forwards;   
+  animation: brandLogoAnimation 200ms ease-in-out forwards;   
 }
 
 .brandLogoAppear:nth-child(2){
-  animation-delay: 0.5s;
+  animation-delay: 100ms;
 }
 
 
@@ -147,30 +147,30 @@ body {
 }
 
 .appear2 {
-  animation: appearAnimation2 1s ease-in-out forwards;
+  animation: appearAnimation2 0.4s ease-in-out forwards;
 }
 
 
 .appear2:nth-child(2){
-  animation-delay: 200ms;
+  animation-delay: 10ms;
 }
 .appear2:nth-child(3){
-  animation-delay: 400ms;
+  animation-delay: 20ms;
 }
 .appear2:nth-child(4){
-  animation-delay: 600ms;
+  animation-delay: 30ms;
 }
 .appear2:nth-child(5){
-  animation-delay: 800ms;
+  animation-delay: 40ms;
 }
 .appear2:nth-child(6){
-  animation-delay: 1000ms;
+  animation-delay: 50ms;
 }
 .appear2:nth-child(7){
-  animation-delay: 1200ms;
+  animation-delay: 60ms;
 }
 .appear2:nth-child(8){
-  animation-delay: 1400ms;
+  animation-delay: 70ms;
 }
 
 
@@ -239,30 +239,30 @@ body {
 }
 
 .hero {
-  animation: heroAnimation1 1s ease-in-out forwards;
+  animation: heroAnimation1 0.5s ease-in-out forwards;
   animation-delay: 0s;   
 }
 .hero2 {
-  animation: heroAnimation2 1s ease-in-out forwards; 
-  animation-delay: 1s;  
+  animation: heroAnimation2 0.5s ease-in-out forwards; 
+  animation-delay: 0.2s;  
 }
 .hero3 {
-  animation: heroAnimation3 1s ease-in-out forwards; 
-  animation-delay: 1s;  
+  animation: heroAnimation3 0.5s ease-in-out forwards; 
+  animation-delay: 0.2s;  
 }
 
 .hero4 {
-  animation: heroAnimation4 1s ease-in-out forwards; 
+  animation: heroAnimation4 0.4s ease-in-out forwards; 
 }
 
 
 
 .hero4:nth-child(1) {
-  animation-delay: 2s;
+  animation-delay: 0.2s;
 }
 .hero4:nth-child(2) {
-  animation-delay: 2.2s;
+  animation-delay: 0.3s;
 }
 .hero4:nth-child(3) {
-  animation-delay: 2.4s;
+  animation-delay: 0.4s;
 }

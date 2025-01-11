@@ -1,48 +1,42 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { addToCart, updateCart } from "@/lib/actions/cartActions";
+import { fetchOrder, placeOrder } from "@/lib/actions/orderActions";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
+import ConfirmOrder from "./ConfirmOrder";
 
 
-interface SelectedProduct {
-  id: any;
-  price: number;
+export interface SelectedProduct {
+  productId: string;
   quantity: number;
-  total?: number;
+  price: number;
 }
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state: RootState) => state.user);
+  const [ isConfirmOrderOpen, setIsConfirmOrderOpen ] = useState<boolean>(false)
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
 
-  const [order, setOrder] = useState<{
-    order: SelectedProduct[];
-    totalPrice: number;
-  }>({
-    order: [],
-    totalPrice: 0,
-  });
-
-  const handleOrder = () => {
-    if (selectedProducts.length > 0) {
-      setOrder((prevState) => {
-        const newOrder = [...prevState.order.filter(
-          (item) => !selectedProducts.some((p) => p.id === item.id)
-        ), ...selectedProducts];
-        const newTotalPrice = newOrder.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
-        return { order: newOrder, totalPrice: newTotalPrice };
-      });
+  const handleOrder = async () => {
+    if(user && user.address.length === 0){
+      toast.error("You must enter an address first.");
+      redirect('/user');
+    } else if(selectedProducts.length > 0) {
+      const toatalPrice = calculateTotalPrice();
+      await placeOrder({userId: user?._id, orderItems: selectedProducts, totalPrice: toatalPrice, paymentMethod: "Cash on Delivery"})
+      dispatch(fetchOrder());
     }
-  };
-
+  }
 
   const handleCheckboxChange = (
     productId: string,
@@ -50,9 +44,9 @@ const Cart: React.FC = () => {
     quantity: number
   ) => {
     setSelectedProducts((prev) =>
-      prev.find((p) => p.id === productId)
-        ? prev.filter((p) => p.id !== productId)
-        : [...prev, { id: productId, price, quantity }]
+      prev.find((p) => p.productId === productId)
+        ? prev.filter((p) => p.productId !== productId)
+        : [...prev, { productId: productId, price, quantity }]
     );
   };
 
@@ -69,7 +63,7 @@ const Cart: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3">
+    <div className="relative grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3">
       <div className="flex flex-col gap-2">
         {user?.cart?.map((c: any, idx) => (
           <div key={idx} className="w-full relative">
@@ -77,7 +71,7 @@ const Cart: React.FC = () => {
               type="checkbox"
               name="cart_product"
               value={c.product._id}
-              checked={selectedProducts.some((p) => p.id === c.product._id)}
+              checked={selectedProducts.some((p) => p.productId === c.product._id)}
               id={c.product._id}
               onChange={() =>
                 handleCheckboxChange(
@@ -91,7 +85,7 @@ const Cart: React.FC = () => {
             <label
               htmlFor={c.product._id}
               className={`relative w-full flex items-center p-2 rounded-xl ${
-                selectedProducts.some((p) => p.id === c.product._id)
+                selectedProducts.some((p) => p.productId === c.product._id)
                   ? "bg-orange-100"
                   : " bg-slate-50 "
               }`}
@@ -208,7 +202,7 @@ const Cart: React.FC = () => {
                   </li>
                   {selectedProducts.map((p, idx) => {
                     const productDetails = user?.cart.find(
-                      (c: any) => c.product._id === p.id
+                      (c: any) => c.product._id === p.productId
                     )?.product;
 
                     return (
@@ -241,7 +235,7 @@ const Cart: React.FC = () => {
               </div>
               <div className="mt-4 flex justify-between p-3 text-xl">
                 <button
-                  onClick={handleOrder}
+                  onClick={()=> setIsConfirmOrderOpen(!isConfirmOrderOpen)}
                   className="border-2 text-black hover:text-white border-orange-400 hover:bg-orange-400 px-2 py-2 text-lg custom-transition"
                 >
                   Place Order
@@ -260,6 +254,9 @@ const Cart: React.FC = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className={`absolute top-0 left-0 w-full h-full xl:h-auto bg-gray-50 rounded-xl ${isConfirmOrderOpen ? 'block' : 'hidden'}`}>
+        <ConfirmOrder selectedProducts={selectedProducts} calculateTotalPrice={calculateTotalPrice} setIsConfirmOrderOpen={setIsConfirmOrderOpen} isConfirmOrderOpen={isConfirmOrderOpen}/>
       </div>
     </div>
   );

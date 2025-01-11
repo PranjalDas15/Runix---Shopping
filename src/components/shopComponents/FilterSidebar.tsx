@@ -24,10 +24,6 @@ const FilterSidebar = (props: Props) => {
     setOpenSection(openSection === section ? null : section);
   }
 
-  const discountedPrice = (price: number, discountPercent: number) => {
-    const discountAmount = (price * discountPercent) / 100;
-    return price - discountAmount;
-  };
 
   return (
     <>
@@ -36,82 +32,6 @@ const FilterSidebar = (props: Props) => {
               <h1 className="text-black text-lg md:text-xl font-bold mt-4">
                 Filter
               </h1>
-
-              {/* <div className="border rounded-lg p-4 mt-2">
-                <h2 className="font-semibold">By Price</h2>
-                <div>
-                  <input
-                    type="range"
-                    min={500}
-                    max={10000}
-                    step={500}
-                    value={props.priceFilter[0]}
-                    onChange={(e) =>
-                      props.setPriceFilter([parseInt(e.target.value), props.priceFilter[1]])
-                    }
-                    className="w-full"
-                  />
-                  <input
-                    type="range"
-                    min={500}
-                    max={10000}
-                    step={500}
-                    value={props.priceFilter[1]}
-                    onChange={(e) =>
-                      props.setPriceFilter([props.priceFilter[0], parseInt(e.target.value)])
-                    }
-                    className="w-full"
-                  />
-                  <p>
-                    Price: {props.priceFilter[0]} - {props.priceFilter[1]}
-                  </p>
-                </div>
-              </div> */}
-
-              {/* <div className='border rounded-lg px-4 pt-4 pb-2 mt-2'>
-                <div className='flex justify-between items-center cursor-pointer' onClick={()=>toggleSection("price")}>
-                  <h2 className='text-black font-semibold'>By Price</h2>
-                  <div className={`custom-transition ${openSection === "price" ? 'rotate-0' : 'rotate-180'}`}>
-                    <Arrow/>
-                  </div>
-                </div>
-                <div className={`flex flex-col gap-2 mt-2 custom-transition overflow-hidden ${openSection === "price" ? 'max-h-[300px]' : 'max-h-0'}`}>
-                  {prices.map((price, index)=>(
-                    <div key={index} className={`custom-transition ${openSection === "price" ? 'translate-y-0 opacity-100' : 'translate-y-[100px] opacity-0'}`}>
-                      <input
-                        id={price.price}
-                        name="price"
-                        type="radio"
-                        value={price.min}
-                        checked={priceValue === price.min}
-                        onChange={(e: any) => {
-                          setPriceValue(e.target.value);
-                          console.log("Price Value: ", e.target.value);
-                          
-                        }}
-                        className="peer hidden"
-                      />
-
-                      <label
-                        htmlFor={price.price}
-                        className="flex items-center justify-evenly w-4 h-4 border border-gray-400 rounded-full peer-checked:border-orange-500 peer-checked:bg-orange-500 cursor-pointer"
-                      >
-                        <div>
-                          <span className="hidden w-3 h-3 bg-white rounded-full peer-checked:block"></span>
-                        </div>
-
-                        <span className="ml-6 text-gray-700 text-wrap">
-                          {price.min}
-                        </span>
-                        {' - '}
-                        <span className="ml-6 text-gray-700 text-wrap">
-                          {price.max}
-                        </span>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
 
               <div className="border rounded-lg px-4 pt-4 mt-2">
                 <div
@@ -149,6 +69,7 @@ const FilterSidebar = (props: Props) => {
                         checked={genderValue === gender.value}
                         onChange={(e: any) => {
                           dispatch(setGenderValue(e.target.value));
+                          console.log("Value gender:", e.target.value)
                           if (e.target.value === "") {
                             router.push(`/shop`);
                           } else {

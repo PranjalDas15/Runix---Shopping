@@ -1,20 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchOrder, placeOrder } from "../actions/orderActions";
+import { OrderItem } from "@/types/Order";
 
-interface SelectedProduct {
-  productId: any;
-  price: number;
-  quantity: number;
+interface Order {
+  _id: string | null;
+  userId: string | null;
+  order: OrderItem[];
+  totalPrice: number | null;
+  orderStatus: string | null;
+  paymentMethod: string | null;
+  paymentStatus: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
+
 interface OrderState {
-  order: SelectedProduct[];
-  totalPrice: number;
+  orders: Order[];
   loading: boolean;
-  error: null | string;
+  error: null | string | undefined;
 }
 
 const initialState: OrderState = {
-  order: [],
-  totalPrice: 0,
+  orders: [],
   loading: false,
   error: null,
 };
@@ -23,18 +30,26 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setOrder(state, action: PayloadAction<SelectedProduct[]>) {
-        state.order = action.payload;
-    },
-    setTotalPrice(state, action: PayloadAction<number>) {
-        state.totalPrice = action.payload;
-    },
     clearOrder(state) {
-      state.order = [];
-      state.totalPrice = 0;
+      state.orders = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrder.fulfilled, (state, action: PayloadAction<Order[]>) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 
-export const { setOrder, setTotalPrice, clearOrder } = orderSlice.actions;
+export const { clearOrder } = orderSlice.actions;
 export default orderSlice.reducer;

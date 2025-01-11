@@ -1,7 +1,7 @@
 /* eslint-disable */
 
+import { clearOrder } from "@/lib/features/orderSlice";
 import { clearUser } from "@/lib/features/userSlice";
-import store from "@/lib/store";
 import axios from "axios"
 import toast from "react-hot-toast";
 
@@ -31,7 +31,6 @@ export const signIn = async(email: string, password: string) => {
         if(!data){
             toast.error(data.message);
         }
-        
         toast.success(data.message);
         return data.user;
     } catch (error: any) {
@@ -39,16 +38,16 @@ export const signIn = async(email: string, password: string) => {
     }
 }
 
-export const signOut = async() => {
+export const signOut = async(dispatch: any) => {
     try {
-        
         const res = await axios.post('/api/auth/customerSignout');
         const data = res?.data;
         if(!data){
             toast.error(data.message);
             return false;
         }
-        store.dispatch(clearUser());
+        dispatch(clearUser());
+        dispatch(clearOrder());
         toast.success(data.message);
         return true;
     } catch (error: any) {

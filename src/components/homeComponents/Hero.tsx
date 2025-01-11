@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react'
 import Button from '../ui/Button'
+import { redirect } from 'next/navigation'
 
 const Hero = () => {
 
@@ -77,10 +78,10 @@ return () => {
           </span>
         </div>
         <div className='h-[40%] w-full text-2xl text-center text-white py-5'>
-          <p className='hero_no4 pt-2'>Get your favourite shoes for upto <span className='font-bold'>70% off</span> !</p>
+          <p className='hero_no4 pt-2'>Attractive prices with upto <span className='font-bold'>70% off</span> !</p>
           <p className='hero_no4 pt-2'>Grab them before they are gone !!</p>
           <div className='w-full flex justify-center hero_no4 pt-5'>
-            <Button extras={'scale-125 -translate-x-2'}>Explore</Button>
+            <Button extras={'scale-125 -translate-x-2'} onCLickHandler={()=>redirect('/shop')}>Explore</Button>
           </div>
         </div>
       </div>

@@ -1,17 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
-import productReducer from '@/lib/features/productSlice';
-import userReducer from '@/lib/features/userSlice';
-import OrderReducer from '@/lib/features/orderSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import productReducer from "@/lib/features/productSlice";
+import userReducer from "@/lib/features/userSlice";
+import OrderReducer from "@/lib/features/orderSlice";
 
-const store = configureStore({
+export const store = () => {
+  return configureStore({
     reducer: {
-        products: productReducer,
-        user: userReducer,
-        order: OrderReducer,
+      products: productReducer,
+      user: userReducer,
+      order: OrderReducer,
     },
-});
+  });
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof store>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
 
 export default store;

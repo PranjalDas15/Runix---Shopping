@@ -5,7 +5,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className='h-full py-5 px-3 text-white bg-orange-400'>
+    <div className='h-full py-5 px-3 text-white bg-orange-400 snap-start'>
       <div className='w-full grid grid-cols-2 md:grid-cols-3 justify-items-center gap-4 md:gap-0'>
         <div className=''>
           <h1 className='text-lg font-semibold'>Shopping</h1>

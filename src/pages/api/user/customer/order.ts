@@ -12,13 +12,26 @@ const handler = async (req: ExtendedRequest, res: NextApiResponse) => {
     if (!userId) return res.status(400).json({ message: "User required." });
 
     try {
-      const { productId, quantity, price, totalPrice, paymentMethod } =
-        req.body;
-      if (!productId || !quantity || !price || !totalPrice || !paymentMethod)
+      const { orderItems, totalPrice, paymentMethod } = req.body;
+      if (!orderItems || !totalPrice || !paymentMethod)
         return res.status(400).json({ message: "Empty order." });
-    
-      if (typeof quantity !== 'number' || typeof price !== 'number' || typeof totalPrice !== 'number') {
-        return res.status(400).json({ message: "Quantity, price, and totalPrice must be numbers." });
+
+      orderItems.forEach((item: any) => {
+        if (
+          !item.productId ||
+          typeof item.quantity !== "number" ||
+          typeof item.price !== "number"
+        ) {
+          throw new Error(
+            "Each item must have a valid productId, quantity, and price."
+          );
+        }
+      });
+
+      if (typeof totalPrice !== "number") {
+        return res
+          .status(400)
+          .json({ message: "Total price must be a number." });
       }
 
       const orderStatus = "Processing";
@@ -26,11 +39,7 @@ const handler = async (req: ExtendedRequest, res: NextApiResponse) => {
 
       const newOrder = new OrderModel({
         userId,
-        order: {
-          productId,
-          quantity,
-          price,
-        },
+        order: orderItems,
         totalPrice,
         orderStatus: orderStatus,
         paymentMethod,
@@ -53,7 +62,41 @@ const handler = async (req: ExtendedRequest, res: NextApiResponse) => {
     } catch (error: any) {
       return res.status(500).json({ message: "Server Error.", error });
     }
-  } else if (req.method === "PATCH") {
+  } else if (req.method === "GET") {
+    const userId = req.user?.userId;
+    if (!userId) return res.status(400).json({ message: "UserId required." });
+
+    try {
+      await dbConnect();
+      const orders = await OrderModel.find({ userId: userId })
+      .populate({
+        path: 'order.productId',
+        model: "Product"
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Order fetched successfully.", orders });
+    } catch (error) {
+      return res.status(500).json({ message: "Internal server error." });
+    }
+  } else if(req.method === 'PATCH'){
+    const {orderId} = req.body;
+    if (!orderId) return res.status(400).json({ message: "Order ID required." });
+
+    try {
+      await dbConnect();
+      const order = await OrderModel.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ message: "Order not found." });
+      }
+
+      order.orderStatus = "Cancelled";
+      await order.save();
+      return res.status(200).json({message: "Order Cancelled", order});
+    } catch (error) {
+      return res.status(500).json({ message: "Internal server error.", error });
+    }
   } else {
     return res.status(400).json({ message: "Method not allowed." });
   }

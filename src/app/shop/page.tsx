@@ -6,7 +6,7 @@ import { setGenderValue } from "@/lib/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { Filter, Search, X } from "lucide-react";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
 
@@ -69,9 +69,6 @@ function ShoppingPage () {
   }
   return (
     <div>
-        {/* <div className="relative bg-white">
-        <Carousel height="h-[400px] md:h-[800px]" label={advertisements} />
-      </div> */}
         <div className="relative flex gap-2 py-5 px-2 pt-[70px] h-screen">
           <div
             className="absolute top-[65px] md:hidden mt-5"

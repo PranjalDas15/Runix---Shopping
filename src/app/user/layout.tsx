@@ -10,18 +10,22 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    
     if (user && !loading) {
       if (user === undefined || null) {
         redirect("/login");
       }
     }
   }, [dispatch]);
-  if(loading){
-    return <Loading/>
+  
+  if (loading) {
+    return <Loading />;
   }
 
-  return <div>{children}</div>;
+  if (user && !loading) {
+    return <div>{children}</div>;
+  } else {
+    redirect("/login");
+  }
 };
 
 export default layout;

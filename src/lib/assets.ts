@@ -64,7 +64,7 @@ export const keepInTouch = [
 export const banners = [
   {
     image: "/products/ad1.jpg",
-    heading: "Nothing looks cleaner than whites",
+    heading: "Fashion with sport",
     body: "",
     button: "Explore",
   },
@@ -92,7 +92,7 @@ export const banners = [
 export const advertisements = [
   {
     image: "/banners/banner1.jpg",
-    heading: "Nothing looks cleaner than whites",
+    heading: "Fashion with sport",
     body: "",
     button: "Explore",
   },
@@ -120,24 +120,24 @@ export const advertisements = [
 export const advertisements2 = [
   {
     image: "/banners/banner6.jpg",
-    heading: "Nothing looks cleaner than whites",
-    body: "",
+    heading: "Stay Cool with Summer's Best Styles",
+    body: "Beat the heat with our top summer picks.",
     button: "Explore",
   },
   {
     image: "/banners/banner7.jpg",
-    heading: "Everyone is falling for these sneakers",
-    body: "",
+    heading: "Elevate Your Game with Fashion & Sports",
+    body: "Where style meets performance.",
     button: "Explore",
   },
-  { image: "/banners/banner8.jpg", heading: "Push 7Your Limits", body: "", button: "Explore" },
+  { image: "/banners/banner8.jpg", heading: "Chic & Timeless: White Done Right", body: "Classic white, always in fashion.", button: "Explore" },
   {
     image: "/banners/banner9.jpg",
-    heading: "Winter Collection is here!",
-    body: "",
+    heading: "Everyday Jackets for Effortless Style",
+    body: "Layer up with our versatile jackets.",
     button: "Explore",
   },
-  { image: "/banners/banner10.jpg", heading: "HEllo", body: "", button: "Explore" },
+  { image: "/banners/banner10.jpg", heading: "Accessorize Your Life: Fun & Functional", body: "Finish your look with perfect accessories", button: "Explore" },
 ];
 
 export const commondetails = {
@@ -154,3 +154,8 @@ export const commondetails = {
     "For any queries, please contact Customer Service at 0800-000000 or via customercare@runicx.com.",
 };
 
+export const userMenu = [
+  {type: "User", value: "User"},
+  {type: "Orders", value: "User"},
+  {type: "Logout", value: "User"},
+]

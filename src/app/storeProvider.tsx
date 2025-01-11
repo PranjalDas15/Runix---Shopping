@@ -1,18 +1,20 @@
 "use client";
-import { useActionState, useEffect, useRef } from "react";
+
+import { useRef } from "react";
 import { Provider } from "react-redux";
-import store from "@/lib/store";
-import { fetchProducts } from "@/lib/actions/fetchProducts";
+import store, { AppStore } from "@/lib/store";
 import { fetchUser } from "@/lib/actions/fetchUser";
+import { fetchProducts } from "@/lib/actions/fetchProducts";
+import { fetchOrder } from "@/lib/actions/orderActions";
 
 export default function StoreProvider({ children }: {children: React.ReactNode;}) {
-  useEffect(() => {
-    const fetchData = async()=>{
-      await store.dispatch(fetchProducts());
-      await store.dispatch(fetchUser());
-    }
-    fetchData();
-  }, []);
+ const storeRef = useRef<AppStore>()
+ if (!storeRef.current) {
+  storeRef.current = store()
+  storeRef.current.dispatch(fetchUser());
+  storeRef.current.dispatch(fetchProducts());
+  storeRef.current.dispatch(fetchOrder());
+ }
 
-  return <Provider store={store}>{children}</Provider>;
+  return <Provider store={storeRef.current}>{children}</Provider>;
 }

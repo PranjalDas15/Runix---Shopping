@@ -17,8 +17,7 @@ export const addToWishlist = createAsyncThunk("user/addToWishlist", async (produ
         toast.success("Added to wishlist.");
         return res.data.update.wishlist;
     } catch (error: any) {
-        toast.error("You need to log in first.");
-        throw error;
+        return toast.error(error?.response.data.message);
     }
 });
 
@@ -35,7 +34,6 @@ export const deleteFromWishlist = createAsyncThunk("user/removeFromWishlist", as
         toast.success("Removed from wishlist.");
         return res.data.result.wishlist;
     } catch (error:any) {
-        toast.error("You need to log in first.");
-        throw error;
+        toast.error(error?.response.data.message);
     }
 });

@@ -8,6 +8,7 @@ import CategoriesMale from "@/components/homeComponents/CategoriesMale";
 import CategoriesFemale from "@/components/homeComponents/CategoriesFemale";
 import NewArrivals from "@/components/homeComponents/NewArrivals";
 import { ArrowBigUp } from "lucide-react";
+import Footer from "@/components/Footer";
 
 export default function Home() {
 
@@ -23,7 +24,8 @@ export default function Home() {
         <Hero />
         <CategoriesMale /> 
         <CategoriesFemale />
-        <NewArrivals />
+        <Footer/>
+        {/* <NewArrivals /> */}
       </div>
     </>
   );

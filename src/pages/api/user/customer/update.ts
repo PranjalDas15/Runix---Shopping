@@ -4,6 +4,7 @@ import UserModel from "@/models/User";
 import { updateSchema } from "@/schemas/updateSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
+import wishlist from "./wishlist";
 
 interface ExtendedRequest extends NextApiRequest {
     user?: {
@@ -15,7 +16,8 @@ interface ExtendedRequest extends NextApiRequest {
 const handler = async(req:ExtendedRequest, res: NextApiResponse) => {
     if(req.method !== 'PUT') return res.status(400).json({message: "Method not allowed."})
 
-    await dbConnect();
+    if(req.method === 'PUT') {
+        await dbConnect();
     try {
         const userId = req.user?.userId;
 
@@ -38,11 +40,13 @@ const handler = async(req:ExtendedRequest, res: NextApiResponse) => {
         }
 
         const user = {
-            id: updatedUser._id,
+            _id: updatedUser._id,
             email: updatedUser.email,
             phone: updatedUser.phone,
             address: updatedUser.address,
-            role: updatedUser.role
+            role: updatedUser.role,
+            wishlist: updatedUser.wishlist,
+            cart: updatedUser.cart,
         }
 
         return res.status(200).json({message: "Customer updated successfully", user})
@@ -53,6 +57,7 @@ const handler = async(req:ExtendedRequest, res: NextApiResponse) => {
             });
         }
         return res.status(500).json({message: "Server Error."})
+    }
     }
 }
 

@@ -8,7 +8,7 @@ const page = () => {
   const { user } = useAppSelector((state) => state.user);
 
   return (
-    <div>
+    <>
       <div className="min-h-[70vh] w-full bg-white mt-[70px] flex justify-center">
         <div className=" mx-4 py-3 w-full md:w-[70%]">
           <div className="flex gap-1 text-[12px]">
@@ -40,7 +40,7 @@ const page = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
