@@ -1,22 +1,17 @@
-import { CartItem, User, WishlistItem } from "@/types/User";
+import { CartItem, WishlistItem } from "@/types/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchUser } from "../actions/fetchUser";
-import { addToWishlist, deleteFromWishlist } from "../actions/wishlistActions";
-import { addToCart, updateCart } from "../actions/cartActions";
-import { updateCurrentUser } from "firebase/auth";
-import { updateUserAddress } from "../actions/updateUserAddress";
 
-interface SelectedProduct {
-  id: string;
-  price: number;
-  quantity: number;
-  total?: number;
-}
-
-interface Update {
-  phone: string;
-  address: string[];
-}
+interface User {
+    _id: string | null;
+    email: string | null;
+    phone: string | null;
+    password?:string | null;
+    address: string[];
+    role: string | null;
+    wishlist: WishlistItem[];
+    cart: CartItem[];
+  }
 
 type Role = "Admin" | "Customer" | "Seller";
 
@@ -25,7 +20,6 @@ interface UserState {
   loading: boolean;
   error: null | string;
   role: Role | null;
-  selectedProducts: SelectedProduct | null;
 }
 
 const initialState: UserState = {
@@ -33,28 +27,35 @@ const initialState: UserState = {
   loading: false,
   error: null,
   role: null,
-  selectedProducts: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // updateUser(state, action: PayloadAction<User>) {
-    //     state.user = action.payload;
-    // },
-    setSelectedProducts(state, action: PayloadAction<SelectedProduct[]>) {
-      // @ts-ignore
-      state.selectedProducts = action.payload;
-    },
     setRole(state, action: PayloadAction<Role>) {
       state.role = action.payload;
+    },
+    updateUserCart(state, action: PayloadAction<CartItem[]>) {
+      if(state.user){
+        state.user.cart = action.payload;
+      }
+    },
+    updateUserWishlist(state, action : PayloadAction<WishlistItem[]>){
+      if(state.user){
+        state.user.wishlist = action.payload;
+      }
+    },
+    updateUserData(state, action: PayloadAction<{phone: string, address: string[]}>) {
+      if(state.user){
+        state.user.phone = action.payload.phone;
+        state.user.address = action.payload.address;
+      }
     },
     clearUser(state) {
       state.user = null;
       state.loading = false;
       state.error = null;
-      state.selectedProducts = null;
     },
   },
   extraReducers: (builder) => {
@@ -74,109 +75,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || null;
       })
-
-      .addCase(updateUserAddress.pending, (state) => {
-        state.loading = true;
-        state.error = null
-      })
-      .addCase(updateUserAddress.fulfilled, (state, action: PayloadAction<Update>)=> {
-        state.loading = false;
-        if(state.user && state.user.phone){
-          state.user.phone = action.payload.phone;
-          state.user.address = action.payload.address;
-          
-        }
-      })
-      .addCase(updateUserAddress.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || null;
-      })
-
-      // update wihslist
-
-      .addCase(addToWishlist.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        addToWishlist.fulfilled,
-        (state, action: PayloadAction<WishlistItem[]>) => {
-          state.loading = false;
-          if (state.user) {
-            state.user.wishlist = action.payload;
-          }
-          state.error = null;
-        }
-      )
-      .addCase(addToWishlist.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || null;
-      })
-
-      // remove from wishlist
-
-      .addCase(deleteFromWishlist.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        deleteFromWishlist.fulfilled,
-        (state, action: PayloadAction<WishlistItem[]>) => {
-          state.loading = false;
-          if (state.user) {
-            state.user.wishlist = action.payload;
-          }
-          state.error = null;
-        }
-      )
-      .addCase(deleteFromWishlist.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || null;
-      })
-
-      // add to cart
-
-      .addCase(addToCart.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        addToCart.fulfilled,
-        (state, action: PayloadAction<CartItem[] | undefined>) => {
-          state.loading = false;
-          if (state.user && action.payload) {
-            state.user.cart = action.payload;
-          }
-          state.error = null;
-        }
-      )
-      .addCase(addToCart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || null;
-      })
-
-      // update cart
-
-      .addCase(updateCart.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        updateCart.fulfilled,
-        (state, action: PayloadAction<CartItem[] | undefined>) => {
-          state.loading = false;
-          if (state.user && action.payload) {
-            state.user.cart = action.payload;
-          }
-          state.error = null;
-        }
-      )
-      .addCase(updateCart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || null;
-      });
   },
 });
 
-export const { clearUser, setSelectedProducts, setRole } = userSlice.actions;
+export const { clearUser, setRole, updateUserCart, updateUserWishlist, updateUserData } = userSlice.actions;
 export default userSlice.reducer;

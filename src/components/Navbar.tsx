@@ -76,7 +76,7 @@ function Navbar() {
             alt="logo"
             width={200}
             height={200}
-            src={menuHidden ? "/Logotextwhite.svg" : "/logotextblack.svg"}
+            src={menuHidden ? "/Logotextwhite.svg" : "/Logotextblack.svg"}
           />
         </Link>
 

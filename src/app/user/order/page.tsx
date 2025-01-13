@@ -27,7 +27,6 @@ const page = () => {
     return formattedDate.split(" ,")[1];
   };
 
-
   return (
     <>
       <div className="min-h-[70vh] w-full bg-white mt-[70px] flex justify-center">
@@ -72,17 +71,15 @@ const page = () => {
                         ? "Delivered on:"
                         : "Expected delivery date:"}
                       <span>
-                        {o.orderStatus === "Delivered"
-                          ? o.updatedAt
-                            ? dateToString(o.updatedAt)
-                            : "N/A"
-                          : o.createdAt
-                          ? expectedDelivery(o.createdAt)
-                          : "N/A"}
+                        {o.orderStatus === "Cancelled"
+                          ? ""
+                          : o.orderStatus === "Delivered"
+                          ? o.updatedAt && dateToString(o.updatedAt)
+                          : o.createdAt && expectedDelivery(o.createdAt)}
                       </span>
                     </p>
                   </div>
-                  <div className="flex flex-col md:flex-row gap-2 md:gap-4 justify-center md:justify-start items-start md:items-center ">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 ">
                     {o.order.map((item, index) => (
                       <div key={index} className="flex gap-2">
                         <div className="h-20 w-20 overflow-hidden rounded-xl border">

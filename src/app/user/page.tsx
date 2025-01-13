@@ -67,7 +67,7 @@ const page = () => {
                         isOpen ? "h-full" : "h-0"
                       }`}
                     >
-                      <Modal value={isOpen} setValue={setIsOpen}/>
+                      <Modal/>
                     </div>
                   </div>
                 ) : (
@@ -81,7 +81,7 @@ const page = () => {
                         isOpen ? "h-full" : "h-0"
                       }`}
                     >
-                      <Modal value={isOpen} setValue={setIsOpen}/>
+                      <Modal/>
                     </div>
                   </div>
                 )}

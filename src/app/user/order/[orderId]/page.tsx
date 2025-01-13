@@ -24,14 +24,15 @@ const page = () => {
     }
   };
   return (
-    <div className="relative pt-[70px] flex items-center justify-center w-full h-screen p-2 lg:p-0">
-      <button
-        className="absolute top-[70px] left-0 mx-4"
+    <div className="pt-[70px] flex items-center justify-center w-full h-screen p-2 lg:p-0">
+      
+      <div className="relative pt-[70px] w-full min-h-full lg:w-[50vw] lg:min-h-[70vh] border rounded-xl bg-white p-4">
+        <button
+        className="absolute top-[20px] left-0 mx-4"
         onClick={() => router.back()}
       >
-        <ArrowLeft />
+        <ArrowLeft className="hover:text-orange-400 custom-transition"/>
       </button>
-      <div className="w-full min-h-full lg:w-[50vw] lg:min-h-[70vh] border rounded-xl bg-white p-4">
         <div className="font-bold border-b border-black pb-2">
           <p className="">
             <span className="text-orange-400">Order ID: </span>
@@ -46,7 +47,8 @@ const page = () => {
             {order?.paymentMethod}
           </p>
           <div className="text-sm font-light">
-            <p>Expected delivery on {order?.updatedAt}</p>
+            {order?.orderStatus === "Cancelled" ? <></> : <p>Expected delivery on {order?.updatedAt}</p>}
+            
           </div>
         </div>
 
@@ -55,7 +57,7 @@ const page = () => {
             <Link
               href={`/product/${item.productId._id}`}
               key={index}
-              className="flex items-center px-2 bg-slate-50 hover:bg-orange-50"
+              className="flex items-center p-2 bg-slate-50 hover:bg-orange-50"
             >
               <div className="h-20 w-20 overflow-hidden rounded-xl border">
                 <Image
@@ -78,6 +80,12 @@ const page = () => {
               </div>
             </Link>
           ))}
+        </div>
+        <div>
+          <p className="font-semibold text-lg">
+            <span className="text-orange-400">Order Total: </span>
+            ₹{order?.totalPrice}
+          </p>
         </div>
         {order?.orderStatus !== "Cancelled" && (
           <div className="my-2 px-2">

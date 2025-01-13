@@ -50,7 +50,7 @@ export const fetchOrder = createAsyncThunk("order/fetchOrder", async () => {
     });
     return res.data.orders;
   } catch (error: any) {
-    toast.error(error.response.data.message);
+    throw new Error(error);
   }
 });
 

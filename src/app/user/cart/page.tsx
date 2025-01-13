@@ -37,7 +37,6 @@ const page = () => {
             </div>
           ) : (
             <Cart />
-            // <Test/>
           )}
         </div>
       </div>

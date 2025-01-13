@@ -6,12 +6,8 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { addToCart, updateCart } from "@/lib/actions/cartActions";
-import { fetchOrder, placeOrder } from "@/lib/actions/orderActions";
-import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
 import ConfirmOrder from "./ConfirmOrder";
-
+import { handleAddtoCart, handleRemoveFromCart } from "@/lib/utils/utils";
 
 export interface SelectedProduct {
   productId: string;
@@ -22,21 +18,10 @@ export interface SelectedProduct {
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state: RootState) => state.user);
-  const [ isConfirmOrderOpen, setIsConfirmOrderOpen ] = useState<boolean>(false)
+  const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
-
-  const handleOrder = async () => {
-    if(user && user.address.length === 0){
-      toast.error("You must enter an address first.");
-      redirect('/user');
-    } else if(selectedProducts.length > 0) {
-      const toatalPrice = calculateTotalPrice();
-      await placeOrder({userId: user?._id, orderItems: selectedProducts, totalPrice: toatalPrice, paymentMethod: "Cash on Delivery"})
-      dispatch(fetchOrder());
-    }
-  }
 
   const handleCheckboxChange = (
     productId: string,
@@ -71,7 +56,9 @@ const Cart: React.FC = () => {
               type="checkbox"
               name="cart_product"
               value={c.product._id}
-              checked={selectedProducts.some((p) => p.productId === c.product._id)}
+              checked={selectedProducts.some(
+                (p) => p.productId === c.product._id
+              )}
               id={c.product._id}
               onChange={() =>
                 handleCheckboxChange(
@@ -123,14 +110,7 @@ const Cart: React.FC = () => {
                 <div className="flex items-center gap-1 mt-3">
                   <button
                     disabled={c.quantity === 1}
-                    onClick={() =>
-                      dispatch(
-                        updateCart({
-                          productId: c.product._id,
-                          productQuantity: 1,
-                        })
-                      )
-                    }
+                    onClick={() => handleRemoveFromCart(c.product._id, 1, dispatch)}
                     className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                       c.quantity === 1
                         ? "cursor-not-allowed opacity-80"
@@ -146,15 +126,7 @@ const Cart: React.FC = () => {
 
                   <button
                     disabled={c.quantity === 5}
-                    onClick={() =>{
-                      dispatch(
-                        addToCart({
-                          productId: c.product._id,
-                          productQuantity: 1,
-                        })
-                      );
-                    }
-                    }
+                    onClick={() => handleAddtoCart(c.product._id, 1, dispatch)}
                     className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                       c.quantity === 5
                         ? "cursor-not-allowed opacity-80"
@@ -167,14 +139,7 @@ const Cart: React.FC = () => {
               </div>
               <button
                 className="absolute top-0 right-0 mt-4 mr-4"
-                onClick={() => {
-                  dispatch(
-                    updateCart({
-                      productId: c.product._id,
-                      productQuantity: c.quantity,
-                    })
-                  );
-                }}
+                onClick={() => handleRemoveFromCart(c.product._id, c.quantity, dispatch)}
               >
                 <X
                   size={18}
@@ -235,7 +200,7 @@ const Cart: React.FC = () => {
               </div>
               <div className="mt-4 flex justify-between p-3 text-xl">
                 <button
-                  onClick={()=> setIsConfirmOrderOpen(!isConfirmOrderOpen)}
+                  onClick={() => setIsConfirmOrderOpen(!isConfirmOrderOpen)}
                   className="border-2 text-black hover:text-white border-orange-400 hover:bg-orange-400 px-2 py-2 text-lg custom-transition"
                 >
                   Place Order
@@ -255,8 +220,17 @@ const Cart: React.FC = () => {
           )}
         </div>
       </div>
-      <div className={`absolute top-0 left-0 w-full h-full xl:h-auto bg-gray-50 rounded-xl ${isConfirmOrderOpen ? 'block' : 'hidden'}`}>
-        <ConfirmOrder selectedProducts={selectedProducts} calculateTotalPrice={calculateTotalPrice} setIsConfirmOrderOpen={setIsConfirmOrderOpen} isConfirmOrderOpen={isConfirmOrderOpen}/>
+      <div
+        className={`absolute top-0 left-0 w-full h-full xl:h-auto bg-gray-50 rounded-xl ${
+          isConfirmOrderOpen ? "block" : "hidden"
+        }`}
+      >
+        <ConfirmOrder
+          selectedProducts={selectedProducts}
+          calculateTotalPrice={calculateTotalPrice}
+          setIsConfirmOrderOpen={setIsConfirmOrderOpen}
+          isConfirmOrderOpen={isConfirmOrderOpen}
+        />
       </div>
     </div>
   );

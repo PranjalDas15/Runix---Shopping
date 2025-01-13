@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchUser } from "./fetchUser";
 
-export const addToWishlist = createAsyncThunk("user/addToWishlist", async (productId: string) => {
+export const addToWishlist = async (productId: string) => {
     try {
         const res = await axios.patch(
             '/api/user/customer/wishlist',
@@ -19,9 +19,9 @@ export const addToWishlist = createAsyncThunk("user/addToWishlist", async (produ
     } catch (error: any) {
         return toast.error(error?.response.data.message);
     }
-});
+};
 
-export const deleteFromWishlist = createAsyncThunk("user/removeFromWishlist", async (productId: string) => {
+export const deleteFromWishlist = async (productId: string) => {
     try {
         const res = await axios.delete(
             '/api/user/customer/wishlist',
@@ -36,4 +36,4 @@ export const deleteFromWishlist = createAsyncThunk("user/removeFromWishlist", as
     } catch (error:any) {
         toast.error(error?.response.data.message);
     }
-});
+};

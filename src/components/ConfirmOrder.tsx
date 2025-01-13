@@ -27,6 +27,7 @@ const ConfirmOrder = ({
     } else if (selectedProducts.length > 0) {
       const toatalPrice = calculateTotalPrice();
       await placeOrder({
+        //@ts-ignore
         userId: user?._id,
         orderItems: selectedProducts,
         totalPrice: toatalPrice,

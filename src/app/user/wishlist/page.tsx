@@ -25,8 +25,8 @@ const page = () => {
           <div className="py-5">
             <h1 className="font-bold text-xl md:text-2xl">My Wishlist</h1>
           </div>
-          {user && user.wishlist.length > 0 ? (
-            <Shop value={user.wishlist} delButton={true} />
+          {user && user?.wishlist.length > 0 ? (
+            <Shop value={user?.wishlist} delButton={true} />
           ) : (
             <div className="w-full h-[50vh] xl:h-[80vh] flex flex-col items-center justify-center gap-10">
               <p className="font-semibold text-xl">Your wishlist is empty!</p>

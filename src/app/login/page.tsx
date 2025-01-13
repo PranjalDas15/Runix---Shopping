@@ -34,7 +34,6 @@ const page = () => {
 
   const handleSignIn = async (email: string, password: string) => {
     const success = await signIn(email, password);
-    console.log("Status", success);
     if (success) {
       await dispatch(fetchUser());
       await dispatch(fetchOrder());

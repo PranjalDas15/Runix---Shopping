@@ -1,15 +1,10 @@
-import { fetchUser } from "@/lib/actions/fetchUser";
-import { updateUserAddress } from "@/lib/actions/updateUserAddress";
+import { updateUser } from "@/lib/actions/updateUser";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-interface Props {
-  value: boolean;
-  setValue: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-const Modal: React.FC<Props> = ({ value, setValue }) => {
+const Modal: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, loading } = useAppSelector((state) => state.user);
   const [address, setAddress] = useState<string | null>(null);
@@ -20,14 +15,13 @@ const Modal: React.FC<Props> = ({ value, setValue }) => {
         onSubmit={() => {
           if (user && !loading) {
             const newAddress = address?.trim() || user.address.toString();
-            dispatch(
-              updateUserAddress({
-                phone: user.phone.toString(),
+              updateUser({
+                phone: user?.phone?.toString(),
                 address: newAddress,
-              })
-            );
+                dispatch
+              });
           } else {
-            console.log("Phone no. is required.");
+            toast.error("Phone no. is required.");
           }
         }}
         className="w-full h-full flex flex-col gap-2"

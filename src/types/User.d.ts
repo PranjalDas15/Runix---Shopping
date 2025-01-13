@@ -31,7 +31,7 @@ export interface CartItem {
 }
 
 export interface User {
-  _id: any;
+  _id: string;
   email: string;
   phone: string;
   password?:string;
@@ -39,5 +39,4 @@ export interface User {
   role: string;
   wishlist: WishlistItem[];
   cart: CartItem[];
-  order: Order[]
 }
