@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./ui/MobileMenu";
 import CategoryMenu from "./ui/CategoryMenu";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setCategoryValue } from "@/lib/features/productSlice";
 import { signOut } from "@/app/login/actions";
@@ -15,7 +15,9 @@ import { useState } from "react";
 
 function Navbar() {
   const dispatch = useDispatch();
-  const { user } = useAppSelector((state) => state.user);
+  const { user, newlyAddedtoWishlist, newlyAddedtoCart } = useAppSelector(
+    (state) => state.user
+  );
   const [menuHidden, setMenuHidden] = useState<boolean>(true);
 
   const handleSignout = async () => {
@@ -114,12 +116,17 @@ function Navbar() {
 
           <li
             onClick={() => redirect("/user/wishlist")}
-            className="cursor-pointer"
+            className="relative cursor-pointer"
           >
             <Heart className="hover:fill-current text-red-400" />
+            <div className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${newlyAddedtoWishlist ? 'block' : 'hidden'}`} />
           </li>
-          <li onClick={() => redirect("/user/cart")} className="cursor-pointer">
+          <li
+            onClick={() => redirect("/user/cart")}
+            className="relative cursor-pointer"
+          >
             <ShoppingCart className="hover:fill-current" />
+            <div className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${newlyAddedtoCart? 'block' : 'hidden'}`} />
           </li>
           {user ? (
             <div className="hidden md:block group relative custor-pointer">

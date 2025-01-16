@@ -40,10 +40,10 @@ const page = () => {
               Profile
             </Link>
             <p>/</p>
-            <p> Wishlist</p>
+            <p> Order</p>
           </div>
           <div className="py-5">
-            <h1 className="font-bold text-xl md:text-2xl">My Wishlist</h1>
+            <h1 className="font-bold text-xl md:text-2xl">My Orders</h1>
           </div>
           <div className="flex flex-col gap-2">
             {orders && orders.length > 0 ? (

@@ -32,7 +32,7 @@ export const deleteFromWishlist = async (productId: string) => {
             toast.error(res.data.message);
         }
         toast.success("Removed from wishlist.");
-        return res.data.result.wishlist;
+        return res.data.update.wishlist;
     } catch (error:any) {
         toast.error(error?.response.data.message);
     }

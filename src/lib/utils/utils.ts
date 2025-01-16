@@ -1,6 +1,6 @@
 import { addToCart, updateCart } from "../actions/cartActions";
 import { addToWishlist, deleteFromWishlist } from "../actions/wishlistActions";
-import { updateUserCart, updateUserWishlist } from "../features/userSlice";
+import { removeFromUserCart, removeFromUserWishlist, updateUserCart, updateUserWishlist } from "../features/userSlice";
 
 export const handleAddtoCart = async (pid: string, quantity: number, dispatch: any) => {
   try {
@@ -23,7 +23,7 @@ export const handleRemoveFromCart = async (pid: string, quantity: number, dispat
       productQuantity: quantity,
     });
     if (updatedCart) {
-      dispatch(updateUserCart(updatedCart));
+      dispatch(removeFromUserCart(updatedCart));
     }
   } catch (error) {
     console.log(error);
@@ -45,7 +45,7 @@ export const handleRemoveFromWishlist = async (pid:string, dispatch: any) => {
     try {
         const updatedWishlist = await deleteFromWishlist(pid);
         if(updatedWishlist) {
-            dispatch(updateUserWishlist(updatedWishlist));
+            dispatch(removeFromUserWishlist(updatedWishlist));
         }
     } catch (error) {
         console.log(error)

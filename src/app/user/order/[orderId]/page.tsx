@@ -14,7 +14,7 @@ const page = () => {
   const { orders, loading } = useAppSelector((state) => state.order);
 
   const order = orders?.find(
-    (o) => o._id?.toString() === param?.orderId.toString()
+    (o) => o._id?.toString() === param?.orderId?.toString()
   );
 
   const handleCancelOrder = async (orderId: string | null) => {

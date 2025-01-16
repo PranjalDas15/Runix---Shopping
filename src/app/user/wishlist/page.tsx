@@ -1,11 +1,19 @@
 "use client";
 
 import Shop from "@/components/shopComponents/Shop";
-import { useAppSelector } from "@/lib/hooks";
+import { resetNewlyAddedtoWishlist } from "@/lib/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const page = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user, newlyAddedtoWishlist } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  useEffect(()=>{
+    if(newlyAddedtoWishlist){
+      dispatch(resetNewlyAddedtoWishlist());
+    }
+  },[])
 
   return (
     <>

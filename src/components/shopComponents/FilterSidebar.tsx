@@ -7,13 +7,9 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setCategoryValue, setGenderValue } from '@/lib/features/productSlice';
 
-interface Props {
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setPriceFilter: React.Dispatch<React.SetStateAction<[number, number]>>;
-  priceFilter: [number, number];
-}
 
-const FilterSidebar = (props: Props) => {
+
+const FilterSidebar = () => {
   const dispatch = useAppDispatch();
   const { genderValue, categoryValue } = useAppSelector((state) => state.products);
   const [ priceValue, setPriceValue ] = useState<number>(0);
@@ -66,14 +62,15 @@ const FilterSidebar = (props: Props) => {
                         name="gender"
                         type="radio"
                         value={gender.value}
-                        checked={genderValue === gender.value}
+                        checked={genderValue.toLowerCase() === gender.value.toLowerCase()}
                         onChange={(e: any) => {
-                          dispatch(setGenderValue(e.target.value));
-                          console.log("Value gender:", e.target.value)
+                          const selectedGender = e.target.value;
                           if (e.target.value === "") {
+                            dispatch(setGenderValue(""))
                             router.push(`/shop`);
                           } else {
-                            router.push(`/shop?gender=${e.target.value}`);
+                            dispatch(setGenderValue(selectedGender));
+                            router.push(`/shop?gender=${selectedGender}`);
                           }
                         }}
                         className="peer hidden"

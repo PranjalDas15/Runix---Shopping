@@ -16,15 +16,14 @@ function ShoppingPage () {
 
   const { products, genderValue, categoryValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
-  const [priceFilter, setPriceFilter] = useState<[number, number]>([
-    500, 10000,
-  ]);
   const [search, setSearch] = useState("");
   const [isHidden, setIsHidden] = useState(true);
 
-  useEffect(() => {
-    dispatch(setGenderValue(searchParam?.get("gender") ?? ""));
-  }, [genderValue, categoryValue]);
+  useEffect(() => { 
+    const genderParam = searchParam?.get('gender') || '';
+    if(genderValue !== genderParam) 
+      dispatch(setGenderValue(genderParam));
+  }, [dispatch, genderValue, searchParam]);
 
   const [sortOption, setSortOption] = useState<
     "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"
@@ -69,7 +68,7 @@ function ShoppingPage () {
   }
   return (
     <div>
-        <div className="relative flex gap-2 py-5 px-2 pt-[70px] h-screen">
+        <div className="relative flex gap-2 py-5 px-2 pt-[70px] w-full h-screen">
           <div
             className="absolute top-[65px] md:hidden mt-5"
             onClick={() => setIsHidden(!isHidden)}
@@ -105,9 +104,6 @@ function ShoppingPage () {
             </div>
 
             <FilterSidebar
-              setPriceFilter={setPriceFilter}
-              priceFilter={priceFilter}
-              setSearch={setSearch}
             />
 
             <div className="mx-2 my-5">
@@ -157,7 +153,7 @@ function ShoppingPage () {
               </select>
             </div>
           </div>
-          <div className="mt-14 md:mt-0 flex flex-col">
+          <div className="mt-14 md:mt-0 flex flex-col w-full">
             <div className="pb-5 text-2xl font-bold ">
               <h1 className="">
                 {genderValue === ""
@@ -173,7 +169,7 @@ function ShoppingPage () {
                     categoryValue.slice(1)}
               </p>
             </div>
-            <div className="max-h-screen overflow-auto pb-5">
+            <div className="max-h-screen w-full overflow-auto pb-5">
               {filteredProducts.length > 0 ? (
                 <Shop value={filteredProducts} heartButton={true} />
               ) : (

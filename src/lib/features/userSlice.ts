@@ -20,6 +20,8 @@ interface UserState {
   loading: boolean;
   error: null | string;
   role: Role | null;
+  newlyAddedtoWishlist: boolean;
+  newlyAddedtoCart: boolean;
 }
 
 const initialState: UserState = {
@@ -27,6 +29,8 @@ const initialState: UserState = {
   loading: false,
   error: null,
   role: null,
+  newlyAddedtoWishlist: false,
+  newlyAddedtoCart: false
 };
 
 const userSlice = createSlice({
@@ -39,9 +43,21 @@ const userSlice = createSlice({
     updateUserCart(state, action: PayloadAction<CartItem[]>) {
       if(state.user){
         state.user.cart = action.payload;
+        state.newlyAddedtoCart = true;
+      }
+    },
+    removeFromUserCart(state, action: PayloadAction<CartItem[]>) {
+      if(state.user){
+        state.user.cart = action.payload;
       }
     },
     updateUserWishlist(state, action : PayloadAction<WishlistItem[]>){
+      if(state.user){
+        state.user.wishlist = action.payload;
+        state.newlyAddedtoWishlist = true;
+      }
+    },
+    removeFromUserWishlist(state, action : PayloadAction<WishlistItem[]>){
       if(state.user){
         state.user.wishlist = action.payload;
       }
@@ -52,6 +68,13 @@ const userSlice = createSlice({
         state.user.address = action.payload.address;
       }
     },
+    resetNewlyAddedtoWishlist(state){
+      state.newlyAddedtoWishlist = false
+    },
+    resetNewlyAddedtoCart(state){
+      state.newlyAddedtoCart = false
+    }
+    ,
     clearUser(state) {
       state.user = null;
       state.loading = false;
@@ -78,5 +101,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearUser, setRole, updateUserCart, updateUserWishlist, updateUserData } = userSlice.actions;
+export const { clearUser, setRole, updateUserCart, removeFromUserCart, updateUserWishlist, removeFromUserWishlist, updateUserData, resetNewlyAddedtoWishlist, resetNewlyAddedtoCart } = userSlice.actions;
 export default userSlice.reducer;

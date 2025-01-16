@@ -1,12 +1,21 @@
 "use client";
 
 import Cart from "@/components/Cart";
-import { useAppSelector } from "@/lib/hooks";
+import { resetNewlyAddedtoCart } from "@/lib/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const page = () => {
-  const { user } = useAppSelector((state: RootState) => state.user);
+  const { user, newlyAddedtoCart } = useAppSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  useEffect(()=>{
+      if(newlyAddedtoCart){
+        dispatch(resetNewlyAddedtoCart());
+      }
+    },[])
+
   return (
     <div className="w-full min-h-[70vh] flex justify-center">
       <div className="min-h-[70vh] w-full bg-white mt-[70px] flex justify-center">
