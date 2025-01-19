@@ -31,7 +31,8 @@ export interface CartItem {
 }
 
 export interface User {
-  _id: string;
+  _id: any;
+  name?:string;
   email: string;
   phone: string;
   password?:string;

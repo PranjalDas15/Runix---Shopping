@@ -8,6 +8,10 @@ export const UserSchema: Schema<User> = new Schema({
         required: true,
         unique: true
     },
+    name: {
+        type: String,
+        unique: true
+    },
     phone: {
         type: String,
         required: true

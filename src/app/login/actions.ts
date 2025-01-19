@@ -54,3 +54,20 @@ export const signOut = async(dispatch: any) => {
         toast.error(error.response?.data.message)
     }
 }
+
+export const sellerSignOut = async(dispatch: any) => {
+    try {
+        const res = await axios.post('/api/auth/sellerSignOut');
+        const data = res?.data;
+        if(!data){
+            toast.error(data.message);
+            return false;
+        }
+        dispatch(clearUser());
+        dispatch(clearOrder());
+        toast.success(data.message);
+        return true;
+    } catch (error: any) {
+        toast.error(error.response?.data.message)
+    }
+}

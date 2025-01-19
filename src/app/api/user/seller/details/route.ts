@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/dbConnect";
-import { adminAuth } from "@/middleware/auth";
+import { sellerAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { ExtendedRequest } from "@/types/ExtendedRequest";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) { 
 
-  return adminAuth(async (req: ExtendedRequest) => { 
+  return sellerAuth(async (req: ExtendedRequest) => { 
     const userId = req.user?.userId;
 
     if (!userId) {

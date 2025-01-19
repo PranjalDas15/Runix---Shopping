@@ -1,6 +1,6 @@
 import { CartItem, WishlistItem } from "@/types/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchUser } from "../actions/fetchUser";
+import { fetchSeller, fetchUser } from "../actions/fetchUser";
 
 interface User {
     _id: string | null;
@@ -83,14 +83,13 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // fetchUser
+      // Handle fetchUser actions
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
-        // @ts-ignore
         state.user = action.payload;
         state.error = null;
       })
@@ -98,7 +97,23 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || null;
       })
-  },
+      
+      // Handle fetchSeller actions
+      .addCase(fetchSeller.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSeller.fulfilled, (state, action: PayloadAction<User>) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchSeller.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
+      });
+}
+
 });
 
 export const { clearUser, setRole, updateUserCart, removeFromUserCart, updateUserWishlist, removeFromUserWishlist, updateUserData, resetNewlyAddedtoWishlist, resetNewlyAddedtoCart } = userSlice.actions;

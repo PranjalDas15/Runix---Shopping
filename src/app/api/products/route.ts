@@ -1,59 +1,61 @@
 import dbConnect from "@/lib/dbConnect";
+import { sellerAuth } from "@/middleware/auth";
 import ProductModel from "@/models/Product";
+import { ExtendedRequest } from "@/types/ExtendedRequest";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = req.json();
-  const {
-    productName,
-    productDesc,
-    productImage = [],
-    category,
-    quantity,
-    size,
-    price,
-    discountPercent,
-    gender,
-  } = await body;
-  if (
-    !productName ||
-    !productDesc ||
-    !productImage ||
-    !category ||
-    !quantity ||
-    !size ||
-    !price ||
-    !discountPercent ||
-    !gender
-  )
-    return NextResponse.json({ message: "Fill all fields." }, { status: 400 });
+  return sellerAuth(async (req: ExtendedRequest) => {
+    const userId = req?.user?.userId;
+    console.log("User:", userId);
+
+    if (!userId) {
+      return NextResponse.json({ message: "SellerId required." }, { status: 400 });
+    }
+    const body = await req.json();
+
+  if (!Array.isArray(body) || body.length === 0) {
+    return NextResponse.json({ message: "Invalid input format or empty array." }, { status: 400 });
+  }
+
   try {
     await dbConnect();
-    const newProduct = new ProductModel({
-        productName,
-        productDesc,
-        productImage,
-        category,
-        quantity,
-        size,
-        price,
-        discountPercent,
-        gender,
-      });
-      const savedProduct = await newProduct.save();
-      return NextResponse.json({message: "Product Added.", savedProduct}, {status: 201});
-  } catch (error:any) {
+
+    const products = body.map((product) => ({
+      productBrand: product.productBrand,
+      productName: product.productName,
+      productDesc: product.productDesc,
+      productImage: product.productImage,
+      category: product.category,
+      quantity: product.quantity,
+      size: product.size,
+      price: product.price,
+      discountPercent: product.discountPercent,
+      gender: product.gender,
+      seller: userId
+    }));
+
+
+    console.log("Before Save",products)
+
+    const savedProducts = await ProductModel.insertMany(products);
+    console.log("After Save",savedProducts)
+    return NextResponse.json({ message: "Products added successfully.", savedProducts }, { status: 201 });
+  } catch (error: any) {
     return NextResponse.json(
-        { message: "Server Error", error: error.message },
-        { status: 500 }
-      );
+      { message: "Server Error", error: error.message },
+      { status: 500 }
+    );
   }
+  })(req)
 }
 
 export async function GET() {
   try {
     await dbConnect();
-    const products = await ProductModel.find();
+    const products = await ProductModel.find().populate("seller");
+    console.log(products)
+
     return NextResponse.json({ message: "Success", products }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(

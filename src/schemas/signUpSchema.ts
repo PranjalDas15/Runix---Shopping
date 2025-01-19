@@ -16,6 +16,7 @@ export const passwordValidation = z
 export const roleValidation = z
             .string({message: "Role must be added."})
 
+
 export const signUpSchema = z.object({
     email: emailValidation,
     phone: phoneValidation,

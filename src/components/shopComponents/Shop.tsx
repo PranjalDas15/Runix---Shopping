@@ -75,10 +75,10 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
                   Only few left
                 </p>
                 <p className="text-wrap font-semibold text-sm md:text-base">
-                  {product.productName}
+                  {product.productBrand}
                 </p>
                 <p className="text-[12px] md:text-sm text-gray-500">
-                  {product.productDesc}
+                  {product.productName}
                 </p>
                 <div className="flex gap-2 text-sm md:text-base">
                   <p className="text-gray-500 line-through">₹{product.price}</p>
@@ -94,7 +94,8 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
               {/* Hover Face */}
 
               <button
-                onClick={() => router.push(`/product/${product._id}`)}
+                // onClick={() => router.push(`/product/${product._id}`)}
+                onClick={() => {const name = product.productName.replace(/\s+/g, '') ;router.push(`/test/${name}/${product.size}`)}}
                 className="w-full h-full absolute top-0 flex items-center justify-center flex-col custom-transition opacity-0 group-hover:opacity-100 bg-[rgba(0,0,0,0.4)] backdrop-blur-sm"
               >
                 <div className="flex justify-evenly gap-4 text-white">

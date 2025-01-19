@@ -1,60 +1,59 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Product } from "@/types/Product";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 
-export interface Product extends Document {
-    productName: string,
-    productDesc: string,
-    productImage: [],
-    category: string,
-    quantity: number,
-    price: number,
-    size: string,
-    discountPercent: number,
-    gender: string,
-    // seller: User[]
-}
+interface ProductDocument extends Omit<Product, '_id'>, Document {}
 
-export const ProductSchema: Schema<Product> = new Schema ({
-    productName: {
-        type: String,
-        required: true,
-    },
-    productDesc: {
-        type: String,
-        required: true,
-    },
-    productImage: {
-        type: [String],
-        required: true,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-    },
-    size: {
-        type: String,
-        required: true,
-    },
-    price: {
-        type: Number,
-        required: true,
-    },
-    discountPercent: {
-        type: Number,
-        required: true,
-    },
-    gender: {
-        type: String,
-        required: true,
-    },
-    // seller: [UserSchema]
-})
+export const ProductSchema: Schema<ProductDocument> = new Schema({
+  productBrand: {
+    type: String,
+    required: true,
+  },
+  productName: {
+    type: String,
+    required: true,
+  },
+  productDesc: {
+    type: String,
+    required: true,
+  },
+  productImage: {
+    type: [String],
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  size: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  discountPercent: {
+    type: Number,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  seller: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+});
 
-
-const ProductModel = (mongoose.models.Product as mongoose.Model<Product>) || mongoose.model<Product>("Product", ProductSchema);
+const ProductModel =
+  (mongoose.models.Product as mongoose.Model<Product>) ||
+  mongoose.model<Product>("Product", ProductSchema);
 
 export default ProductModel;

@@ -1,8 +1,6 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import { addToCart } from "@/lib/actions/cartActions";
-import { addToWishlist } from "@/lib/actions/wishlistActions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { handleAddtoCart, handleAddtoWishlist } from "@/lib/utils/utils";
 import {
@@ -25,21 +23,24 @@ const ProductPage = () => {
   );
   const router = useRouter();
 
-  
-
   const discountedPrice = (price: number, discount: number) => {
     const discountedAmmount = (price * discount) / 100;
     return price - discountedAmmount;
   };
 
   const estimateDate = () => {
-    const currentDate = new Date().toString().slice(0, 10);
-    return currentDate;
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 7);
+    const newDate = currentDate.toString().slice(0, 10);
+    return newDate;
   };
   const product = products.find(
     (product) => product._id.toString() === params?.id?.toString()
   );
-  const alreadyAdded = user?.wishlist?.find((p) => p._id === product?._id)
+  const alreadyAdded = user?.wishlist?.find((p) => p._id === product?._id);
+
+
+  console.log(product)
   return (
     <>
       {loading ? (
@@ -50,30 +51,25 @@ const ProductPage = () => {
             <ArrowLeft />
           </button>
           {product ? (
-            <div className="w-full h-full p-4 flex flex-col lg:flex-row gap-2">
-              <div className="md:w-full flex flex-row md:flex-col gap-4 overflow-x-auto md:overflow-x-visible relative">
+            <div className="w-full h-full p-4 grid grid-cols-1 lg:grid-cols-2 gap-2">
+              <div className="w-full h-[40vh] md:h-[70vh] xl:h-[80vh] overflow-y-auto snap-mandatory snap-y">
                 {product.productImage.map((image, index) => (
-                  <div
+                  <Image
                     key={index}
-                    className="border border-gray-200 rounded-md overflow-hidden min-w-[90vw] md:min-w-full"
-                  >
-                    <Image
-                      key={index}
-                      src={image}
-                      alt={`${product.productName} - ${index + 1}`}
-                      width={500}
-                      height={500}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
+                    src={image}
+                    alt={`${product.productName} - ${index + 1}`}
+                    width={500}
+                    height={500}
+                    className="object-cover w-full h-full snap-center"
+                  />
                 ))}
               </div>
-              <div className="w-full px-3">
+              <div className="w-full px-3 border">
                 <div className="py-3 border-b-2">
                   <h1 className="text-3xl font-bold pb-2">
-                    {product.productName}
+                    {product.productBrand}
                   </h1>
-                  <p className="text-gray-600 text-xl">{product.productDesc}</p>
+                  <p className="text-gray-600 text-xl">{product.productName}</p>
                 </div>
                 <div>
                   <div className="flex gap-3 py-3 md:text-2xl">
@@ -114,25 +110,19 @@ const ProductPage = () => {
                     <Heart
                       size={20}
                       className={`text-white fill-current custom-transition ${
-                        alreadyAdded
-                          ? ""
-                          : "md:group-hover:text-orange-400"
+                        alreadyAdded ? "" : "md:group-hover:text-orange-400"
                       }`}
                     />
                     <p
                       className={`text-sm md:text-xl text-white custom-transition ${
-                       alreadyAdded
-                          ? ""
-                          : "md:group-hover:text-black"
+                        alreadyAdded ? "" : "md:group-hover:text-black"
                       }`}
                     >
-                      {alreadyAdded
-                        ? "Added to Wishlist"
-                        : "Add to Wishlist"}
+                      {alreadyAdded ? "Added to Wishlist" : "Add to Wishlist"}
                     </p>
                   </button>
                   <button
-                    onClick={() => handleAddtoCart(product._id, 1, dispatch)}
+                    onClick={() => handleAddtoCart(product?._id, 1, dispatch)}
                     disabled={user?.cart?.some(
                       (p) => p.product._id === product._id
                     )}
@@ -166,7 +156,7 @@ const ProductPage = () => {
                 <div className="py-3 flex flex-col gap-3 font-semibold">
                   <div className="flex gap-2">
                     <Truck />
-                    <p>Get it by {estimateDate()}</p>
+                    <p>Get it by {estimateDate().toString()}</p>
                   </div>
                   <div className="flex gap-2">
                     <Smartphone />
@@ -177,17 +167,11 @@ const ProductPage = () => {
                     <p>Easy 15 days return and exchange available</p>
                   </div>
                 </div>
+                <p>{product.seller.name}</p>
 
                 <div className="border-y-2">
                   <p className="text-xl font-semibold py-3">Product Details</p>
-                  <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Dolore temporibus sit deleniti, voluptatum neque quam vero
-                    pariatur et veniam consequatur tenetur doloribus praesentium
-                    recusandae blanditiis quidem culpa! A, aliquid nulla aperiam
-                    unde magni ex eius dolorem, quasi hic, praesentium labore
-                    perferendis temporibus. Placeat, est amet?
-                  </p>
+                  <p>{product.productDesc}</p>
                 </div>
               </div>
             </div>

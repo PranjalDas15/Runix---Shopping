@@ -1,5 +1,8 @@
+import { User } from "./User";
+
 export interface Product {
     _id: any,
+    productBrand: string;
     productName: string;
     productDesc: string;
     productImage: string[]; 
@@ -9,4 +12,5 @@ export interface Product {
     size: string;
     discountPercent: number;
     gender: string;
+    seller?: any
   }

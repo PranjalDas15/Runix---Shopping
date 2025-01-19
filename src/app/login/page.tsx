@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { signIn, signUp } from "./actions";
-import { fetchUser } from "@/lib/actions/fetchUser";
+import { fetchSeller, fetchUser } from "@/lib/actions/fetchUser";
 import { useAppDispatch } from "@/lib/hooks";
 import toast from "react-hot-toast";
 import { Eye, EyeClosed, EyeOff } from "lucide-react";
@@ -36,6 +36,7 @@ const page = () => {
     const success = await signIn(email, password);
     if (success) {
       await dispatch(fetchUser());
+      await dispatch(fetchSeller());
       await dispatch(fetchOrder());
       redirect("/");
     }

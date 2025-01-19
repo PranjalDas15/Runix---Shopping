@@ -10,6 +10,7 @@ export async function POST(req: Request) {
     const body = await req.json()
     const validatedData = signUpSchema.parse(body);
     const { email, phone, password, role } = validatedData;
+    const name = body.name
 
     await dbConnect();
 
@@ -26,12 +27,14 @@ export async function POST(req: Request) {
       password: hashedPassword,
       phone,
       role,
+      name
     });
     
     await newUser.save();
     const savedUser = {
       _id: newUser._id,
       email: newUser.email,
+      name:newUser.name,
       phone: newUser.phone,
       address: newUser.address,
       cart: newUser.cart,
