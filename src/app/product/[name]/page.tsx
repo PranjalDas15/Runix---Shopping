@@ -2,7 +2,11 @@
 
 import Loading from "@/components/Loading";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { handleAddtoCart, handleAddtoWishlist } from "@/lib/utils/utils";
+import {
+  discountedPrice,
+  handleAddtoCart,
+  handleAddtoWishlist,
+} from "@/lib/utils/utils";
 import {
   ArrowLeft,
   Check,
@@ -12,6 +16,7 @@ import {
   Truck,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
 const ProductPage = () => {
@@ -23,11 +28,6 @@ const ProductPage = () => {
   );
   const router = useRouter();
 
-  const discountedPrice = (price: number, discount: number) => {
-    const discountedAmmount = (price * discount) / 100;
-    return price - discountedAmmount;
-  };
-
   const estimateDate = () => {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 7);
@@ -35,12 +35,16 @@ const ProductPage = () => {
     return newDate;
   };
   const product = products.find(
-    (product) => product._id.toString() === params?.id?.toString()
+    (product) =>
+      product.productBrand.replace(/\s+/g, "") +
+        product.productName.replace(/\s+/g, "") +
+        product.size ===
+      params?.name
   );
+
   const alreadyAdded = user?.wishlist?.find((p) => p._id === product?._id);
 
-
-  console.log(product)
+  console.log(product);
   return (
     <>
       {loading ? (
@@ -90,10 +94,27 @@ const ProductPage = () => {
 
                 <div className="flex flex-col gap-2 pt-5">
                   <p className="font-bold text-xl">Select Size</p>
-                  <div className="flex">
-                    <p className="border max-w-10 py-2 px-4 flex items-center justify-center cursor-pointer hover:bg-slate-100">
-                      {product.size}
-                    </p>
+                  <div className="flex gap-2">
+                    {products
+                      .filter((p) => p.productName === product.productName)
+                      .map((p, index) => {
+                        const brand = product.productBrand.replace(/\s+/g, "");
+                        const name = product.productName.replace(/\s+/g, "");
+                        return (
+                          <div  key={index}>
+                            <Link
+                            href={`/product/${brand+name+p.size}`}
+                            className={`border max-w-10 py-2 px-4 flex items-center justify-center cursor-pointer  ${
+                              p.size === product.size ? "text-white hover:none bg-orange-400" : "hover:bg-slate-100 text-gray-600"
+                            }`}
+                           
+                          >
+                            {p.size}
+                          </Link>
+                          <p className="text-[12px] text-orange-400">{p.quantity <=10 && "Few left"}</p>
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
 
@@ -167,7 +188,7 @@ const ProductPage = () => {
                     <p>Easy 15 days return and exchange available</p>
                   </div>
                 </div>
-                <p>{product.seller.name}</p>
+                <p>{product.seller.email}</p>
 
                 <div className="border-y-2">
                   <p className="text-xl font-semibold py-3">Product Details</p>

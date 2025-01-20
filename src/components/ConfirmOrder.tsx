@@ -82,12 +82,12 @@ const ConfirmOrder = ({
           <p className="">
             Email: <span className="font-light">{user?.email}</span>
           </p>
-          {!user?.address ? (
+          {user?.address.length === 0 ? (
+            <button onClick={() => redirect("/user")} className="border w-32 py-2">Add Address</button>
+          ) : (
             <p className="">
               Address: <span className="font-light">{user?.address}</span>
             </p>
-          ) : (
-            <button onClick={() => redirect("/user")}>Add Address</button>
           )}
           <p className="font-semibold">Cash on Delivery</p>
         </div>

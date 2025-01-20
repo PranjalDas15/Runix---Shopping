@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
+  discountedPrice,
   handleAddtoCart,
   handleAddtoWishlist,
   handleRemoveFromWishlist,
@@ -22,11 +23,6 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { user } = useAppSelector((state: RootState) => state.user);
-
-  const discountedPrice = (price: number, discountPercent: number) => {
-    const discountAmount = (price * discountPercent) / 100;
-    return price - discountAmount;
-  };
 
   const isProductQuantityLow = (quantity: number) => {
     if (quantity <= 10) {
@@ -94,8 +90,11 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
               {/* Hover Face */}
 
               <button
-                // onClick={() => router.push(`/product/${product._id}`)}
-                onClick={() => {const name = product.productName.replace(/\s+/g, '') ;router.push(`/test/${name}/${product.size}`)}}
+                onClick={() => {
+                  const brand = product.productBrand.replace(/\s+/g, "");
+                  const name = product.productName.replace(/\s+/g, "");
+                  router.push(`/product/${brand+name + product.size}`);
+                }}
                 className="w-full h-full absolute top-0 flex items-center justify-center flex-col custom-transition opacity-0 group-hover:opacity-100 bg-[rgba(0,0,0,0.4)] backdrop-blur-sm"
               >
                 <div className="flex justify-evenly gap-4 text-white">
@@ -129,7 +128,11 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
                       }
                     }}
                   >
-                    <ShoppingCart className={`hover:fill-current custom-transition ${alreadyAddedtoCart ? 'fill-current' : 'fill-none'}`} />
+                    <ShoppingCart
+                      className={`hover:fill-current custom-transition ${
+                        alreadyAddedtoCart ? "fill-current" : "fill-none"
+                      }`}
+                    />
                   </div>
                   {delButton ? (
                     <div

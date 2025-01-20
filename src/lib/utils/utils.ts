@@ -51,3 +51,8 @@ export const handleRemoveFromWishlist = async (pid:string, dispatch: any) => {
         console.log(error)
     }
 }
+
+export const discountedPrice = (price: number, discountPercent: number) => {
+  const discountAmount = (price * discountPercent) / 100;
+  return parseInt((price - discountAmount).toString(), 10);
+};

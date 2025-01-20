@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./ui/MobileMenu";
 import CategoryMenu from "./ui/CategoryMenu";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setCategoryValue } from "@/lib/features/productSlice";
 import { signOut } from "@/app/login/actions";
@@ -27,7 +27,10 @@ function Navbar() {
     }
   };
 
-  if (user && user.role !== "Customer") {
+  const url = usePathname();
+  console.log("URL: ", url);
+
+  if (url.startsWith("/admin")) {
     return null;
   } else {
     return (
@@ -119,39 +122,61 @@ function Navbar() {
             className="relative cursor-pointer"
           >
             <Heart className="hover:fill-current text-red-400" />
-            <div className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${newlyAddedtoWishlist ? 'block' : 'hidden'}`} />
+            <div
+              className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${
+                newlyAddedtoWishlist ? "block" : "hidden"
+              }`}
+            />
           </li>
           <li
             onClick={() => redirect("/user/cart")}
             className="relative cursor-pointer"
           >
             <ShoppingCart className="hover:fill-current" />
-            <div className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${newlyAddedtoCart? 'block' : 'hidden'}`} />
+            <div
+              className={`absolute top-0 right-0 w-2.5 h-2.5 translate-x-1 bg-red-500 rounded-full ${
+                newlyAddedtoCart ? "block" : "hidden"
+              }`}
+            />
           </li>
           {user ? (
             <div className="hidden md:block group relative custor-pointer">
               <User2 className={`hover:fill-current`} />
-              <div className="absolute hidden group-hover:flex justify-center items-end top-[20px] w-[200px] h-[250px] text-black">
-                <div className="w-full h-[220px] bg-white flex flex-col gap-2 p-2 items-center justify-evenly">
-                  <button
-                    onClick={() => redirect("/user")}
-                    className=" border w-full h-full hover:bg-orange-100 custom-transition"
-                  >
-                    USER
-                  </button>
-                  <button
-                    onClick={() => redirect("/user/order")}
-                    className=" border w-full h-full hover:bg-orange-100 custom-transition"
-                  >
-                    MY ORDERS
-                  </button>
-                  <button
-                    onClick={() => handleSignout()}
-                    className="flex justify-center items-center border w-full h-full hover:bg-red-200 custom-transition"
-                  >
-                    <LogOut />
-                    <p>LOGOUT</p>
-                  </button>
+              <div className="absolute hidden group-hover:flex justify-center items-end top-[20px] w-[200px] text-black">
+                <div className="w-full pt-[20px]">
+                  <div className="w-full bg-white flex flex-col gap-2">
+                    <button
+                      onClick={() => redirect("/user")}
+                      className={`border w-full h-full hover:bg-orange-100 custom-transition py-3 ${
+                        user.role === "Customer" ? "block" : "hidden"
+                      }`}
+                    >
+                      USER
+                    </button>
+                    <button
+                      onClick={() => redirect("/user/order")}
+                      className={`border w-full h-full hover:bg-orange-100 custom-transition py-3 ${
+                        user.role === "Customer" ? "block" : "hidden"
+                      }`}
+                    >
+                      MY ORDERS
+                    </button>
+                    <button
+                      onClick={() => redirect("/admin")}
+                      className={`border w-full h-full hover:bg-orange-100 custom-transition py-3 ${
+                        user.role === "Customer" ? "hidden" : "block"
+                      }`}
+                    >
+                      DASHBOARD
+                    </button>
+                    <button
+                      onClick={() => handleSignout()}
+                      className="flex justify-center items-center border w-full h-full hover:bg-red-200 custom-transition py-3"
+                    >
+                      <LogOut />
+                      <p>LOGOUT</p>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

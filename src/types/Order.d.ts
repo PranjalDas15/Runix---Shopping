@@ -3,6 +3,7 @@ import { Document, ObjectId } from "mongoose";
 export interface OrderItem {
   productId: {
     _id: string | null;
+    productBrand: string | null;
     productName: string | null;
     productDesc: string | null;
     productImage: string[];

@@ -1,37 +1,27 @@
 "use client";
 import Sidebar from "@/components/adminComponents/Sidebar";
-import Loading from "@/components/Loading";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { redirect } from "next/navigation";
-import React, { ReactNode, useEffect } from "react";
+import { File, FilePlus, LayoutDashboard, User } from "lucide-react";
+import React, { ReactNode, useState } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
-  const { user, loading } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (user && !loading) {
-      if (user.role !== "Seller") {
-        redirect("/");
-      }
-    }
-  }, [dispatch]);
-
-  if (loading) {
-    return <Loading />;
-  }
-  if(user?.role === 'Seller' && !loading) {
-    return (
-      <div className="pt-[70px] flex gap-2 h-screen">
-      <div className="w-0 md:w-[300px] overflow-hidden">
-        <Sidebar />
+  const menu = [
+    { name: "Dashboard" , icon: <LayoutDashboard/>},
+    { name: "Add Products" , icon: <FilePlus/>},
+    { name: "My Products", icon: <File/>},
+    { name: "Profile" , icon: <User/>},
+  ];
+  const [value, setValue] = useState("");
+  return (
+    <div className="flex gap-2 h-screen">
+      <div className="w-[60px] xl:w-[300px] h-screen overflow-hidden">
+        <Sidebar setValue={setValue} menu={menu} />
       </div>
-      <div className="w-full">{loading ? <Loading /> : children}</div>
+      <div className="w-full h-screen flex flex-col overflow-y-auto">
+        <h1 className="py-6 md:py-12 text-xl md:text-3xl font-bold text-gray-600">{value}</h1>
+        <div className="h-full">{children}</div>
+      </div>
     </div>
-    )
-  } else {
-    return redirect('/')
-  }
+  );
 };
 
 export default layout;

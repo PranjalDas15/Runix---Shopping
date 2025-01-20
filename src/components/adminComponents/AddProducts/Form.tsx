@@ -55,7 +55,7 @@ const Form: React.FC<Props> = ({ formState, setFormState, errors }) => {
                         e.preventDefault();
                         open();
                       }}
-                      className="w-60 h-36 border border-dashed border-gray-400 rounded-xl flex justify-center items-center hover:bg-orange-50 cursor-pointer bg-white"
+                      className="w-24 h-14 md:w-60 md:h-36 border border-dashed border-gray-400 rounded-xl flex justify-center items-center hover:bg-orange-50 cursor-pointer bg-white"
                     >
                       <Plus className="text-gray-400" size={40} />
                     </button>
@@ -197,43 +197,6 @@ const Form: React.FC<Props> = ({ formState, setFormState, errors }) => {
               }
             ></textarea>
             <p className="text-sm text-red-400">{errors.productDesc}</p>
-          </div>
-          <div className="flex flex-col xl:flex-row gap-2">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="price" className="font-semibold">
-                Price
-              </label>
-              <input
-                type="text"
-                id="price"
-                value={formState.price || ""}
-                name="price"
-                className="p-2 border border-orange-400 rounded-md"
-                onChange={(e: any) =>
-                  setFormState({ ...formState, price: Number(e.target.value) })
-                }
-              />
-              <p className="text-sm text-red-400">{errors.price}</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="discountPercent" className="font-semibold">
-                Discount
-              </label>
-              <input
-                type="text"
-                value={formState.discountPercent || ""}
-                id="discountPercent"
-                name="discountPercent"
-                className="p-2 border border-orange-400 rounded-md"
-                onChange={(e: any) =>
-                  setFormState({
-                    ...formState,
-                    discountPercent: Number(e.target.value),
-                  })
-                }
-              />
-              <p className="text-sm text-red-400">{errors.discountPercent}</p>
-            </div>
           </div>
         </div>
       </form>
