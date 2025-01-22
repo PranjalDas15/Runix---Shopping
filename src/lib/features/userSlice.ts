@@ -5,12 +5,14 @@ import { fetchSeller, fetchUser } from "../actions/fetchUser";
 interface User {
     _id: string | null;
     email: string | null;
+    name?: string | null;
     phone: string | null;
     password?:string | null;
     address: string[];
     role: string | null;
     wishlist: WishlistItem[];
     cart: CartItem[];
+    verified?: string
   }
 
 type Role = "Admin" | "Customer" | "Seller";

@@ -42,17 +42,17 @@ const Sidebar = ({
             src={"/Logotextwhitewhite.png"}
             width={200}
             height={200}
-            className="w-full h-full object-contain hidden md:block"
+            className="w-full h-full object-contain hidden xl:block"
           />
           <Image
             alt="logo"
             src={"/LogoWhite.svg"}
             width={200}
             height={200}
-            className="w-full h-full object-contain md:hidden"
+            className="w-full h-full object-contain xl:hidden md:p-3"
           />
         </div>
-        <h1 className="text-white text-2xl font-bold text-center hidden md:block">
+        <h1 className="text-white text-2xl font-bold text-center hidden xl:block">
           Seller Page
         </h1>
       </div>

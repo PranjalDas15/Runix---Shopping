@@ -21,7 +21,7 @@ const page = () => {
                 className="flex rounded-xl border overflow-hidden h-40"
               >
                 {product.productImage.length > 0 ? (
-                  product.productImage.map((image, index) => (
+                  
                     <div
                       key={index}
                       className="w-48 h-full overflow-hidden"
@@ -30,11 +30,10 @@ const page = () => {
                         width={200}
                         height={200}
                         alt=""
-                        src={image}
+                        src={product.productImage[0]}
                         className="w-full h-full object-cover object-center"
                       />
                     </div>
-                  ))
                 ) : (
                   <div></div>
                 )}

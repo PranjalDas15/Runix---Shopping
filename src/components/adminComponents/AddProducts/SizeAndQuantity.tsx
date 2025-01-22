@@ -1,5 +1,6 @@
 import { addProduct } from "@/app/admin/addproducts/formAction";
-import { useAppSelector } from "@/lib/hooks";
+import { fetchProducts } from "@/lib/actions/fetchProducts";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import productSchema, {
   discountPercent,
@@ -20,6 +21,8 @@ interface Props {
   quantity: number;
   price: number;
   discount: number;
+  isNext: boolean;
+  setIsNext: any;
   setProducts: any;
   setSize: any;
   setPrice: any;
@@ -40,7 +43,24 @@ const SizeAndQuantity: React.FC<Props> = ({
   setPrice,
   setDiscount,
   setProducts,
+  isNext,
+  setIsNext
 }) => {
+  const dispatch = useAppDispatch();
+  const initialFormState: Product = {
+    _id: '',
+    productBrand: "",
+    productName: "",
+    productDesc: "",
+    productImage: [],
+    gender: "Select a gender",
+    category: "Select a category",
+    price: 0,
+    discountPercent: 0,
+    size: "",
+    quantity: 0,
+  };
+
   const handleNewSize = () => {
     try {
       const newProduct = {
@@ -71,7 +91,10 @@ const SizeAndQuantity: React.FC<Props> = ({
     if (!loading && products.length > 0) {
       await addProduct(products);
     }
-    setProducts([])
+    setProducts([]);
+    setIsNext(!isNext)
+    setFormState && setFormState(initialFormState);
+    dispatch(fetchProducts());
     setLoading(false);
   };
 

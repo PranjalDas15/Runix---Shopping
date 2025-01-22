@@ -40,4 +40,5 @@ export interface User {
   role: string;
   wishlist: WishlistItem[];
   cart: CartItem[];
+  verified?: string
 }

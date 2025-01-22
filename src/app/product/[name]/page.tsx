@@ -62,8 +62,8 @@ const ProductPage = () => {
                     key={index}
                     src={image}
                     alt={`${product.productName} - ${index + 1}`}
-                    width={500}
-                    height={500}
+                    width={900}
+                    height={900}
                     className="object-cover w-full h-full snap-center"
                   />
                 ))}
@@ -188,7 +188,7 @@ const ProductPage = () => {
                     <p>Easy 15 days return and exchange available</p>
                   </div>
                 </div>
-                <p>{product.seller.email}</p>
+                <Link href={`/product/store/${product.seller.name}`}>{product.seller.name}</Link>
 
                 <div className="border-y-2">
                   <p className="text-xl font-semibold py-3">Product Details</p>

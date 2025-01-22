@@ -4,7 +4,7 @@ import Form from "@/components/adminComponents/AddProducts/Form";
 import SizeAndQuantity from "@/components/adminComponents/AddProducts/SizeAndQuantity";
 import productSchema from "@/schemas/productSchema";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { Product } from "@/types/Product";
 import Image from "next/image";
@@ -77,6 +77,8 @@ const Page = () => {
             quantity={quantity ?? 0}
             setQuantity={setQuantity}
             price={price ?? 0}
+            isNext={isNext}
+            setIsNext={setIsNext}
             setPrice={setPrice}
             discount={discount ?? 0}
             setDiscount={setDiscount}

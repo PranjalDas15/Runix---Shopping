@@ -9,6 +9,7 @@ import { Filter, Search, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
+import { discountedPrice } from "@/lib/utils/utils";
 
 function ShoppingPage () {
   const searchParam = useSearchParams();
@@ -41,10 +42,10 @@ function ShoppingPage () {
     )
     .sort((a, b) => {
       if (sortOption === "high-to-low") {
-        return b.price - a.price;
+        return discountedPrice(b.price, b.discountPercent) - discountedPrice(a.price, a.discountPercent);
       }
       if (sortOption === "low-to-high") {
-        return a.price - b.price;
+        return discountedPrice(a.price, a.discountPercent) - discountedPrice(b.price, b.discountPercent);
       }
       if (sortOption === "a-z") {
         return a.productName.localeCompare(b.productName);

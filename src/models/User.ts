@@ -29,6 +29,9 @@ export const UserSchema: Schema<User> = new Schema({
         default: 'Customer',
         required: true
     },
+    verified: {
+        type: String
+    },
     wishlist: {
         type: [
             {   
