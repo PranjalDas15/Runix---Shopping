@@ -16,3 +16,4 @@ export const fetchProducts = createAsyncThunk<Product[]>(
     }
   }
 );
+

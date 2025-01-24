@@ -2,7 +2,7 @@
 
 import { Heart, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   discountedPrice,
@@ -20,6 +20,7 @@ interface Prop {
 }
 
 const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
+  
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { user } = useAppSelector((state: RootState) => state.user);
@@ -29,7 +30,6 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
       return true;
     }
   };
-
   return (
     <div>
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full h-full">
@@ -48,8 +48,8 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
                   <Image
                     alt={product.productName || "Product Image"}
                     src={product.productImage[0]}
-                    width={200}
-                    height={200}
+                    width={500}
+                    height={500}
                     className="object-cover w-full h-full group-hover:scale-125 custom-transition"
                   />
                 </div>
@@ -61,6 +61,9 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
                   </span>
                   <span className="border rounded-full mx-2 px-2 py-1">
                     {product.category}
+                  </span>
+                  <span className="border rounded-full px-2 py-1">
+                    {product.size}
                   </span>
                 </div>
                 <p

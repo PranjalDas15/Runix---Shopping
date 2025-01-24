@@ -28,7 +28,6 @@ function Navbar() {
   };
 
   const url = usePathname();
-  console.log("URL: ", url);
 
   if (url.startsWith("/admin")) {
     return null;

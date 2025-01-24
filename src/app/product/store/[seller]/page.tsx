@@ -2,53 +2,53 @@
 
 import Shop from "@/components/shopComponents/Shop";
 import { useAppSelector } from "@/lib/hooks";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
-const page = () => {
+const Page = () => {
   const param = useParams();
-  const pathname = usePathname();
+  const searchParam = useSearchParams();
+  const router = useRouter();
+
   const { products } = useAppSelector((state) => state.products);
   const sellerProducts = products.filter((p) => p.seller.name === param.seller);
-  
-  const [array, setArray] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+
+  const pageQuery = searchParam.get("page");
+  const [currentPage, setCurrentPage] = useState<number | null>(
+    pageQuery ? Number(pageQuery) : null
+  );
 
   useEffect(() => {
-    const length = sellerProducts.length;
-    const pages = Math.ceil(length / itemsPerPage);
-    const tempArray = Array.from({ length: pages }, (_, i) => i + 1);
-    setArray(tempArray);
-  }, [products, param.seller]);
+    if (!pageQuery) {
+      router.replace("?page=1");
+      setCurrentPage(1);
+    }
+  }, [pageQuery, router]);
 
-  // Get the products for the current page
+  if (currentPage === null) {
+    return null;
+  }
+
+  const itemsPerPage = 15;
+  const length = sellerProducts.length;
+  const pages = Math.ceil(length / itemsPerPage);
   const currentProducts = sellerProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  // Handler to change the page
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    return `${pathname}?${param}`
-  };
 
   return (
     <div>
       {currentProducts.length > 0 ? (
         <div>
           <Shop value={currentProducts} />
-          <div className="pagination-controls">
-            {array.map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`page-button ${currentPage === page ? "active" : ""}`}
-              >
-                {page}
-              </button>
-            ))}
+          <div>
+            <Pagination
+              totalPages={pages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
       ) : (
@@ -60,4 +60,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -35,11 +35,7 @@ export async function POST(req: Request) {
       seller: userId
     }));
 
-
-    console.log("Before Save",products)
-
     const savedProducts = await ProductModel.insertMany(products);
-    console.log("After Save",savedProducts)
     return NextResponse.json({ message: "Products added successfully.", savedProducts }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
@@ -54,7 +50,6 @@ export async function GET() {
   try {
     await dbConnect();
     const products = await ProductModel.find().populate("seller");
-    console.log(products)
 
     return NextResponse.json({ message: "Success", products }, { status: 200 });
   } catch (error: any) {
