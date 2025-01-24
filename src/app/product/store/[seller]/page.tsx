@@ -18,21 +18,28 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState<number | null>(
     pageQuery ? Number(pageQuery) : null
   );
+  const itemsPerPage = 15;
+  const length = sellerProducts.length;
+  const totalPages = Math.ceil(length / itemsPerPage);
 
   useEffect(() => {
-    if (!pageQuery) {
-      router.replace("?page=1");
-      setCurrentPage(1);
+    if (products.length > 0) {
+      if (!pageQuery || isNaN(Number(pageQuery)) || Number(pageQuery) < 1) {
+        router.replace("?page=1");
+        setCurrentPage(1);
+      } else if (Number(pageQuery) > totalPages) {
+        router.replace("?page=1");
+        setCurrentPage(1);
+      } else {
+        setCurrentPage(Number(pageQuery));
+      }
     }
-  }, [pageQuery, router]);
+  }, [pageQuery, totalPages, router, products.length]);
 
   if (currentPage === null) {
     return null;
   }
 
-  const itemsPerPage = 15;
-  const length = sellerProducts.length;
-  const pages = Math.ceil(length / itemsPerPage);
   const currentProducts = sellerProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -45,7 +52,7 @@ const Page = () => {
           <Shop value={currentProducts} />
           <div>
             <Pagination
-              totalPages={pages}
+              totalPages={totalPages}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

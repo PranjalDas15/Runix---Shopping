@@ -21,6 +21,7 @@ const Pagination: React.FC<Props> = ({
       setCurrentPage(Number(pageValue));
     }
   }, [pageValue, router]);
+
   return (
     <div className="py-10 flex items-center justify-center gap-2">
       {[...Array(totalPages)].map((_, index) => (
