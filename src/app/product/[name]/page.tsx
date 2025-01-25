@@ -188,7 +188,7 @@ const ProductPage = () => {
                     <p>Easy 15 days return and exchange available</p>
                   </div>
                 </div>
-                <Link href={`/product/store/${product.seller.name}?page=1`}>{product.seller.name}</Link>
+                <Link href={`/shop/${product.seller.name}?page=1`}>{product.seller.name}</Link>
 
                 <div className="border-y-2">
                   <p className="text-xl font-semibold py-3">Product Details</p>

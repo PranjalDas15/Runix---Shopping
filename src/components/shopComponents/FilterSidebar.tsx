@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Arrow from '../ui/Arrow';
 import { categories, genders } from '@/lib/assets';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setCategoryValue, setGenderValue } from '@/lib/features/productSlice';
 
@@ -15,6 +15,8 @@ const FilterSidebar = () => {
   const [ priceValue, setPriceValue ] = useState<number>(0);
   const router = useRouter();
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
   
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -65,12 +67,17 @@ const FilterSidebar = () => {
                         checked={genderValue.toLowerCase() === gender.value.toLowerCase()}
                         onChange={(e: any) => {
                           const selectedGender = e.target.value;
+                          const params = new URLSearchParams(searchParams?.toString());
                           if (e.target.value === "") {
                             dispatch(setGenderValue(""))
-                            router.push(`/shop`);
+                            params.delete("gender");
+                            router.push(`?${params.toString()}`);
                           } else {
                             dispatch(setGenderValue(selectedGender));
-                            router.push(`/shop?gender=${selectedGender}`);
+                            
+                            params.set("gender", selectedGender)
+                            params.set("page", "1");
+                            router.push(`?${params.toString()}`);
                           }
                         }}
                         className="peer hidden"
