@@ -6,7 +6,7 @@ interface ProductState {
     products: Product[];
     genderValue: string;
     categoryValue: string;
-    priceValue: [number, number];
+    // priceValue: [number, number];
     loading: boolean;
     error: string | null;
 }
@@ -16,7 +16,7 @@ const initialState: ProductState = {
     products: [],
     genderValue: "",
     categoryValue: "",
-    priceValue: [0, 0],
+    // priceValue: [0, 0],
     loading: false,
     error: null,
 };
@@ -31,10 +31,10 @@ const productSlice = createSlice({
         setCategoryValue(state, action: PayloadAction<string>) {
             state.categoryValue = action.payload;
         },
-        setPriceValue(state, action: PayloadAction<string>) {
-            const prices = action.payload.split('-').map((price) => parseInt(price, 10));
-            state.priceValue = [prices[0] || 0, prices[1] || 0];
-        },
+        // setPriceValue(state, action: PayloadAction<string>) {
+        //     const prices = action.payload.split('-').map((price) => parseInt(price, 10));
+        //     state.priceValue = [prices[0] || 0, prices[1] || 0];
+        // },
         setProducts(state, action: PayloadAction<Product[]>) {
             state.products = action.payload;
         },
@@ -66,5 +66,5 @@ const productSlice = createSlice({
     }
 });
 
-export const { setGenderValue, setCategoryValue, setPriceValue ,clearProducts, setProducts, setError, setLoading } = productSlice.actions;
+export const { setGenderValue, setCategoryValue ,clearProducts, setProducts, setError, setLoading } = productSlice.actions;
 export default productSlice.reducer;
