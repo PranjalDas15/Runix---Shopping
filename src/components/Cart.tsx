@@ -22,7 +22,7 @@ export interface SelectedProduct {
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state: RootState) => state.user);
-  const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(false);
+  const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(true);
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
@@ -47,13 +47,13 @@ const Cart: React.FC = () => {
   };
 
   return (
-    <div className="relative grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3">
-      <div className="flex flex-col gap-2">
+    <div className={`relative grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3`}>
+      <div className={`flex flex-col gap-2 ${isConfirmOrderOpen? 'hidden': 'block'}`}>
         {user?.cart?.map((c: any, idx) => {
           const name = c.product.productName.replace(/\s+/g, "");
           const brand = c.product.productBrand.replace(/\s+/g, "");
           return(
-            <div key={idx} className="w-full relative">
+            <div key={idx} className={`w-full relative`}>
               <input
                 type="checkbox"
                 name="cart_product"
@@ -163,7 +163,7 @@ const Cart: React.FC = () => {
         })}
       </div>
 
-      <div className="flex flex-col gap-2 w-full">
+      <div className={`flex flex-col gap-2 w-full ${isConfirmOrderOpen? 'hidden': 'block'}`}>
         <div className="bg-slate-50 w-full rounded-xl p-4">
           <p className="font-bold text-center text-xl">Selected Products</p>
           {selectedProducts.length > 0 ? (

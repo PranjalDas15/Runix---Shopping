@@ -13,6 +13,7 @@ import {
   Heart,
   ShoppingCart,
   Smartphone,
+  Store,
   Truck,
 } from "lucide-react";
 import Image from "next/image";
@@ -44,7 +45,6 @@ const ProductPage = () => {
 
   const alreadyAdded = user?.wishlist?.find((p) => p._id === product?._id);
 
-  console.log(product);
   return (
     <>
       {loading ? (
@@ -175,20 +175,24 @@ const ProductPage = () => {
                   </button>
                 </div>
                 <div className="py-3 flex flex-col gap-3 font-semibold">
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
                     <Truck />
                     <p>Get it by {estimateDate().toString()}</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex items-center  gap-2">
                     <Smartphone />
                     <p>Pay on Delivery available</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex items-center  gap-2">
                     <Check />
                     <p>Easy 15 days return and exchange available</p>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Store />
+                    <Link href={`/shop/${product.seller.name}`} className="custom-transition hover:text-orange-400">{product.seller.name}</Link>
+                  </div>
                 </div>
-                <Link href={`/shop/${product.seller.name}?page=1`}>{product.seller.name}</Link>
+                
 
                 <div className="border-y-2">
                   <p className="text-xl font-semibold py-3">Product Details</p>

@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 type Label= {
     children: ReactNode;
-    extras: string;
+    extras?: string;
     onCLickHandler?: () => void;
 }
     

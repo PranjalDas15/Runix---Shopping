@@ -19,31 +19,55 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const validatedData = updateSchema.parse(body);
     const { phone, address } = validatedData;
+    const { name } = body;
     try {
-        await dbConnect();
-        const updatedUser = await UserModel.findByIdAndUpdate( userId , 
-            {
-                phone,
-                address
-            },
-            { new: true }
+      await dbConnect();
+      const existingUser = await UserModel.findById(userId);
+      if (!existingUser) {
+        return NextResponse.json(
+          { message: "User not found." },
+          { status: 404 }
+        );
+      }
+
+      const updatedAddress = address
+        ? [
+            ...existingUser.address,
+            ...address.filter((newAddr) => !!newAddr.trim()),
+          ]
+        : existingUser.address;
+
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        userId,
+        {
+          ...(name && { name }),
+          ...(phone && { phone }), 
+          address: updatedAddress, 
+        },
+        { new: true }
+      );
+
+      if (!updatedUser)
+        return NextResponse.json(
+          { message: "Something went wrong. Try again later." },
+          { status: 404 }
         );
 
-        if(!updatedUser)
-            return NextResponse.json({message: "Something went wrong. Try again later."}, {status: 404});
+      const user = {
+        _id: updatedUser._id,
+        email: updatedUser.email,
+        name: updatedUser.name,
+        phone: updatedUser.phone,
+        address: updatedUser.address,
+        role: updatedUser.role,
+        wishlist: updatedUser.wishlist,
+        cart: updatedUser.cart,
+      };
 
-        const user = {
-            _id: updatedUser._id,
-            email: updatedUser.email,
-            phone: updatedUser.phone,
-            address: updatedUser.address,
-            role: updatedUser.role,
-            wishlist: updatedUser.wishlist,
-            cart: updatedUser.cart,
-        }
-
-        return NextResponse.json({message: "Customer updated successfully.", user}, {status: 201});
-
+      return NextResponse.json(
+        { message: "Customer updated successfully.", user },
+        { status: 201 }
+      );
     } catch (error: any) {
       if (error instanceof z.ZodError) {
         return NextResponse.json(

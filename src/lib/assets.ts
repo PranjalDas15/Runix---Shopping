@@ -1,4 +1,3 @@
-
 export const prices = [
   { price: "All", min: 0, max: 10000 },
   { price: "Below 1000", min: 0, max: 1000 },
@@ -14,36 +13,83 @@ export const genders = [
   { gender: "Female", value: "female" },
 ];
 
-
 export const categories = [
   { type: "All", value: "", image: "/categories/sweatsmen.jpg" },
   { type: "Shoes", value: "Shoes", image: "/categories/tshirtmen.jpg" },
   { type: "Topwear", value: "T-Shirt", image: "/categories/shortsmen.jpg" },
-  { type: "Bottomwear", value: "Bottomwear", image: "/categories/shortsmen.jpg" },
-  { type: "Sportswear", value: "Sportswear", image: "/categories/tracksmen.jpg" },
+  {
+    type: "Bottomwear",
+    value: "Bottomwear",
+    image: "/categories/shortsmen.jpg",
+  },
+  {
+    type: "Sportswear",
+    value: "Sportswear",
+    image: "/categories/tracksmen.jpg",
+  },
   { type: "Jacket", value: "Jacket", image: "/categories/tracksmen.jpg" },
-  { type: "Accessories", value: "Accessories", image: "/categories/tracksmen.jpg" },
-  { type: "Winterwear", value: "Winterwear", image: "/categories/tracksmen.jpg" },
+  {
+    type: "Accessories",
+    value: "Accessories",
+    image: "/categories/tracksmen.jpg",
+  },
+  {
+    type: "Winterwear",
+    value: "Winterwear",
+    image: "/categories/tracksmen.jpg",
+  },
 ];
 
 export const categoriesMale = [
-  { type: "Shoes", value: "Shoes", image: "/categories/sweatsmen.jpg" },
+  { type: "Shoes", value: "Shoes", image: "/categories/sneakermen.jpg" },
   { type: "Topwear", value: "T-Shirt", image: "/categories/tshirtmen.jpg" },
-  { type: "BottomWear", value: "Bottomwear", image: "/categories/shortsmen.jpg" },
-  { type: "Sportswear", value: "Sportswear", image: "/categories/tracksmen.jpg" },
+  {
+    type: "BottomWear",
+    value: "Bottomwear",
+    image: "/categories/shortsmen.jpg",
+  },
+  {
+    type: "Sportswear",
+    value: "Sportswear",
+    image: "/categories/tracksmen.jpg",
+  },
   { type: "Jacket", value: "Jacket", image: "/categories/sweatsmen.jpg" },
-  { type: "Accessories", value: "Accessories", image: "/categories/accessoriesmen.jpg" },
-  { type: "Winterwear", value: "Winterwear", image: "/categories/accessoriesmen.jpg" },
+  {
+    type: "Winterwear",
+    value: "Winterwear",
+    image: "/categories/jacketsmen.jpg",
+  },
+  {
+    type: "Accessories",
+    value: "Accessories",
+    image: "/categories/accessoriesmen.jpg",
+  },
 ];
 
 export const categoriesFemale = [
-  { type: "Shoes", value: "Shoes", image: "/categories/sweatswomen.jpg" },
+  { type: "Shoes", value: "Shoes", image: "/categories/sneakerwomen.jpg" },
   { type: "Topwear", value: "T-Shirt", image: "/categories/tshirtwomen.jpg" },
-  { type: "BottomWear", value: "Bottomwear", image: "/categories/shortswomen.jpg" },
-  { type: "Sportswear", value: "Sportswear", image: "/categories/trackswomen.jpg" },
-  { type: "Jacket", value: "Jacket", image: "/categories/sweatswomen.jpg" },
-  { type: "Accessories", value: "Accessories", image: "/categories/accessorieswomen.jpg" },
-  { type: "Winterwear", value: "Winterwear", image: "/categories/accessorieswomen.jpg" },
+  {
+    type: "BottomWear",
+    value: "Bottomwear",
+    image: "/categories/shortswomen.jpg",
+  },
+  {
+    type: "Sportswear",
+    value: "Sportswear",
+    image: "/categories/trackswomen.jpg",
+  },
+  { type: "Jacket", value: "Jacket", image: "/categories/jacketswomen.jpg" },
+  {
+    type: "Winterwear",
+    value: "Winterwear",
+    image: "/categories/accessorieswomen.jpg",
+  },
+  {
+    type: "Accessories",
+    value: "Accessories",
+    image: "/categories/accessorieswomen.jpg",
+  },
 ];
 
 export const customerPolicies = [
@@ -74,7 +120,12 @@ export const banners = [
     body: "",
     button: "Explore",
   },
-  { image: "/products/ad3.jpg", heading: "Push Your Limits", body: "", button: "Explore" },
+  {
+    image: "/products/ad3.jpg",
+    heading: "Push Your Limits",
+    body: "",
+    button: "Explore",
+  },
   {
     image: "/products/ad4.jpg",
     heading: "Winter Collection is here!",
@@ -102,7 +153,12 @@ export const advertisements = [
     body: "",
     button: "Explore",
   },
-  { image: "/banners/banner3.jpg", heading: "Push Your Limits", body: "", button: "Explore" },
+  {
+    image: "/banners/banner3.jpg",
+    heading: "Push Your Limits",
+    body: "",
+    button: "Explore",
+  },
   {
     image: "/banners/banner4.jpg",
     heading: "Winter Collection is here!",
@@ -130,14 +186,24 @@ export const advertisements2 = [
     body: "Where style meets performance.",
     button: "Explore",
   },
-  { image: "/banners/banner8.jpg", heading: "Chic & Timeless: White Done Right", body: "Classic white, always in fashion.", button: "Explore" },
+  {
+    image: "/banners/banner8.jpg",
+    heading: "Chic & Timeless: White Done Right",
+    body: "Classic white, always in fashion.",
+    button: "Explore",
+  },
   {
     image: "/banners/banner9.jpg",
     heading: "Everyday Jackets for Effortless Style",
     body: "Layer up with our versatile jackets.",
     button: "Explore",
   },
-  { image: "/banners/banner10.jpg", heading: "Accessorize Your Life: Fun & Functional", body: "Finish your look with perfect accessories", button: "Explore" },
+  {
+    image: "/banners/banner10.jpg",
+    heading: "Accessorize Your Life: Fun & Functional",
+    body: "Finish your look with perfect accessories",
+    button: "Explore",
+  },
 ];
 
 export const commondetails = {
@@ -155,8 +221,9 @@ export const commondetails = {
 };
 
 export const userMenu = [
-  {type: "User", value: "User"},
-  {type: "Orders", value: "User"},
-  {type: "Logout", value: "User"},
-]
+  { type: "User", value: "User" },
+  { type: "Orders", value: "User" },
+  { type: "Logout", value: "User" },
+];
 
+export const states = ['Select State','Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu', 'Jharkhand', 'Karnataka', 'Kashmir', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttarakhand', 'Uttar Pradesh', 'West Bengal']

@@ -1,9 +1,9 @@
 "use client";
+
 import Sidebar from "@/components/adminComponents/Sidebar";
 import Loading from "@/components/Loading";
 import { useAppSelector } from "@/lib/hooks";
 import { File, FilePlus, LayoutDashboard, User } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { ReactNode, useState } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
