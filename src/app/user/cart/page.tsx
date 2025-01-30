@@ -5,20 +5,17 @@ import { resetNewlyAddedtoCart } from "@/lib/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const page = () => {
   const { user, newlyAddedtoCart } = useAppSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
+
   useEffect(()=>{
       if(newlyAddedtoCart){
         dispatch(resetNewlyAddedtoCart());
       }
     },[])
-
-    const route = usePathname();
-    const links = route.split("/");
 
   return (
     <div className="w-full min-h-[70vh] flex justify-center">
@@ -50,7 +47,6 @@ const page = () => {
             </div>
           ) : (
             <Cart />
-            // <></>
           )}
         </div>
       </div>

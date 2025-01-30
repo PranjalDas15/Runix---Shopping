@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -12,31 +12,27 @@ import {
   handleAddtoCart,
   handleRemoveFromCart,
 } from "@/lib/utils/utils";
+import { setSelectedProducts } from "@/lib/features/cartSlice";
+import { useRouter } from "next/navigation";
 
-export interface SelectedProduct {
-  productId: string;
-  quantity: number;
-  price: number;
-}
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { user } = useAppSelector((state: RootState) => state.user);
   const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(false);
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
-    []
-  );
 
+  const {selectedProducts} = useAppSelector((state)=>state.cart);
   const handleCheckboxChange = (
     productId: string,
     price: number,
     quantity: number
   ) => {
-    setSelectedProducts((prev) =>
-      prev.find((p) => p.productId === productId)
-        ? prev.filter((p) => p.productId !== productId)
-        : [...prev, { productId: productId, price, quantity }]
-    );
+    const isSelected = selectedProducts.some((p) => p.productId === productId);
+    const newSelectedProducts = isSelected
+      ? selectedProducts.filter((p) => p.productId !== productId)
+      : [...selectedProducts, { productId, price, quantity }];
+    dispatch(setSelectedProducts(newSelectedProducts));
   };
 
   const calculateTotalPrice = () => {
@@ -45,6 +41,7 @@ const Cart: React.FC = () => {
       0
     );
   };
+
 
   return (
     <div className={`relative grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3`}>
@@ -163,7 +160,7 @@ const Cart: React.FC = () => {
         })}
       </div>
 
-      <div className={`flex flex-col gap-2 w-full ${isConfirmOrderOpen? 'hidden': 'block'}`}>
+      <div className={`flex flex-col gap-2 w-full`}>
         <div className="bg-slate-50 w-full rounded-xl p-4">
           <p className="font-bold text-center text-xl">Selected Products</p>
           {selectedProducts.length > 0 ? (
@@ -212,7 +209,7 @@ const Cart: React.FC = () => {
               </div>
               <div className="mt-4 flex justify-between p-3 text-xl">
                 <button
-                  onClick={() => setIsConfirmOrderOpen(!isConfirmOrderOpen)}
+                  onClick={() => router.push('/user/place_order')}
                   className="border-2 text-black hover:text-white border-orange-400 hover:bg-orange-400 px-2 py-2 text-lg custom-transition"
                 >
                   Place Order
@@ -231,18 +228,6 @@ const Cart: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-      <div
-        className={`absolute top-0 left-0 w-full h-full xl:h-auto bg-gray-50 rounded-xl ${
-          isConfirmOrderOpen ? "block" : "hidden"
-        }`}
-      >
-        <ConfirmOrder
-          selectedProducts={selectedProducts}
-          calculateTotalPrice={calculateTotalPrice}
-          setIsConfirmOrderOpen={setIsConfirmOrderOpen}
-          isConfirmOrderOpen={isConfirmOrderOpen}
-        />
       </div>
     </div>
   );
