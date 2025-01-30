@@ -33,7 +33,7 @@ interface ShopContextType {
 
 const ShopContext = createContext<ShopContextType>({
   totalPages: 0,
-  itemsPerPage: 12,
+  itemsPerPage: 30,
   currentPage: 1,
   setCurrentPage: () => {},
   filteredProducts: [],
@@ -95,7 +95,7 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
       return 0;
     });
 
-  const itemsPerPage = 12;
+  const itemsPerPage = 30;
   const length = filteredProducts?.length || 0;
   const totalPages = Math.ceil(length / itemsPerPage);
 

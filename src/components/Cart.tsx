@@ -22,7 +22,7 @@ export interface SelectedProduct {
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state: RootState) => state.user);
-  const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(true);
+  const [isConfirmOrderOpen, setIsConfirmOrderOpen] = useState<boolean>(false);
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
@@ -50,37 +50,37 @@ const Cart: React.FC = () => {
     <div className={`relative grid grid-cols-1 xl:grid-cols-2 w-full gap-10 xl:gap-2 p-3`}>
       <div className={`flex flex-col gap-2 ${isConfirmOrderOpen? 'hidden': 'block'}`}>
         {user?.cart?.map((c: any, idx) => {
-          const name = c.product.productName.replace(/\s+/g, "");
-          const brand = c.product.productBrand.replace(/\s+/g, "");
+          const name = c?.product?.productName?.replace(/\s+/g, "");
+          const brand = c?.product?.productBrand?.replace(/\s+/g, "");
           return(
             <div key={idx} className={`w-full relative`}>
               <input
                 type="checkbox"
                 name="cart_product"
-                value={c.product._id}
+                value={c.product?._id}
                 checked={selectedProducts.some(
-                  (p) => p.productId === c.product._id
+                  (p) => p.productId === c.product?._id
                 )}
-                id={c.product._id}
+                id={c.product?._id}
                 onChange={() =>
                   handleCheckboxChange(
-                    c.product._id,
-                    discountedPrice(c.product.price, c.product.discountPercent),
+                    c.product?._id,
+                    discountedPrice(c.product?.price, c.product?.discountPercent),
                     c.quantity
                   )
                 }
                 className="hidden"
               />
               <label
-                htmlFor={c.product._id}
+                htmlFor={c.product?._id}
                 className={`relative w-full flex items-center p-2 rounded-xl ${
-                  selectedProducts.some((p) => p.productId === c.product._id)
+                  selectedProducts.some((p) => p.productId === c.product?._id)
                     ? "bg-orange-100"
                     : " bg-slate-50 "
                 }`}
               >
                 <Link
-                  href={`/product/${brand+name+c.product.size}`}
+                  href={`/product/${brand+name+c.product?.size}`}
                   className="group h-[130px] w-[130px] rounded-lg overflow-hidden"
                 >
                   <Image
@@ -94,23 +94,23 @@ const Cart: React.FC = () => {
                 <div className="px-5">
                   <div className="flex items-center gap-5">
                     <p className="text-lg font-semibold">
-                      {c.product.productBrand}
+                      {c.product?.productBrand}
                     </p>
-                    <p className="text-sm border border-black px-1">{c.product.size}</p>
+                    <p className="text-sm border border-black px-1">{c.product?.size}</p>
                   </div>
-                  <p>{c.product.productName}</p>
+                  <p>{c.product?.productName}</p>
                   <div className="flex items-center gap-2">
                     <p className="line-through font-semibold text-gray-500">
-                      ₹ {c.product.price}
+                      ₹ {c.product?.price}
                     </p>
                     <p className="bg-gray-700 rounded-full text-white text-sm px-1">
-                      {c.product.discountPercent}% OFF
+                      {c.product?.discountPercent}% OFF
                     </p>
                     <p className="font-semibold">
                       ₹{" "}
                       {discountedPrice(
-                        c.product.price,
-                        c.product.discountPercent
+                        c.product?.price,
+                        c.product?.discountPercent
                       )}
                     </p>
                   </div>
@@ -118,7 +118,7 @@ const Cart: React.FC = () => {
                     <button
                       disabled={c.quantity === 1}
                       onClick={() =>
-                        handleRemoveFromCart(c.product._id, 1, dispatch)
+                        handleRemoveFromCart(c.product?._id, 1, dispatch)
                       }
                       className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                         c.quantity === 1
@@ -135,7 +135,7 @@ const Cart: React.FC = () => {
   
                     <button
                       disabled={c.quantity === 5}
-                      onClick={() => handleAddtoCart(c.product._id, 1, dispatch)}
+                      onClick={() => handleAddtoCart(c.product?._id, 1, dispatch)}
                       className={`w-8 h-8 flex items-center justify-center bg-slate-200  custom-transition ${
                         c.quantity === 5
                           ? "cursor-not-allowed opacity-80"
@@ -149,7 +149,7 @@ const Cart: React.FC = () => {
                 <button
                   className="absolute top-0 right-0 mt-4 mr-4"
                   onClick={() =>
-                    handleRemoveFromCart(c.product._id, c.quantity, dispatch)
+                    handleRemoveFromCart(c.product?._id, c.quantity, dispatch)
                   }
                 >
                   <X
@@ -179,7 +179,7 @@ const Cart: React.FC = () => {
                   </li>
                   {selectedProducts.map((p, idx) => {
                     const productDetails = user?.cart.find(
-                      (c: any) => c.product._id === p.productId
+                      (c: any) => c.product?._id === p.productId
                     )?.product;
 
                     return (
@@ -188,9 +188,9 @@ const Cart: React.FC = () => {
                           <p className="font-semibold">{idx + 1}.</p>
                           {productDetails ? (
                             <div className="col-span-2 text-wrap">
-                              {productDetails.productName.length > 20 ? (
+                              {productDetails?.productName?.length > 20 ? (
                                 <p>
-                                  {productDetails.productName.slice(0, 20)}...
+                                  {productDetails?.productName?.slice(0, 20)}...
                                 </p>
                               ) : (
                                 <p>{productDetails?.productName}</p>

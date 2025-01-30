@@ -50,6 +50,7 @@ const page = () => {
             </div>
           ) : (
             <Cart />
+            // <></>
           )}
         </div>
       </div>

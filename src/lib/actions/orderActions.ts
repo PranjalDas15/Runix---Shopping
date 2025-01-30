@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 export const placeOrder = async ({
   userId,
   orderItems,
+  addressInfo,
   totalPrice,
   paymentMethod,
 }: {
@@ -14,6 +15,10 @@ export const placeOrder = async ({
     quantity: number;
     price: number;
   }[];
+  addressInfo: {
+    name: string,
+    address: string
+  }
   totalPrice: number;
   paymentMethod: string;
 }) => {
@@ -23,6 +28,7 @@ export const placeOrder = async ({
       {
         userId,
         orderItems,
+        addressInfo,
         totalPrice,
         paymentMethod,
       },

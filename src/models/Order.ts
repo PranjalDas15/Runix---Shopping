@@ -44,6 +44,16 @@ const OrderSchema: Schema<OrderDocument> = new Schema({
             required: true
         }
     }],
+    addressInfo: {
+        name: {
+            type: String,
+            required: true
+        },
+        address: {
+            type: String,
+            required: true
+        }
+    },
     totalPrice: {
         type: Number,
         required: true

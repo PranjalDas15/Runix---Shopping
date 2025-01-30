@@ -16,8 +16,8 @@ export async function POST(req: Request) {
     }
     try {
       const body = await req.json();
-      const { orderItems, totalPrice, paymentMethod } = body;
-      if (!orderItems || !totalPrice || !paymentMethod)
+      const { orderItems, addressInfo, totalPrice, paymentMethod } = body;
+      if (!orderItems || !addressInfo || !totalPrice || !paymentMethod)
         return NextResponse.json({ message: "Empty Order" }, { status: 400 });
       orderItems.forEach((item: any) => {
         if (
@@ -44,6 +44,7 @@ export async function POST(req: Request) {
       const newOrder = new OrderModel({
         userId,
         order: orderItems,
+        addressInfo,
         totalPrice,
         orderStatus: "Processing",
         paymentMethod,
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
         _id: newOrder._id,
         userId: newOrder.userId,
         order: newOrder.order,
+        addressInfo: newOrder.addressInfo,
         totalPrice: newOrder.totalPrice,
         orderStatus: newOrder.orderStatus,
         paymentMethod: newOrder.paymentMethod,
@@ -125,3 +127,4 @@ export async function PATCH(req: Request) {
     }
   })(req);
 }
+

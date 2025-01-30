@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { states } from "@/lib/assets";
 import { string } from "zod";
+import { updateUser } from "@/lib/actions/updateUser";
+import { useDispatch } from "react-redux";
 
 const ConfirmOrder = ({
   selectedProducts,
@@ -19,6 +21,7 @@ const ConfirmOrder = ({
   setIsConfirmOrderOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isConfirmOrderOpen: boolean;
 }) => {
+  const dispatch = useAppDispatch();
   const { orders, loading } = useAppSelector((state) => state.order);
   const { user } = useAppSelector((state) => state.user);
   const [name, setName] = useState("");
@@ -26,16 +29,18 @@ const ConfirmOrder = ({
     address_line1: "",
     address_line2: "",
     address_pincode: "",
-    address_state: ""
+    address_state: "",
   });
 
-    const fullAddress = Object.values(addressString).filter(val=>val.trim()!== "").join(", ");
-  useEffect(()=>{
-    console.log(addressString)
-    console.log("FUll address:", fullAddress)
+  const fullAddress = Object.values(addressString)
+    .filter((val) => val.trim() !== "")
+    .join(", ");
 
-  }, [addressString])
-  const dispatch = useAppDispatch();
+  const [addressInfo, setAddressInfo] = useState({
+    name: "",
+    address: "",
+  });
+
   const handleOrder = async (e: any) => {
     if (user && user.address.length === 0) {
       e.preventDefault();
@@ -46,12 +51,14 @@ const ConfirmOrder = ({
         //@ts-ignore
         userId: user?._id,
         orderItems: selectedProducts,
+        addressInfo: addressInfo,
         totalPrice: toatalPrice,
         paymentMethod: "Cash on Delivery",
       });
       dispatch(fetchOrder());
     }
   };
+
   return (
     <div className="p-5 rounded-xl flex flex-col gap-4">
       <h1 className="text-xl font-bold text-center">Order Details</h1>
@@ -95,103 +102,159 @@ const ConfirmOrder = ({
       <div className="bg-white p-2 rounded-xl border font-semibold flex flex-col gap-4 justify-center">
         <h3 className="text-lg">Address Information</h3>
         <div className="flex flex-col gap-2 justify-center">
-          {/* {user?.address.length === 0 ? (
-            <button onClick={() => redirect("/user")} className="border w-32 py-2">Add Address</button>
-          ) : (
-            <p className="">
-              Address: <span className="font-light">{user?.address}</span>
-            </p>
-          )} */}
-          {user?.address.length === 0 ? (
-            <div className="w-full md:w-1/2">
+
+          <div className="w-full md:w-1/2 flex flex-col gap-2">
+            <div>
+              <label htmlFor="name" className="block">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                className="font-normal py-2 border border-orange-400 px-2 peer w-full"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="address_line1" className="block">
+                Address Line 1
+              </label>
+              <input
+                type="text"
+                name="address_line1"
+                id="address_line1"
+                className="font-normal py-2 border border-orange-400 px-2 peer w-full"
+                onChange={(e) =>
+                  setAddressString({
+                    ...addressString,
+                    address_line1: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="address_line2" className="block">
+                Address Line 2
+              </label>
+              <input
+                type="text"
+                name="address_line2"
+                id="address_line2"
+                className="font-normal py-2 border border-orange-400 px-2 peer w-full"
+                onChange={(e) =>
+                  setAddressString({
+                    ...addressString,
+                    address_line2: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div className="flex flex-col md:flex-row gap-3  md:items-center">
               <div>
-                <label htmlFor="name" className="block">
-                  Name
+                <label htmlFor="address_pincode" className="block">
+                  Pincode
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  id="name"
-                  className="font-normal py-2 border border-orange-400 px-2 peer w-full"
-                  onChange={(e)=>setName(e.target.value)}
+                  name="address_pincode"
+                  id="address_pincode"
+                  className="font-normal py-2 border border-orange-400 peer px-2"
+                  onChange={(e) =>
+                    setAddressString({
+                      ...addressString,
+                      address_pincode: e.target.value,
+                    })
+                  }
                 />
               </div>
-              <div>
-                <label htmlFor="address_line1" className="block">
-                  Address Line 1
-                </label>
-                <input
-                  type="text"
-                  name="address_line1"
-                  id="address_line1"
-                  className="font-normal py-2 border border-orange-400 px-2 peer w-full"
-                  onChange={(e)=>setAddressString({...addressString, address_line1: e.target.value})}
-                  />
-              </div>
-              <div>
-                <label htmlFor="address_line2" className="block">
-                  Address Line 2
-                </label>
-                <input
-                  type="text"
-                  name="address_line2"
-                  id="address_line2"
-                  className="font-normal py-2 border border-orange-400 px-2 peer w-full"
-                  onChange={(e)=>setAddressString({...addressString, address_line2: e.target.value})}
-                  />
-              </div>
-              <div className="flex flex-col md:flex-row gap-3  md:items-center">
-                <div>
-                  <label htmlFor="address_pincode" className="block">
-                    Pincode
-                  </label>
-                  <input
-                    type="text"
-                    name="address_pincode"
-                    id="address_pincode"
-                    className="font-normal py-2 border border-orange-400 peer px-2"
-                    onChange={(e)=>setAddressString({...addressString, address_pincode: e.target.value})}
-                  />
-                </div>
 
-                <div>
-                  <label htmlFor="address_state" className="block">
-                    State
-                  </label>
-                  <select
-                    name="address_state"
-                    id="address_state"
-                    defaultValue={"Select State"}
-                    className="py-2.5 border border-orange-400"
-                    onChange={(e) => setAddressString({ ...addressString, address_state: e.target.value })}
-                  >
-                    {states.map((state, index) => (
-                      <option
-                        value={state}
-                        key={index}
-                        disabled={state === "Select State"}
-                      >
-                        {state}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div>
+                <label htmlFor="address_state" className="block">
+                  State
+                </label>
+                <select
+                  name="address_state"
+                  id="address_state"
+                  defaultValue={"Select State"}
+                  className="py-2.5 border border-orange-400"
+                  onChange={(e) =>
+                    setAddressString({
+                      ...addressString,
+                      address_state: e.target.value,
+                    })
+                  }
+                >
+                  {states.map((state, index) => (
+                    <option
+                      value={state}
+                      key={index}
+                      disabled={state === "Select State"}
+                    >
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
-
-              
             </div>
+            <div>
+              <button
+                className="border py-2 px-5"
+                onClick={() => {
+                  updateUser({ address: [fullAddress], name: name, dispatch });
+                  console.log("Address Info:", addressInfo);
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          {user?.address.length === 0 ? (
+            <></>
           ) : (
-            <div></div>
+            <div className="flex flex-col gap-2">
+              {user?.address.map((address, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="rounded-xl border overflow-hidden"
+                  >
+                    <input
+                      type="radio"
+                      name="address"
+                      id={address}
+                      value={address}
+                      onChange={(e) => {
+                        console.log("Address:", e.target.value);
+                        if (user) {
+                          setAddressInfo({
+                            name: user.name || "",
+                            address: e.target.value,
+                          });
+                        }
+                      }}
+                      className="peer hidden"
+                    />
+                    <label
+                      htmlFor={address}
+                      className="peer-hover:bg-slate-100 peer-checked:bg-orange-50 w-full h-full flex flex-col gap-2 px-2 py-3"
+                    >
+                      <h1 className="text-lg">Address {index + 1}</h1>
+                      <p className="">{user?.name}</p>
+                      <p className="font-normal">{user?.phone}</p>
+                      <p className="font-normal text-sm">{address}</p>
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
           )}
           <p className="font-semibold">Cash on Delivery</p>
-          <div className="flex justify-start">
-          <button className="py-3 px-2 border border-orange-400">Add Address Information</button>
-          </div>
         </div>
       </div>
       <div className="flex gap-2 font-semibold">
         <button
-          disabled={fullAddress.trim()===""}
+          disabled={addressInfo.address === ""}
           onClick={(e: any) => {
             handleOrder(e);
             setIsConfirmOrderOpen(!isConfirmOrderOpen);
