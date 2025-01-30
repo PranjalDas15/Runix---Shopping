@@ -140,7 +140,19 @@ const FilterSidebar = () => {
                           category.value.toLowerCase()
                         }
                         onChange={(e: any) => {
-                          dispatch(setCategoryValue(e.target.value));
+                          const selectedCategory = e.target.value;
+                          const params = new URLSearchParams(searchParams?.toString());
+                          if(e.target.value === ""){
+                            dispatch(setCategoryValue(""));
+                            params.delete("category");
+                            router.push(`?${params.toString()}`);
+                          } else {
+                            dispatch(setCategoryValue(selectedCategory.toLowerCase()))
+                            params.set("category", selectedCategory);
+                            params.set("page", "1");
+                            router.push(`?${params.toString()}`)
+                          }
+                          
                         }}
                         className="peer hidden"
                       />

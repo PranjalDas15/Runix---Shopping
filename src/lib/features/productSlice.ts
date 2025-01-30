@@ -6,6 +6,7 @@ interface ProductState {
     products: Product[];
     genderValue: string;
     categoryValue: string;
+    searchValue: string;
     // priceValue: [number, number];
     loading: boolean;
     error: string | null;
@@ -16,6 +17,7 @@ const initialState: ProductState = {
     products: [],
     genderValue: "",
     categoryValue: "",
+    searchValue: "",
     // priceValue: [0, 0],
     loading: false,
     error: null,
@@ -30,6 +32,9 @@ const productSlice = createSlice({
         },
         setCategoryValue(state, action: PayloadAction<string>) {
             state.categoryValue = action.payload;
+        },
+        setSearchValue(state, action: PayloadAction<string>) {
+            state.searchValue = action.payload;
         },
         // setPriceValue(state, action: PayloadAction<string>) {
         //     const prices = action.payload.split('-').map((price) => parseInt(price, 10));
@@ -66,5 +71,5 @@ const productSlice = createSlice({
     }
 });
 
-export const { setGenderValue, setCategoryValue ,clearProducts, setProducts, setError, setLoading } = productSlice.actions;
+export const { setGenderValue, setCategoryValue, setSearchValue ,clearProducts, setProducts, setError, setLoading } = productSlice.actions;
 export default productSlice.reducer;

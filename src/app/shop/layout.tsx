@@ -2,15 +2,13 @@
 
 import Loading from "@/components/Loading";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
-import { setGenderValue } from "@/lib/features/productSlice";
+import { setCategoryValue, setGenderValue, setSearchValue } from "@/lib/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { discountedPrice } from "@/lib/utils/utils";
 import { Product } from "@/types/Product";
 import { Filter, Search, X } from "lucide-react";
 import {
-  useParams,
-  usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
@@ -48,7 +46,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 const ShopContent = ({ children }: { children: ReactNode }) => {
-  const { products, genderValue, categoryValue, loading, error } =
+  const { products, genderValue, categoryValue, searchValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -60,40 +58,54 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
   const [sortOption, setSortOption] = useState<
     "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"
   >("default");
-  const [search, setSearch] = useState("");
   const [isHidden, setIsHidden] = useState(true);
 
   const filteredProducts = products
-    .filter(
-      (product) =>
-        (search === "" ||
-          product.productName.toLowerCase().includes(search.toLowerCase()) || product.productBrand.toLowerCase().includes(search.toLowerCase())) &&
-        (genderValue === "" ||
-          product.gender.toLowerCase() === genderValue.toLowerCase()) &&
-        (categoryValue === "" ||
-          product.category.toLowerCase() === categoryValue.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (sortOption === "high-to-low") {
-        return (
-          discountedPrice(b.price, b.discountPercent) -
-          discountedPrice(a.price, a.discountPercent)
-        );
-      }
-      if (sortOption === "low-to-high") {
-        return (
-          discountedPrice(a.price, a.discountPercent) -
-          discountedPrice(b.price, b.discountPercent)
-        );
-      }
-      if (sortOption === "a-z") {
-        return a.productName.localeCompare(b.productName);
-      }
-      if (sortOption === "z-a") {
-        return b.productName.localeCompare(a.productName);
-      }
-      return 0;
-    });
+  .filter((product) => {
+    const matchesGender =
+      genderValue === "" ||
+      product.gender.toLowerCase() === genderValue.toLowerCase();
+
+    const matchesCategory =
+      categoryValue === "" ||
+      product.category.toLowerCase() === categoryValue.toLowerCase();
+
+    const matchesSearch =
+      searchValue === "" ||
+      searchValue
+        .toLowerCase()
+        .split(" ")
+        .every((word) => {
+          return (
+            product.productName.toLowerCase().includes(word) ||
+            product.productBrand.toLowerCase().includes(word) ||
+            product.category.toLowerCase().includes(word)
+          );
+        });
+
+    return matchesGender && matchesCategory && matchesSearch;
+  })
+  .sort((a, b) => {
+    if (sortOption === "high-to-low") {
+      return (
+        discountedPrice(b.price, b.discountPercent) -
+        discountedPrice(a.price, a.discountPercent)
+      );
+    }
+    if (sortOption === "low-to-high") {
+      return (
+        discountedPrice(a.price, a.discountPercent) -
+        discountedPrice(b.price, b.discountPercent)
+      );
+    }
+    if (sortOption === "a-z") {
+      return a.productName.localeCompare(b.productName);
+    }
+    if (sortOption === "z-a") {
+      return b.productName.localeCompare(a.productName);
+    }
+    return 0;
+  });
 
   const itemsPerPage = 30;
   const length = filteredProducts?.length || 0;
@@ -115,7 +127,24 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
     }
     const genderParam = searchParams?.get("gender") || "";
     if (genderValue !== genderParam) dispatch(setGenderValue(genderParam));
-  }, [dispatch, genderValue, searchParams, totalPages]);
+
+    const categoryParam = searchParams?.get("category") || "";
+    if (categoryValue !== categoryParam) dispatch(setCategoryValue(categoryParam));
+
+    const searchParam = searchParams?.get("search") || "";
+    if (searchValue !== searchParam) dispatch(setSearchValue(searchParam));
+  }, [dispatch, genderValue, searchParams, totalPages, searchValue, categoryValue]);
+
+  const handleSearchChange = (value: string) => {
+    dispatch(setSearchValue(value));
+    const queryParam = new URLSearchParams(searchParams?.toString());
+    if (value) {
+      queryParam.set("search", value);
+    } else {
+      queryParam.delete("search");
+    }
+    router.push(`?${queryParam.toString()}`);
+  };
 
   return (
     <div className="relative flex gap-2 py-5 px-2 pt-[70px] w-full h-screen">
@@ -143,8 +172,9 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
           <input
             type="text"
             placeholder="Search Products"
+            value={searchValue}
             onChange={(e) => {
-              setSearch(e.target.value);
+              handleSearchChange(e.target.value);
             }}
             className="w-full pl-10 pr-2 py-2 border border-gray-300 rounded-md"
           />
@@ -212,23 +242,24 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
               : "Male"}
           </h1>
           <p className="text-sm font-light text-gray-500">
-            {search ? search : categoryValue === ""
+            {searchValue ? searchValue : categoryValue === ""
               ? "All"
               : categoryValue.charAt(0).toUpperCase() + categoryValue.slice(1)}
           </p>
         </div>
         <div className="max-h-screen w-full pb-5">
+          {loading ? <Loading/> :
           <ShopContext.Provider
-            value={{
-              totalPages,
-              currentPage,
-              setCurrentPage,
-              itemsPerPage,
-              filteredProducts,
-            }}
-          >
-            {children}
-          </ShopContext.Provider>
+          value={{
+            totalPages,
+            currentPage,
+            setCurrentPage,
+            itemsPerPage,
+            filteredProducts,
+          }}
+        >
+          {children}
+        </ShopContext.Provider>}
         </div>
       </div>
     </div>
