@@ -11,7 +11,6 @@ async function dbConnect(): Promise<void> {
     console.log("Already Connected.");
     return;
   }
-  // 'mongodb+srv://pranjal080015:SJEEhbl6lR4XRNpH@runix.ve2nz.mongodb.net/?retryWrites=true&w=majority&appName=Runix'
   try {
     const MONGO_URI = process.env.MONGO_URI;
     if (!MONGO_URI) {

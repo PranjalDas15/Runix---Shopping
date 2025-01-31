@@ -6,19 +6,9 @@ import Loading from "@/components/Loading";
 import Navbar from "@/components/Navbar";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const { products, loading } = useAppSelector((state) => state.products);
-  const [isLoading, setIsLoading] = useState(true);
+  const { loading } = useAppSelector((state) => state.products);
 
-  useEffect(() => {
-    console.log("Loading state:", loading);
-    console.log("Products:", products);
-
-    if (!loading && products) {
-      setIsLoading(false);
-    }
-  }, [loading, products]);
-
-  if (isLoading) {
+  if (loading) {
     return <Loading />;
   }
 
