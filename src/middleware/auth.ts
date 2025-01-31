@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';  // Import cookies from next/headers
+import { cookies } from 'next/headers';  
 import { ExtendedRequest } from '@/types/ExtendedRequest';
 
 if (!process.env.JWT_SECRET) {
