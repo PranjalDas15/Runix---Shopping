@@ -6,6 +6,10 @@ interface Order {
   _id: string | null;
   userId: string | null;
   order: OrderItem[];
+  addressInfo: {
+    name: string,
+    address: string
+  };
   totalPrice: number | null;
   orderStatus: string | null;
   paymentMethod: string | null;

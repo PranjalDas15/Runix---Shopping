@@ -1,6 +1,7 @@
 "use client";
 import { cancelOrder, fetchOrder } from "@/lib/actions/orderActions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { expectedDelivery } from "@/lib/utils/utils";
 import { ArrowLeft, LoaderCircle, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +26,7 @@ const page = () => {
   };
   return (
     <div className="pt-[70px] flex items-center justify-center w-full h-screen p-2 lg:p-0">
-      <div className="relative pt-[70px] w-full min-h-full lg:w-[50vw] lg:min-h-[70vh] border rounded-xl bg-white p-4">
+      <div className="relative pt-[70px] w-full md:w-[70%] lg:min-h-[70vh] border rounded-xl bg-white p-4 flex flex-col gap-3">
         <button
           className="absolute top-[20px] left-0 mx-4"
           onClick={() => router.back()}
@@ -49,18 +50,25 @@ const page = () => {
             {order?.orderStatus === "Cancelled" ? (
               <></>
             ) : (
-              <p>Expected delivery on {order?.updatedAt}</p>
+              <p>
+                Expected delivery on{" "}
+                {order?.createdAt && expectedDelivery(order?.createdAt)}
+              </p>
             )}
           </div>
         </div>
 
         <div className=" rounded-xl min-h-full mt-2 flex flex-col gap-2">
+          <h1 className="text-lg font-semibold">Products Info</h1>
+
           {order?.order.map((item, index) => {
-            const brand = item.productId.productBrand?.replace(/\s+/g, "") || "UnknownBrand";
+            const brand =
+              item.productId.productBrand?.replace(/\s+/g, "") ||
+              "UnknownBrand";
             const name = item.productId.productName?.replace(/\s+/g, "");
             return (
               <Link
-                href={`/product/${brand+name+item.productId.size}`}
+                href={`/product/${brand + name + item.productId.size}`}
                 key={index}
                 className="flex items-center p-2 bg-slate-50 hover:bg-orange-50"
               >
@@ -92,7 +100,14 @@ const page = () => {
             );
           })}
         </div>
-        <div>
+        <div className="rounded-xl min-h-full mt-2 flex flex-col gap-2">
+          <h1 className="text-lg font-semibold">Order Address</h1>
+          <div>
+            <p>{order?.addressInfo.name}</p>
+            <p>{order?.addressInfo.address}</p>
+          </div>
+        </div>
+        <div className="rounded-xl min-h-full mt-2 flex flex-col gap-2">
           <p className="font-semibold text-lg">
             <span className="text-orange-400">Order Total: </span>₹
             {order?.totalPrice}

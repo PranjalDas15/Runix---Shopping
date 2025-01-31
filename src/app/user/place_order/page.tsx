@@ -20,7 +20,7 @@ const Page = () => {
   const { loading } = useAppSelector((state) => state.order);
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
 
-  const steps = ["Address", "Payment", "Order Summary"];
+  const steps = ["Address", "Payment", "Order"];
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const nextStep = () => {

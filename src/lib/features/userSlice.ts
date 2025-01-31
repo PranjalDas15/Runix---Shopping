@@ -64,8 +64,9 @@ const userSlice = createSlice({
         state.user.wishlist = action.payload;
       }
     },
-    updateUserData(state, action: PayloadAction<{phone: string, address: string[]}>) {
+    updateUserData(state, action: PayloadAction<{name: string, phone: string, address: string[]}>) {
       if(state.user){
+        state.user.name = action.payload.name;
         state.user.phone = action.payload.phone;
         state.user.address = action.payload.address;
       }

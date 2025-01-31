@@ -1,40 +1,53 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, Check, Loader, Pen, User2Icon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { deleteAddress, updateUser } from "@/lib/actions/updateUser";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, loading } = useAppSelector((state) => state.user);
-  const [isPhoneEdit, setIsPhoneEdit] = useState<boolean>(false);
-  const [isNameEdit, setIsNameEdit] = useState<boolean>(false);
-  const [phone, setPhone] = useState<number | null>(null);
-  const [name, setName] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPhoneEdit, setIsPhoneEdit] = useState(false);
+  const [isNameEdit, setIsNameEdit] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (user) {
+      setName(user.name || "");
+      setPhone(user.phone || "");
+    }
+  }, [user]);
 
   const handlePhoneUpdate = () => {
     if (phone) {
-      updateUser({ phone: phone.toString(), dispatch });
+      updateUser({ phone: phone, dispatch });
       toast.success("Phone number updated.");
-      setIsPhoneEdit(!isPhoneEdit);
+      setIsPhoneEdit(false);
     }
   };
 
   const handleNameUpdate = () => {
-    if (name) {
-      updateUser({ name: name, dispatch });
+    if (name.trim()) {
+      updateUser({ name: name.trim(), dispatch });
       toast.success("Name updated.");
-      setIsNameEdit(!isNameEdit);
+      setIsNameEdit(false);
     }
   };
 
   const handleDeleteAddress = ({ address }: { address: string }) => {
     deleteAddress({ address, dispatch });
+  };
+
+  if (!isMounted) {
+    return <Loading />;
   }
 
   return (
@@ -51,6 +64,7 @@ const page = () => {
                   type="text"
                   id="name"
                   name="name"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="py-2 px-2 border border-orange-400"
                   placeholder="Enter your name"
@@ -58,23 +72,30 @@ const page = () => {
               </div>
             ) : (
               <p className="text-xl font-semibold">
-                {user?.name ? user?.name : "User"}
+                {user?.name || "User"}
               </p>
             )}
 
             {!isNameEdit ? (
               <button
                 className="text-orange-400"
-                onClick={() => setIsNameEdit(!isNameEdit)}
+                onClick={() => setIsNameEdit(true)}
               >
                 <Pen size={15} />
               </button>
             ) : (
-              <div>
+              <div className="flex gap-1">
                 <button disabled={loading} onClick={handleNameUpdate}>
-                  {loading ? <Loader size={20}/> :<Check className="text-green-400" size={20} />}
+                  {loading ? (
+                    <Loader size={20} />
+                  ) : (
+                    <Check className="text-green-400" size={20} />
+                  )}
                 </button>
-                <button onClick={() => setIsNameEdit(!isNameEdit)}>
+                <button onClick={() => {
+                  setIsNameEdit(false);
+                  setName(user?.name || "");
+                }}>
                   <X className="text-red-400" size={20} />
                 </button>
               </div>
@@ -85,28 +106,31 @@ const page = () => {
             {isPhoneEdit ? (
               <div>
                 <input
-                  type="text"
+                  type="tel"
                   id="phone"
                   name="phone"
-                  value={phone ?? user?.phone ?? ""}
-                  onChange={(e) => setPhone(Number(e.target.value))}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                   className="py-2 px-2 border border-orange-400"
                   placeholder="Enter phone number"
+                  maxLength={10}
                 />
               </div>
             ) : (
-              <p className="text-gray-500">+91 {user?.phone}</p>
+              <p className="text-gray-500">
+                {user?.phone ? `+91 ${user.phone}` : "No phone number"}
+              </p>
             )}
 
             {!isPhoneEdit ? (
               <button
                 className="text-orange-400"
-                onClick={() => setIsPhoneEdit(!isPhoneEdit)}
+                onClick={() => setIsPhoneEdit(true)}
               >
                 <Pen size={15} />
               </button>
             ) : (
-              <div>
+              <div className="flex gap-1">
                 <button disabled={loading} onClick={handlePhoneUpdate}>
                   {loading ? (
                     <Loader size={20} />
@@ -114,7 +138,10 @@ const page = () => {
                     <Check className="text-green-400" size={20} />
                   )}
                 </button>
-                <button onClick={() => setIsPhoneEdit(!isPhoneEdit)}>
+                <button onClick={() => {
+                  setIsPhoneEdit(false);
+                  setPhone(user?.phone || "");
+                }}>
                   <X className="text-red-400" size={20} />
                 </button>
               </div>
@@ -128,25 +155,32 @@ const page = () => {
           <ArrowLeft />
         </button>
       </div>
-      <div className="flex flex-col gap-2  w-full md:w-[700px] ">
+      <div className="flex flex-col gap-2 w-full md:w-[700px]">
         <h2 className="font-bold text-xl text-center">Addresses</h2>
-        {user?.address.map((address, index) => {
-          return (
+        {loading ? (
+          <Loading />
+        ) : user?.address?.length ? (
+          user.address.map((address, index) => (
             <div
               key={index}
-              className="relative bg-slate-50 hover:bg-slate-100 rounded-xl px-4 py-4 cursor-pointer"
+              className="relative bg-slate-50 hover:bg-slate-100 rounded-xl px-4 py-4"
             >
               <h3 className="font-semibold text-lg">Address {index + 1}</h3>
               <p>{address}</p>
-              <button onClick={()=>handleDeleteAddress({ address })} className="absolute top-2 right-2 hover:text-orange-400">
+              <button
+                onClick={() => handleDeleteAddress({ address })}
+                className="absolute top-2 right-2 hover:text-orange-400"
+              >
                 <X size={15} />
               </button>
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <div className="text-center py-4">No addresses found</div>
+        )}
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

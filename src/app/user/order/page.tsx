@@ -2,30 +2,19 @@
 
 import Shop from "@/components/shopComponents/Shop";
 import { useAppSelector } from "@/lib/hooks";
+import { dateToString, expectedDelivery } from "@/lib/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 
 const page = () => {
   const { orders } = useAppSelector((state) => state.order);
 
-  const dateToString = (date: string) => {
-    const parsedDate = new Date(date);
-    const year = parsedDate.getFullYear();
-    const month = parsedDate.toLocaleDateString("default", { month: "short" });
-    const day = String(parsedDate.getDate()).padStart(2, "0");
-    const hours = String(parsedDate.getHours()).padStart(2, "0");
-    const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes} ,${day} ${month} ${year}`;
-  };
 
-  const expectedDelivery = (date: string) => {
-    const parsedDate = new Date(date);
+  const sortedOrder = [...orders].sort(
+    (a, b) => new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime()
+  );
 
-    parsedDate.setDate(parsedDate.getDate() + 14);
-    const formattedDate = dateToString(parsedDate.toDateString());
 
-    return formattedDate.split(" ,")[1];
-  };
 
   return (
     <>
@@ -46,8 +35,8 @@ const page = () => {
             <h1 className="font-bold text-xl md:text-2xl">My Orders</h1>
           </div>
           <div className="flex flex-col gap-2">
-            {orders && orders.length > 0 ? (
-              orders.map((o, index) => (
+            {sortedOrder && sortedOrder.length > 0 ? (
+              sortedOrder.map((o, index) => (
                 <Link
                   href={`/user/order/${o._id}`}
                   key={index}
@@ -60,6 +49,7 @@ const page = () => {
                     </span>
                   </div>
                   <div className="flex gap-4 text-sm">
+                    <p>{}</p>
                     <p>
                       Order placed on:{" "}
                       {o.createdAt ? dateToString(o.createdAt) : "N/A"}

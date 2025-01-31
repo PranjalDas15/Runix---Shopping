@@ -56,3 +56,23 @@ export const discountedPrice = (price: number, discountPercent: number) => {
   const discountAmount = (price * discountPercent) / 100;
   return parseInt((price - discountAmount).toString(), 10);
 };
+
+
+export const dateToString = (date: string) => {
+  const parsedDate = new Date(date);
+  const year = parsedDate.getFullYear();
+  const month = parsedDate.toLocaleDateString("default", { month: "short" });
+  const day = String(parsedDate.getDate()).padStart(2, "0");
+  const hours = String(parsedDate.getHours()).padStart(2, "0");
+  const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes} ,${day} ${month} ${year}`;
+};
+
+export const expectedDelivery = (date: string) => {
+  const parsedDate = new Date(date);
+
+  parsedDate.setDate(parsedDate.getDate() + 14);
+  const formattedDate = dateToString(parsedDate.toDateString());
+
+  return formattedDate.split(" ,")[1];
+};

@@ -7,6 +7,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import StoreProvider from "./storeProvider";
+import ClientLayout from "@/components/ClientLayout";
 
 interface Props {
   params: { _id: string };
@@ -36,12 +37,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Props["params"];
 }>) {
-  const param = params;
   return (
     <html lang="en">
       <body
@@ -49,10 +47,7 @@ export default function RootLayout({
       >
         <Toaster position="top-right"/>
           <StoreProvider>
-            <div className="relative">
-              <Navbar />
-              {children}
-            </div>
+            <ClientLayout>{children}</ClientLayout>
           </StoreProvider>
       </body>
     </html>
