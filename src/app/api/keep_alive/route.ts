@@ -1,5 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({ message: "Keep-alive endpoint is working!" });
+import { NextResponse } from "next/server";
+
+export default function GET() {
+  return NextResponse.json({ message: "Keep-alive endpoint is working!" }, {status: 200})
 }
