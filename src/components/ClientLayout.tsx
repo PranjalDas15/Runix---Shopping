@@ -10,6 +10,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Loading state:", loading);
+    console.log("Products:", products);
+
     if (!loading && products) {
       setIsLoading(false);
     }
