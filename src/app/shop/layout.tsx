@@ -29,6 +29,14 @@ const ShopContext = createContext<ShopContextType>({
 });
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <Suspense fallback={<Loading/>}>
+      <ShopContent>{children}</ShopContent>
+    </Suspense>
+  )
+};
+
+const ShopContent = ({children} : {children: ReactNode}) => {
   const [products, setProducts] = useState<Product[]>([]);
   const { genderValue, categoryValue, searchValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
@@ -225,7 +233,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       </div>
     </div>
   );
-};
+}
 
 export function useShopContext(): ShopContextType {
   return useContext(ShopContext);

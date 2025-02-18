@@ -94,7 +94,6 @@ const SizeAndQuantity: React.FC<Props> = ({
     setProducts([]);
     setIsNext(!isNext)
     setFormState && setFormState(initialFormState);
-    dispatch(fetchProducts());
     setLoading(false);
   };
 
