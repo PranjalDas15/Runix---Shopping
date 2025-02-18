@@ -1,13 +1,23 @@
 "use client";
 
+import { fetchProducts } from "@/lib/actions/fetchProducts";
 import { useAppSelector } from "@/lib/hooks";
+import { Product } from "@/types/Product";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { products } = useAppSelector((state) => state.products);
+    const [products, setProducts] = useState<Product[]>([]);
+    useEffect(()=>{
+      const fetchAndSetProducts = async()=> {
+        const fetchedProducts = await fetchProducts();
+        setProducts(fetchedProducts);
+      }
+  
+      fetchAndSetProducts();
+    }, [])
 
   const sellerProducts = products.filter((p) => p.seller._id === user?._id);
   return (
