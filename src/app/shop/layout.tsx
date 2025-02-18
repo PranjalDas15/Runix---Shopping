@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import Loading from "@/components/Loading";
 import FilterSidebar from "@/components/shopComponents/FilterSidebar";
@@ -8,18 +8,9 @@ import { RootState } from "@/lib/store";
 import { discountedPrice } from "@/lib/utils/utils";
 import { Product } from "@/types/Product";
 import { Filter, Search, X } from "lucide-react";
-import {
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import React, {
-  createContext,
-  ReactNode,
-  Suspense,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
+import { fetchProducts } from "@/lib/actions/fetchProducts";
 
 interface ShopContextType {
   totalPages: number;
@@ -38,74 +29,63 @@ const ShopContext = createContext<ShopContextType>({
 });
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  return (
-    <Suspense fallback={<Loading />}>
-      <ShopContent>{children}</ShopContent>
-    </Suspense>
-  );
-};
-
-const ShopContent = ({ children }: { children: ReactNode }) => {
-  const { products, genderValue, categoryValue, searchValue, loading, error } =
+  const [products, setProducts] = useState<Product[]>([]);
+  const { genderValue, categoryValue, searchValue, loading, error } =
     useAppSelector((state: RootState) => state.products);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
 
-  const [currentPage, setCurrentPage] = useState<number | null>(
-    searchParams ? Number(searchParams) : null
-  );
-  const [sortOption, setSortOption] = useState<
-    "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"
-  >("default");
+  useEffect(() => {
+    const fetchAndSetProducts = async () => {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    };
+    fetchAndSetProducts();
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState<number | null>(searchParams ? Number(searchParams) : null);
+  const [sortOption, setSortOption] = useState<"default" | "high-to-low" | "low-to-high" | "a-z" | "z-a">("default");
   const [isHidden, setIsHidden] = useState(true);
 
   const filteredProducts = products
-  .filter((product) => {
-    const matchesGender =
-      genderValue === "" ||
-      product.gender.toLowerCase() === genderValue.toLowerCase();
+    .filter((product) => {
+      const matchesGender =
+        genderValue === "" || product.gender.toLowerCase() === genderValue.toLowerCase();
 
-    const matchesCategory =
-      categoryValue === "" ||
-      product.category.toLowerCase() === categoryValue.toLowerCase();
+      const matchesCategory =
+        categoryValue === "" || product.category.toLowerCase() === categoryValue.toLowerCase();
 
-    const matchesSearch =
-      searchValue === "" ||
-      searchValue
-        .toLowerCase()
-        .split(" ")
-        .every((word) => {
-          return (
-            product.productName.toLowerCase().includes(word) ||
-            product.productBrand.toLowerCase().includes(word) ||
-            product.category.toLowerCase().includes(word)
-          );
-        });
+      const matchesSearch =
+        searchValue === "" ||
+        searchValue
+          .toLowerCase()
+          .split(" ")
+          .every((word) => {
+            return (
+              product.productName.toLowerCase().includes(word) ||
+              product.productBrand.toLowerCase().includes(word) ||
+              product.category.toLowerCase().includes(word)
+            );
+          });
 
-    return matchesGender && matchesCategory && matchesSearch;
-  })
-  .sort((a, b) => {
-    if (sortOption === "high-to-low") {
-      return (
-        discountedPrice(b.price, b.discountPercent) -
-        discountedPrice(a.price, a.discountPercent)
-      );
-    }
-    if (sortOption === "low-to-high") {
-      return (
-        discountedPrice(a.price, a.discountPercent) -
-        discountedPrice(b.price, b.discountPercent)
-      );
-    }
-    if (sortOption === "a-z") {
-      return a.productName.localeCompare(b.productName);
-    }
-    if (sortOption === "z-a") {
-      return b.productName.localeCompare(a.productName);
-    }
-    return 0;
-  });
+      return matchesGender && matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      if (sortOption === "high-to-low") {
+        return discountedPrice(b.price, b.discountPercent) - discountedPrice(a.price, a.discountPercent);
+      }
+      if (sortOption === "low-to-high") {
+        return discountedPrice(a.price, a.discountPercent) - discountedPrice(b.price, b.discountPercent);
+      }
+      if (sortOption === "a-z") {
+        return a.productName.localeCompare(b.productName);
+      }
+      if (sortOption === "z-a") {
+        return b.productName.localeCompare(a.productName);
+      }
+      return 0;
+    });
 
   const itemsPerPage = 30;
   const length = filteredProducts?.length || 0;
@@ -152,7 +132,7 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
         className="absolute top-[65px] md:hidden mt-5"
         onClick={() => setIsHidden(!isHidden)}
       >
-        <Filter/>
+        <Filter />
       </div>
 
       <div
@@ -186,45 +166,25 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
         <FilterSidebar />
 
         <div className="mx-2 my-5">
-          <h1 className="text-black text-lg md:text-xl font-bold mt-4">
-            Sort By
-          </h1>
+          <h1 className="text-black text-lg md:text-xl font-bold mt-4">Sort By</h1>
           <select
             name="sort"
             id="sort"
-            className="py-4 px-4 border mt-2 rounded-md w-full selection:font-bold focus:ring-orange-500 "
+            className="py-4 px-4 border mt-2 rounded-md w-full selection:font-bold focus:ring-orange-500"
             value={sortOption}
             onChange={(e) =>
               setSortOption(
-                e.target.value as
-                  | "default"
-                  | "high-to-low"
-                  | "low-to-high"
-                  | "a-z"
-                  | "z-a"
+                e.target.value as "default" | "high-to-low" | "low-to-high" | "a-z" | "z-a"
               )
             }
           >
             <option value="relavance">Relevance</option>
-            <option
-              disabled
-              className="text-gray-600 font-semibold bg-slate-200"
-            >
+            <option disabled className="text-gray-600 font-semibold bg-slate-200">
               Price
             </option>
-            <option
-              value="low-to-high"
-              onChange={() =>
-                filteredProducts.sort((a, b) => a.price - b.price)
-              }
-            >
-              Low to High
-            </option>
+            <option value="low-to-high">Low to High</option>
             <option value="high-to-low">High to Low</option>
-            <option
-              disabled
-              className="text-gray-600 font-semibold bg-slate-200"
-            >
+            <option disabled className="text-gray-600 font-semibold bg-slate-200">
               Name
             </option>
             <option value="a-z">Accending Order</option>
@@ -248,18 +208,19 @@ const ShopContent = ({ children }: { children: ReactNode }) => {
           </p>
         </div>
         <div className="max-h-screen w-full pb-5">
-          {loading ? <Loading/> :
-          <ShopContext.Provider
-          value={{
-            totalPages,
-            currentPage,
-            setCurrentPage,
-            itemsPerPage,
-            filteredProducts,
-          }}
-        >
-          {children}
-        </ShopContext.Provider>}
+          {loading ? <Loading /> : (
+            <ShopContext.Provider
+              value={{
+                totalPages,
+                currentPage,
+                setCurrentPage,
+                itemsPerPage,
+                filteredProducts,
+              }}
+            >
+              {children}
+            </ShopContext.Provider>
+          )}
         </div>
       </div>
     </div>

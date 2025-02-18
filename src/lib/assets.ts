@@ -232,3 +232,11 @@ export const coupons = [
   {code: 'NEW200', amount: 200},
   {code: 'APP150', amount: 150}
 ]
+
+
+export const paymentType = [
+  {type: "Cash on Delivery"},
+  {type: "Debit Card"},
+  {type: "Credit Card"},
+  {type: "UPI"},
+]

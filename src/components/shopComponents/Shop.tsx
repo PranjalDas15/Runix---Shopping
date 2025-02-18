@@ -35,10 +35,10 @@ const Shop: React.FC<Prop> = ({ value, delButton, heartButton }) => {
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 w-full h-full">
         {value.map((product: any, index: number) => {
           const alreadyAddedtoWishlist = user?.wishlist?.some(
-            (p) => p._id === product._id
+            (p) => p._id === product?._id
           );
           const alreadyAddedtoCart = user?.cart?.some(
-            (p) => p.product._id === product._id
+            (p) => p.product?._id === product._id
           );
 
           return (

@@ -1,12 +1,14 @@
 "use client";
 
 import Loading from "@/components/Loading";
+import { fetchProducts } from "@/lib/actions/fetchProducts";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
   discountedPrice,
   handleAddtoCart,
   handleAddtoWishlist,
 } from "@/lib/utils/utils";
+import { Product } from "@/types/Product";
 import {
   ArrowLeft,
   Check,
@@ -19,15 +21,26 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const ProductPage = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const { products, loading, error } = useAppSelector(
+  const { loading, error } = useAppSelector(
     (state) => state.products
   );
   const router = useRouter();
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(()=>{
+    const fetchAndSetProducts = async () => {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    }
+    fetchAndSetProducts();
+  }, []);
 
   const estimateDate = () => {
     const currentDate = new Date();

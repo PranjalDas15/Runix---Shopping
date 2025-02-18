@@ -13,7 +13,6 @@ export default function StoreProvider({ children }: {children: React.ReactNode;}
   storeRef.current = store()
   storeRef.current.dispatch(fetchUser());
   storeRef.current.dispatch(fetchSeller());
-  storeRef.current.dispatch(fetchProducts());
   storeRef.current.dispatch(fetchOrder());
  }
 
