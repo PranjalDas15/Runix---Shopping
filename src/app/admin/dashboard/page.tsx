@@ -1,9 +1,11 @@
 "use client";
 
 import Loading from "@/components/Loading";
+import { fetchProducts } from "@/lib/actions/fetchProducts";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { discountedPrice } from "@/lib/utils/utils";
+import { Product } from "@/types/Product";
 import {
   BadgePercent,
   DollarSign,
@@ -23,11 +25,19 @@ import {
   Vault,
   Verified,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
   const { user, loading } = useAppSelector((state: RootState) => state.user);
-  const { products } = useAppSelector((state: RootState) => state.products);
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(()=>{
+    const fetchAndSetProducts = async()=> {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    }
+
+    fetchAndSetProducts();
+  }, [])
 
   const sellerProducts = products.filter((p) => p.seller._id === user?._id);
   const totalInventoryQuantity = () => {
