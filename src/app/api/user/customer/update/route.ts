@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import {dbConnect} from "@/lib/dbConnect";
 import { customerAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { updateSchema } from "@/schemas/updateSchema";
@@ -138,10 +138,8 @@ export async function DELETE(req: Request) {
         );
       }
 
-      // Ensure `address` is always treated as an array
       address = Array.isArray(address) ? address : [address];
 
-      // Filter out addresses that match the ones provided
       const updatedAddresses = existingUser.address.filter(
         (addr) => !address.includes(addr.trim())
       );

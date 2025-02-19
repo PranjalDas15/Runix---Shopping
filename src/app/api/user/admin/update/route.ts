@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import {dbConnect} from "@/lib/dbConnect";
 import { adminAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { updateSchema } from "@/schemas/updateSchema";

@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import {dbConnect} from "@/lib/dbConnect";
 import { sellerAuth } from "@/middleware/auth";
 import UserModel from "@/models/User";
 import { ExtendedRequest } from "@/types/ExtendedRequest";

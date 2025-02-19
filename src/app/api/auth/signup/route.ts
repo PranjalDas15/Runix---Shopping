@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import {dbConnect} from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcrypt";
 import { signUpSchema } from "@/schemas/signUpSchema";
