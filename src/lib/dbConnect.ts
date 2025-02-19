@@ -13,7 +13,7 @@ export async function dbConnect(): Promise<void> {
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "your_database_name",
+      dbName: "test",
       useNewUrlParser: true,
       useUnifiedTopology: true,
     } as any);
